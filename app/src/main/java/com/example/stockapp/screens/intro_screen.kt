@@ -10,9 +10,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.stockapp.R
 import com.example.stockapp.Screen
@@ -21,15 +26,21 @@ import com.example.stockapp.Screen
 fun IntroScreen(navController: NavController)
 {
     //val appUiState by appViewModel.uiState.collectAsState()
-
+    var buttonClicked by remember { mutableStateOf(false) }
     Box(modifier = Modifier.fillMaxSize())
     {
-        IntroLayout(navController)
+        if(buttonClicked)
+        {
+            navController.navigate(Screen.LoginScreen.route)
+        }
+        else {
+            IntroLayout(onButtonClick = {buttonClicked = true})
+        }
     }
 
 }
 @Composable
-fun IntroLayout(navController: NavController)
+fun IntroLayout(onButtonClick: () -> Unit)
 {
    Column(modifier = Modifier.fillMaxSize()) {
        Row() {
@@ -39,9 +50,16 @@ fun IntroLayout(navController: NavController)
        }
        Text(text = "Market Wisdom at your\nFingertips: Tune into Success")
        
-       Button(onClick = { navController.navigate(Screen.LoginScreen.route)},shape = RoundedCornerShape(50),colors = ButtonDefaults.buttonColors(Color.Blue)) {
+       Button(onClick = {onButtonClick},shape = RoundedCornerShape(50),colors = ButtonDefaults.buttonColors(Color.Blue)) {
            Text(text = "Get Started!")
            
        }
    }
 }
+
+@Preview
+@Composable
+fun IntroLayout() {
+    IntroLayout()
+}
+
