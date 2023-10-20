@@ -1,6 +1,8 @@
 package com.example.stockapp
 
+import AuthenticationManager
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +15,8 @@ import com.example.stockapp.screens.PortfolioScreen
 @Composable
 fun MainNavHost() {
     val navController = rememberNavController();
-
+    val authManager = remember { AuthenticationManager() }
+    val currentUser = authManager.getCurrentUser()
     NavHost(navController = navController, startDestination = Screen.IntroScreen.route)
     {
        composable(route = Screen.IntroScreen.route){
