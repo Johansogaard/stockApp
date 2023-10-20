@@ -71,7 +71,7 @@ fun LoginLayOut(navController: NavController)
 
       Button(
          onClick = {
-         navController.navigate(Screen.PortfolioScreen.withArgs(textValue))
+         navController.navigate(Screen.SignUpScreen.route)
          },
          modifier = Modifier
             .fillMaxWidth()
@@ -102,9 +102,9 @@ fun LoginLayOut(navController: NavController)
       ) {
          Text(text = "Continue with Google")
       }
-      Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
-         Text(text = "Already have an account?")
-         TextButton(onClick = { /*TODO*/ }) {
+      Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+         Text(text = "Already have an account?",modifier = Modifier.align(Alignment.Bottom))
+         TextButton(onClick = { navController.navigate(Screen.LoginScreen.route) },modifier = Modifier.align(Alignment.Bottom)) {
             Text(text = "Log in", color = Color.Blue)
       }
   
