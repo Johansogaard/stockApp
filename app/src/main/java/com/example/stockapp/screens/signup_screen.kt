@@ -84,7 +84,7 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         Button(
             onClick = {
 
-                      authManager.signUp(email,password) {
+                      authManager.signUp(email,password,username) {
                           isSuccess, errorMessage ->
                           if (isSuccess)
                           {
