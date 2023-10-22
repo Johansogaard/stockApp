@@ -21,19 +21,19 @@ import androidx.navigation.NavController
 import com.example.stockapp.Screen
 
 @Composable
-fun LoginScreen(navController: NavController, authManager: AuthenticationManager)
+fun LoginScreen(navController: NavController)
 {
     //val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        LoginLayout(navController = navController,authManager = AuthenticationManager())
+        LoginLayout(navController = navController)
     }
 
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginLayout(navController: NavController, authManager: AuthenticationManager)
+fun LoginLayout(navController: NavController)
 {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -57,7 +57,7 @@ fun LoginLayout(navController: NavController, authManager: AuthenticationManager
                 .padding(8.dp)
         )
         Button(onClick = {
-            authManager.signIn(email,password)
+            AuthenticationManager.signIn(email,password)
             {
                     isSuccess, errorMessage ->
                 if (isSuccess)

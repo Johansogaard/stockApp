@@ -1,24 +1,57 @@
 package com.example.stockapp.screens
 
-import AuthenticationManager
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ExitToApp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun PortfolioScreen(navController: NavController,authManager: AuthenticationManager) {
+fun PortfolioScreen(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize())
+    {
+        PortfolioLayout()
+
+    }
+
+}
+@Composable
+fun PortfolioLayout()
+{
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(14.dp)
     )
     {
-        Text(text = "Get Started")
+        Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, // Align children to the start and end of the Row
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Overview")
+            IconButton(
+                onClick = {  },
+
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.ExitToApp,
+                    contentDescription = "exit app icon",
+                    tint = Color.Black // You can change the icon color here
+                )
+            }
+        }
+        }
+       
 
     }
-}

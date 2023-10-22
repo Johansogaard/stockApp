@@ -33,26 +33,22 @@ import androidx.navigation.NavController
 import com.example.stockapp.Screen
 
 @Composable
-fun LoginScreen(navController: NavController)
+fun ChoseSignupScreen(navController: NavController)
 {
   // val appUiState by appViewModel.uiState.collectAsState()
 
    Box(modifier = Modifier.fillMaxSize())
    {
-      LoginLayOut(navController)
+      ChoseSignupLayOut(navController)
    }
 
 }
 
-@Composable
-fun LoginStatus()
-{
 
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginLayOut(navController: NavController)
+fun ChoseSignupLayOut(navController: NavController)
 {
    var textValue by remember {mutableStateOf("") }
    Column(modifier = Modifier

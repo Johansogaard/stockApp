@@ -13,13 +13,13 @@ import com.example.stockapp.Screen
 
 
 @Composable
-fun SignUpScreen(navController: NavController,authManager:AuthenticationManager)
+fun SignUpScreen(navController: NavController)
 {
     // val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        SignUpLayout(navController,authManager)
+        SignUpLayout(navController)
     }
 
 }
@@ -27,7 +27,7 @@ fun SignUpScreen(navController: NavController,authManager:AuthenticationManager)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpLayout(navController: NavController,authManager: AuthenticationManager)
+fun SignUpLayout(navController: NavController)
 {
 
     val context = LocalContext.current
@@ -88,7 +88,7 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         Button(
             onClick = {
 
-                    authManager.signUp(email,password,username) {
+                    AuthenticationManager.signUp(email,password,username) {
                           isSuccess, errorMessage ->
                           if (isSuccess)
                           {

@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class AuthenticationManager {
+object AuthenticationManager {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
    // private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
     val databaseUrl = "https://stockapp-26f58-default-rtdb.europe-west1.firebasedatabase.app/"
