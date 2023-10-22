@@ -1,6 +1,6 @@
 package com.example.stockapp
 
-import AuthenticationManager
+import com.example.stockapp.authentication.EmailAuthManager
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -15,7 +15,7 @@ import com.example.stockapp.screens.SignUpScreen
 @Composable
 fun MainNavHost() {
     val navController = rememberNavController();
-    val authManager = remember { AuthenticationManager }
+    val authManager = remember { EmailAuthManager }
     val currentUser = authManager.getCurrentUser()
     val startDestination = if(currentUser != null)
     {

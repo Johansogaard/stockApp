@@ -1,17 +1,12 @@
-
+package com.example.stockapp.authentication
 import android.util.Log
-import com.example.stockapp.data.User
+import com.example.stockapp.data.DatabaseManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
-object AuthenticationManager {
+object EmailAuthManager  {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
    // private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference.child("users")
-    val databaseUrl = "https://stockapp-26f58-default-rtdb.europe-west1.firebasedatabase.app/"
-    val database = Firebase.database(databaseUrl)
-    val myRef = database.getReference("users")
 
     fun signUp(email: String, password: String, username: String, callback: (Boolean, String?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -20,8 +15,7 @@ object AuthenticationManager {
                     val userId = getCurrentUser()?.uid
                     Log.i("Tag","id = $userId")
                     userId?.let {
-                        val user = User(email, username)
-                       myRef.child(userId.toString()).setValue(user)
+                       DatabaseManager.addUser(email,username,userId.toString())
                     }
                     callback(true, null)
                 } else {
@@ -50,7 +44,7 @@ object AuthenticationManager {
             }
     }
 
-    fun getCurrentUser(): FirebaseUser? {
+   fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser
     }
 

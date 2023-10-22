@@ -1,6 +1,6 @@
 package com.example.stockapp.screens
 
-import AuthenticationManager
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stockapp.Screen
+import com.example.stockapp.authentication.EmailAuthManager
 
 
 @Composable
@@ -88,7 +89,7 @@ fun SignUpLayout(navController: NavController)
         Button(
             onClick = {
 
-                    AuthenticationManager.signUp(email,password,username) {
+                    EmailAuthManager.signUp(email,password,username) {
                           isSuccess, errorMessage ->
                           if (isSuccess)
                           {
@@ -97,6 +98,7 @@ fun SignUpLayout(navController: NavController)
                               navController.navigate(Screen.LoginScreen.route)
                           }
                           else{
+                              Toast.makeText(context,"Sign up failed. Error message: $errorMessage",Toast.LENGTH_SHORT).show()
                               println("Sign up failed. Error message: $errorMessage")
                           }
                       }

@@ -18,18 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.stockapp.Screen
+import com.example.stockapp.authentication.EmailAuthManager
 
 @Composable
 fun PortfolioScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize())
     {
-        PortfolioLayout()
+        PortfolioLayout(navController)
 
     }
 
 }
 @Composable
-fun PortfolioLayout()
+fun PortfolioLayout(navController: NavController)
 {
     Column(
         modifier = Modifier
@@ -41,7 +43,11 @@ fun PortfolioLayout()
             verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Overview")
             IconButton(
-                onClick = {  },
+                onClick = {
+                          EmailAuthManager.signOut()
+                    navController.navigate(Screen.IntroScreen.route)
+                },
+
 
             ) {
                 Icon(

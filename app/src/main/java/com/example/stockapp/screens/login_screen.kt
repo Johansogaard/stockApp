@@ -1,6 +1,6 @@
 package com.example.stockapp.screens
 
-import AuthenticationManager
+import com.example.stockapp.authentication.EmailAuthManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,7 +57,7 @@ fun LoginLayout(navController: NavController)
                 .padding(8.dp)
         )
         Button(onClick = {
-            AuthenticationManager.signIn(email,password)
+            EmailAuthManager.signIn(email,password)
             {
                     isSuccess, errorMessage ->
                 if (isSuccess)
