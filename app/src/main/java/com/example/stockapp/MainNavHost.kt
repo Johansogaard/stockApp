@@ -16,6 +16,7 @@ fun MainNavHost() {
     val navController = rememberNavController();
     val authManager = remember { AuthenticationManager() }
     val currentUser = authManager.getCurrentUser()
+
     NavHost(navController = navController, startDestination = Screen.IntroScreen.route)
     {
        composable(route = Screen.IntroScreen.route){

@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stockapp.Screen
@@ -28,11 +29,14 @@ fun SignUpScreen(navController: NavController,authManager:AuthenticationManager)
 @Composable
 fun SignUpLayout(navController: NavController,authManager: AuthenticationManager)
 {
+
+    val context = LocalContext.current
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +57,7 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         // Email
         TextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it.trimStart().trimEnd() },
             label = { Text("Email") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +67,7 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         // Username
         TextField(
             value = username,
-            onValueChange = { username = it },
+            onValueChange = { username = it.trimStart().trimEnd() },
             label = { Text("Username") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -73,7 +77,7 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         // Password
         TextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it.trimStart().trimEnd() },
             label = { Text("Password") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,10 +88,11 @@ fun SignUpLayout(navController: NavController,authManager: AuthenticationManager
         Button(
             onClick = {
 
-                      authManager.signUp(email,password,username) {
+                    authManager.signUp(email,password,username) {
                           isSuccess, errorMessage ->
                           if (isSuccess)
                           {
+
                             println("successfull")
                               navController.navigate(Screen.LoginScreen.route)
                           }
