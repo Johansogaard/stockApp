@@ -25,4 +25,3 @@ object Route{
     const val loginScreen = "LoginScreen"
 }
 
-
