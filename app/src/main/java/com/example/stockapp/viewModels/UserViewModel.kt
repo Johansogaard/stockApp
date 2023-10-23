@@ -1,5 +1,6 @@
 package com.example.stockapp.viewModels
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,9 +41,12 @@ class UserViewModel : ViewModel() {
             if (isSuccess)
             {
                 _state.value = _state.value.copy(isLoggedIn = true)
+                Log.d("Login Status", "Login Success")
             }
             else{
                 println("Login failed. Error message: $errorMessage")
+                _state.value = _state.value.copy(isLoggedIn = false)
+                Log.d("Login Status", "Login Failed")
             }
         }
     }
