@@ -7,9 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.screens.ChoseSignupScreen
+import com.example.stockapp.screens.ExplorerScreen
 import com.example.stockapp.screens.IntroScreen
 import com.example.stockapp.screens.LoginScreen
 import com.example.stockapp.screens.PortfolioScreen
+import com.example.stockapp.screens.SearchScreen
 import com.example.stockapp.screens.SignUpScreen
 
 @Composable
@@ -42,6 +44,12 @@ fun MainNavHost() {
         }
         composable(route = Screen.LoginScreen.route){
             LoginScreen(navController = navController)
+        }
+        composable(route = Screen.ExplorerScreen.route) {
+            ExplorerScreen(navController = navController)
+        }
+        composable(route = Screen.SearchScreen.route) {
+            SearchScreen(navController = navController)
         }
 
     }
