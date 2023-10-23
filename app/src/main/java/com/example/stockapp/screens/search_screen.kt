@@ -49,8 +49,8 @@ fun SearchableBar(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .height(66.dp)
-            .background(Color.DarkGray)
-            .padding(10.dp),
+            .background(Color.Gray)
+            .padding(12.dp),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
