@@ -2,6 +2,7 @@ package com.example.stockapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.stockapp.MainActivity
+import com.example.stockapp.authentication.EmailAuthManager
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 import com.example.stockapp.ui.theme.CustomTextField
@@ -44,6 +46,12 @@ fun CreateAccountScreen() {
 
 
     val context = LocalContext.current
+
+    val fullName = remember { mutableStateOf(TextFieldValue()) }
+    val email = remember { mutableStateOf(TextFieldValue()) }
+    val username = remember { mutableStateOf(TextFieldValue()) }
+    val password = remember { mutableStateOf(TextFieldValue()) }
+    val referralCode = remember { mutableStateOf(TextFieldValue()) }
 
     Column(
         modifier = Modifier
@@ -91,11 +99,6 @@ fun CreateAccountScreen() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val fullName = remember { mutableStateOf(TextFieldValue()) }
-            val email = remember { mutableStateOf(TextFieldValue()) }
-            val username = remember { mutableStateOf(TextFieldValue()) }
-            val password = remember { mutableStateOf(TextFieldValue()) }
-            val referralCode = remember { mutableStateOf(TextFieldValue()) }
 
             CustomTextField(
                 value = fullName,
@@ -123,14 +126,6 @@ fun CreateAccountScreen() {
             )
 
 
-
-
-
-
-
-
-
-
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
@@ -141,7 +136,23 @@ fun CreateAccountScreen() {
                 .fillMaxWidth()
                 .offset(y = (-32).dp)
         ) {
-            CustomButton(onClick = { /* login*/ }, text = "Sign Up")
+            CustomButton(onClick = {
+
+                EmailAuthManager.signUp(email.value.text, password.value.text, username.value.text) {
+                        isSuccess, errorMessage ->
+                    if (isSuccess)
+                    {
+                        val intent = Intent(context, HomeActivity::class.java)
+                        context.startActivity(intent)
+                        println("successfull")
+                    }
+                    else{
+                        Toast.makeText(context,"Sign up failed. Error message: $errorMessage", Toast.LENGTH_SHORT).show()
+                        println("Sign up failed. Error message: $errorMessage")
+                    }
+                }
+
+            }, text = "Sign Up")
             Spacer(modifier = Modifier.height(16.dp))
 
             ClickableText(

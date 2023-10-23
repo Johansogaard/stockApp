@@ -65,6 +65,12 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text("Go to Create Account")
                         }
+                        Button(onClick = {
+                            val intent = Intent(this@MainActivity,  HomeActivity::class.java)
+                            startActivity(intent)
+                        }) {
+                            Text("Go to Home")
+                        }
                     }
                 }
             }

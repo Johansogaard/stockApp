@@ -2,6 +2,7 @@ package com.example.stockapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -21,7 +22,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.stockapp.MainActivity
+import com.example.stockapp.authentication.EmailAuthManager
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomTextField
 import com.example.stockapp.ui.theme.CustomButton
@@ -31,6 +34,7 @@ import com.example.stockapp.ui.theme.CustomButton
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             StockAppTheme {
 
@@ -118,7 +122,19 @@ fun LoginScreen() {
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            CustomButton(onClick = { /* login*/ }, text = "Login")
+
+            CustomButton(onClick = {
+                EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
+                    if (isSuccess) {
+                        println("successful")
+                        context.startActivity(Intent(context, HomeActivity::class.java))
+                    } else {
+                        Toast.makeText(context,"Login failed. Error message: $errorMessage", Toast.LENGTH_SHORT).show()
+
+                        println("Login failed. Error message: $errorMessage")
+                    }
+                }
+            }, text = "Login")
             Spacer(modifier = Modifier.height(16.dp))
 
 
@@ -150,8 +166,8 @@ fun LoginScreen() {
         ) {
 
             ClickableText(
-                normalText = "Already have an account? ",
-                clickableText = "Log in",
+                normalText = "Dont have an account? ",
+                clickableText = "Sign up",
                 onClick = {
                     val intent = Intent(context, LoginActivity::class.java)
                     context.startActivity(intent)
