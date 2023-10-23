@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.stockapp.screens.BuyScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +40,7 @@ fun MainNavHost(
     currentAppViewModel: CurrentAppViewModel
 ) {
 
-    currentAppViewModel.state.value.showNavigationBar = true
+    //currentAppViewModel.state.value.showNavigationBar = true
 
     var showNavigate by remember {
         mutableStateOf(true)
@@ -103,6 +104,10 @@ fun MainNavHost(
                     ) {
                         SearchScreen(navController = navController)
                         showNavigate = false
+                    }
+                    composable(route = Screen.BuyScreen.route) {
+                        BuyScreen(navController = navController)
+                        showNavigate = true
                     }
                 }
             }

@@ -61,7 +61,7 @@ fun NavigationBar(navController: NavController) {
                 )
             }
             Column(
-                modifier = Modifier.clickable(onClick = { /*TODO*/ }),
+                modifier = Modifier.clickable(onClick = { navController.navigate(Screen.BuyScreen.route) }),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
