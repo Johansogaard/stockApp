@@ -20,22 +20,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.Screen
+import com.example.stockapp.data.Screen
+import com.example.stockapp.viewModels.UserViewModel
 
 @Composable
-fun LoginScreen(navController: NavController)
+fun LoginScreen(navController: NavController, userViewModel: UserViewModel)
 {
-    //val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        LoginLayout(navController = navController)
+        LoginLayout(navController = navController, userViewModel = userViewModel)
     }
 
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginLayout(navController: NavController)
+fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -59,17 +59,11 @@ fun LoginLayout(navController: NavController)
                 .padding(8.dp)
         )
         Button(onClick = {
-            EmailAuthManager.signIn(email,password)
-            {
-                    isSuccess, errorMessage ->
-                if (isSuccess)
-                {
-                    println("successfull")
+            userViewModel.login(email,password)
+            if (userViewModel.state.value.isLoggedIn) {
                     navController.navigate(Screen.PortfolioScreen.route)
-                }
-                else{
-                    println("Login failed. Error message: $errorMessage")
-                }
+            }
+            else { /*TODO: Show error message*/
             }
          })
         {
@@ -81,5 +75,5 @@ fun LoginLayout(navController: NavController)
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(navController = rememberNavController())
+    LoginScreen(navController = rememberNavController(), userViewModel = UserViewModel())
 }

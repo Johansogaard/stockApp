@@ -1,4 +1,4 @@
-package com.example.stockapp
+package com.example.stockapp.data
 
 sealed class Screen(val route: String) {
     object IntroScreen: Screen("intro_screen")
