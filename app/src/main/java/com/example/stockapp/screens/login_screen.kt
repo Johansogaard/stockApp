@@ -1,6 +1,5 @@
 package com.example.stockapp.screens
 
-import com.example.stockapp.authentication.EmailAuthManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +32,7 @@ fun LoginScreen(navController: NavController, userViewModel: UserViewModel)
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
