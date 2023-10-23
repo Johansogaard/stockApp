@@ -1,17 +1,13 @@
 package com.example.stockapp
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,9 +22,13 @@ import com.example.stockapp.screens.SearchScreen
 import com.example.stockapp.screens.SignUpScreen
 import com.example.stockapp.ui.NavigationBar
 import com.example.stockapp.viewModels.CompetitionViewModel
-import com.example.stockapp.viewModels.LayoutViewModel
+import com.example.stockapp.viewModels.CurrentAppViewModel
 import com.example.stockapp.viewModels.StockViewModel
 import com.example.stockapp.viewModels.UserViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,10 +36,14 @@ fun MainNavHost(
     userViewModel: UserViewModel,
     stocksViewModel: StockViewModel,
     competitionViewModel: CompetitionViewModel,
-    layoutViewModel: LayoutViewModel
+    currentAppViewModel: CurrentAppViewModel
 ) {
 
-    layoutViewModel.state.value.showNavigationBar = true
+    currentAppViewModel.state.value.showNavigationBar = true
+
+    var showNavigate by remember {
+        mutableStateOf(true)
+    }
 
     val navController = rememberNavController();
     val startDestination = if(userViewModel.state.value.isLoggedIn)
@@ -53,7 +57,7 @@ fun MainNavHost(
 
     Scaffold(
         bottomBar = {
-            if (layoutViewModel.state.value.showNavigationBar) {
+            if (showNavigate) {
                 NavigationBar(navController = navController)
             }
         },
@@ -63,35 +67,42 @@ fun MainNavHost(
                 {
                     composable(route = Screen.IntroScreen.route) {
                         IntroScreen(navController = navController)
-                        layoutViewModel.showNavigationBar(false)
+                        showNavigate = false
                     }
                     composable(route = Screen.ChoseSignupScreen.route) {
                         Column {
                             ChoseSignupScreen(navController = navController)
-                            layoutViewModel.showNavigationBar(false)
+                            showNavigate = false
                         }
                     }
                     composable(route = Screen.PortfolioScreen.route) {
                         PortfolioScreen(navController = navController)
-                        layoutViewModel.showNavigationBar(true)
+                        showNavigate = true
                     }
                     composable(route = Screen.SignUpScreen.route) {
                         SignUpScreen(navController = navController)
-                        layoutViewModel.showNavigationBar(false)
+                        showNavigate = false
                     }
                     composable(route = Screen.LoginScreen.route) {
                         LoginScreen(navController = navController, userViewModel = userViewModel)
-                        layoutViewModel.showNavigationBar(false)
+                        showNavigate = false
                     }
                     composable(route = Screen.ExplorerScreen.route) {
                         ExplorerScreen(navController = navController)
-                        layoutViewModel.showNavigationBar(true)
+                        showNavigate = true
                     }
-                    composable(route = Screen.SearchScreen.route) {
+                    composable(
+                        route = Screen.SearchScreen.route,
+                        enterTransition = {
+                            null
+                        },
+                        exitTransition = {
+                            null
+                        }
+                    ) {
                         SearchScreen(navController = navController)
-                        layoutViewModel.showNavigationBar(false)
+                        showNavigate = false
                     }
-
                 }
             }
         }
