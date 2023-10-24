@@ -1,0 +1,63 @@
+@startuml
+
+object EmailAuthManager {
+    -auth: FireBaseAuth
+    +signUp()
+}
+
+class Screen {
+}
+
+class MainNavHost {
+    userViewModel : UserViewModel
+    stockViewModel : StockViewModel
+    competitionViewModel : CompetitionViewModel
+    currentAppViewModel : CurrentAppViewModel
+
+}
+
+class NavController {
+    +rememberNavController() : NavController
+    +navigate(route : String) : void
+}
+
+class UserState {
+    isLoggedIn: Boolean
+    user: User?
+    name: String
+    email: String
+}
+
+class UserViewModel {
+    state: State<UserState>
+    -_state mutableStateOf(UserState())
+    -currentUser: User?
+    +login(email: String, password: String): void
+    +logout(): void
+    +setUserState(): void
+}
+
+class login_screen{
+    +LoginScreen(navController: NavController,
+     userVidewModel: UserViewModel)
+    +LoginLayout(navController: NavController,
+     userViewModel: UserViewModel) : void
+    +PreviewLoginScreen(): void
+}
+
+package OtherViewModels {
+    class StockViewModel
+    class CompetitionViewModel
+    class CurrentAppViewModel
+}
+
+
+MainNavHost -down-> NavController : -uses
+MainNavHost -> UserViewModel : -has
+OtherViewModels <--- MainNavHost : -has
+NavController --> Screen : -navigates to
+Screen -> login_screen : -represents
+login_screen -> UserViewModel : -uses
+UserViewModel --> EmailAuthManager : -uses
+UserViewModel -> UserState : -updates data
+@enduml

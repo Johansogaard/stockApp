@@ -34,7 +34,7 @@ import androidx.compose.runtime.setValue
 @Composable
 fun MainNavHost(
     userViewModel: UserViewModel,
-    stocksViewModel: StockViewModel,
+    stockViewModel: StockViewModel,
     competitionViewModel: CompetitionViewModel,
     currentAppViewModel: CurrentAppViewModel
 ) {
