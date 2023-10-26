@@ -1,5 +1,6 @@
 package com.example.stockapp.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
+import com.example.stockapp.ui.theme.Purple40
 import com.example.stockapp.viewModels.UserViewModel
 
 @Composable
@@ -48,6 +50,7 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .background(color = Purple40)
         )
         // Password
         TextField(

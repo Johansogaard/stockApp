@@ -18,13 +18,13 @@ class MainActivity : ComponentActivity() {
             StockAppTheme {
 
                 val userViewModel: UserViewModel by viewModels()
-                val stocksViewModel: StockViewModel by viewModels()
+                val stockViewModel: StockViewModel by viewModels()
                 val competitionViewModel: CompetitionViewModel by viewModels()
                 val currentAppViewModel: CurrentAppViewModel by viewModels()
 
                 MainNavHost(
                     userViewModel = userViewModel,
-                    stocksViewModel = stocksViewModel,
+                    stockViewModel = stockViewModel,
                     competitionViewModel = competitionViewModel,
                     currentAppViewModel = currentAppViewModel
                 )
