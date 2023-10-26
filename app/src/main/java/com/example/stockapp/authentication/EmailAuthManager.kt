@@ -12,7 +12,7 @@ object EmailAuthManager  {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val userId = getCurrentUser()?.uid
+                    val userId = getUser()?.uid
                     Log.i("Tag","id = $userId")
                     userId?.let {
                        DatabaseManager.addUser(email,username,userId.toString())
@@ -44,7 +44,7 @@ object EmailAuthManager  {
             }
     }
 
-   fun getCurrentUser(): FirebaseUser? {
+   fun getUser(): FirebaseUser? {
         return auth.currentUser
     }
 

@@ -1,6 +1,6 @@
 package com.example.stockapp.screens
 
-import com.example.stockapp.authentication.EmailAuthManager
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,24 +16,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.stockapp.Screen
+import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.data.Screen
+import com.example.stockapp.ui.theme.Purple40
+import com.example.stockapp.viewModels.UserViewModel
 
 @Composable
-fun LoginScreen(navController: NavController)
+fun LoginScreen(navController: NavController, userViewModel: UserViewModel)
 {
-    //val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        LoginLayout(navController = navController)
+        LoginLayout(navController = navController, userViewModel = userViewModel)
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginLayout(navController: NavController)
+fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -46,6 +50,7 @@ fun LoginLayout(navController: NavController)
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+                .background(color = Purple40)
         )
         // Password
         TextField(
@@ -57,21 +62,21 @@ fun LoginLayout(navController: NavController)
                 .padding(8.dp)
         )
         Button(onClick = {
-            EmailAuthManager.signIn(email,password)
-            {
-                    isSuccess, errorMessage ->
-                if (isSuccess)
-                {
-                    println("successfull")
+            userViewModel.login(email,password)
+            if (userViewModel.state.value.isLoggedIn) {
                     navController.navigate(Screen.PortfolioScreen.route)
-                }
-                else{
-                    println("Login failed. Error message: $errorMessage")
-                }
+            }
+            else { /*TODO: Show error message*/
             }
          })
         {
             Text(text = "Login")
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLoginScreen() {
+    LoginScreen(navController = rememberNavController(), userViewModel = UserViewModel())
 }
