@@ -1,11 +1,9 @@
 package com.example.stockapp.screens
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -15,12 +13,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.authentication.EmailAuthManager
 import com.example.stockapp.data.Screen
+import com.example.stockapp.ui.theme.ClickableText
+import com.example.stockapp.ui.theme.CustomButton
+import com.example.stockapp.ui.theme.CustomTextField
 import com.example.stockapp.ui.theme.Purple40
 import com.example.stockapp.viewModels.UserViewModel
 
@@ -39,42 +43,86 @@ fun LoginScreen(navController: NavController, userViewModel: UserViewModel)
 @Composable
 fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // Email
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .background(color = Purple40)
+    val username = remember { mutableStateOf(TextFieldValue()) }
+    val password = remember { mutableStateOf(TextFieldValue()) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )  {
+
+        CustomTextField(
+            value = username,
+            label = "Enter Email or Username"
         )
-        // Password
-        TextField(
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomTextField(
             value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            label = "Enter your password",
+            isPassword = true
         )
-        Button(onClick = {
-            userViewModel.login(email,password)
-            if (userViewModel.state.value.isLoggedIn) {
+        Spacer(modifier = Modifier.height(16.dp))
+        ClickableText(
+            normalText = "Forgot your ",
+            clickableText = "Password?",
+            onClick = {
+                /*do something*/
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        CustomButton(onClick = {
+            EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
+                if (userViewModel.state.value.isLoggedIn) {
                     navController.navigate(Screen.PortfolioScreen.route)
+                }
+                else { /*TODO: Show error message*/
+                }
             }
-            else { /*TODO: Show error message*/
-            }
-         })
-        {
-            Text(text = "Login")
+        }, text = "Login")
+        OrDivider()
+
+
+        CustomButton(onClick = {
+            navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text))
+        }, text = "Continue with Google", outlined = true)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text)) }
+            , text = "Continue with Apple", outlined = true)
+
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .offset(y = (-32).dp)
+        ) {
+
+            ClickableText(
+                normalText = "Dont have an account? ",
+                clickableText = "Sign up",
+                onClick = {navController.navigate(Screen.ChoseSignupScreen.route)}
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ClickableText(
+                normalText = "By signing up, you agree to the ",
+                clickableText = "Terms and Conditions",
+                onClick = {
+                    /*do something*/
+                }
+            )
         }
     }
-}
-
+    }
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {

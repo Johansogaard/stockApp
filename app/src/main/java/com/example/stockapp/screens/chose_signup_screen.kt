@@ -2,17 +2,10 @@ package com.example.stockapp.screens
 
 
 
+import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.*
 
-import androidx.compose.foundation.layout.Column
-
-import androidx.compose.foundation.layout.Row
-
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,11 +21,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
+import com.example.stockapp.ui.theme.ClickableText
+import com.example.stockapp.ui.theme.CustomButton
+import com.example.stockapp.ui.theme.CustomTextField
 
 @Composable
 fun ChoseSignupScreen(navController: NavController)
@@ -47,67 +44,69 @@ fun ChoseSignupScreen(navController: NavController)
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChoseSignupLayOut(navController: NavController)
 {
-   var textValue by remember {mutableStateOf("") }
-   Column(modifier = Modifier
-      .fillMaxSize()
-      .padding(14.dp))
+   val email = remember { mutableStateOf(TextFieldValue()) }
+   Column(
+      modifier = Modifier
+         .fillMaxSize()
+         .padding(16.dp),
+      horizontalAlignment = Alignment.CenterHorizontally
+   )
    {
       Text(text = "Get Started")
 
-      OutlinedTextField(
-         value =textValue ,
-         onValueChange ={textValue = it},
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(14.dp),
-         label={Text("Email")} )
+      CustomTextField(
+         value = email,
+         label = "Email"
+      )
+      Spacer(modifier = Modifier.height(16.dp))
 
-      Button(
-         onClick = {
+      CustomButton(onClick = {
          navController.navigate(Screen.SignUpScreen.route)
-         },
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(14.dp)
-      ) {
-         Text(text = "Create Account")
-      }
+      }, text = "Create Account")
+
       OrDivider()
 
-      Button(
-         onClick = {
-            navController.navigate(Screen.PortfolioScreen.withArgs(textValue))
-         },
-         modifier = Modifier
-            .fillMaxWidth()
-            .padding(14.dp)
-      ) {
-         Text(text = "Continue with Play Store")
+
+      CustomButton(onClick = {
+         navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text))
+      }, text = "Continue with Google", outlined = true)
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text)) }
+         , text = "Continue with Apple", outlined = true)
+
+
+
       }
 
-      Button(
-         onClick = {
-            navController.navigate(Screen.PortfolioScreen.withArgs(textValue))
-         },
-         modifier = Modifier
+   Box(modifier = Modifier.fillMaxSize()) {
+      Column(
+         verticalArrangement = Arrangement.Bottom,
+         horizontalAlignment = Alignment.CenterHorizontally,
+         modifier = Modifier.align(Alignment.BottomCenter)
             .fillMaxWidth()
-            .padding(14.dp)
+            .offset(y = (-32).dp)
       ) {
-         Text(text = "Continue with Google")
-      }
-      Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-         Text(text = "Already have an account?",modifier = Modifier.align(Alignment.Bottom))
-         TextButton(onClick = { navController.navigate(Screen.LoginScreen.route) },modifier = Modifier.align(Alignment.Bottom)) {
-            Text(text = "Log in", color = Color.Blue)
-      }
-  
-         
-         
+
+         ClickableText(
+            normalText = "Already have an account?",
+            clickableText = " Login",
+            onClick = {navController.navigate(Screen.LoginScreen.route)}
+         )
+         Spacer(modifier = Modifier.height(16.dp))
+
+         ClickableText(
+            normalText = "By signing up, you agree to the ",
+            clickableText = "Terms and Conditions",
+            onClick = {
+               /*do something*/
+            }
+         )
       }
    }
 }
