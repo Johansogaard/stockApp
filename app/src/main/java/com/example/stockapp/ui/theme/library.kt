@@ -60,7 +60,7 @@ fun CustomButton(
                 OutlinedButton(
                         onClick = onClick,
                         modifier = modifier.then(Modifier.width(350.dp).height(50.dp)),
-                        border = BorderStroke(1.dp, Accent), // You can customize the border if needed
+                        border = BorderStroke(1.dp, Accent),
                         colors = ButtonDefaults.buttonColors(Color.Transparent, contentColor = Accent)
                 ) {
                         Text(
