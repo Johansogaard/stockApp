@@ -35,7 +35,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.Screen
 import com.example.stockapp.authentication.EmailAuthManager
-import com.google.android.gms.wallet.button.ButtonConstants
 
 @Composable
 fun BuyScreen(navController: NavController) {
