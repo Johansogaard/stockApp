@@ -61,7 +61,7 @@ fun NavigationBar(navController: NavController) {
                 )
             }
             Column(
-                modifier = Modifier.clickable(onClick = { navController.navigate(Screen.BuyScreen.route) }),
+                modifier = Modifier.clickable(onClick = { navController.navigate(Screen.OrderScreen.route) }),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -88,7 +88,7 @@ fun NavigationBar(navController: NavController) {
                 )
             }
             Column(
-                modifier = Modifier.clickable(onClick = { /*TODO*/ }),
+                modifier = Modifier.clickable(onClick = { navController.navigate(Screen.IndexScreen.route)}),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
@@ -101,7 +101,7 @@ fun NavigationBar(navController: NavController) {
                 )
             }
             Column(
-                modifier = Modifier.clickable(onClick = { /*TODO*/ }),
+                modifier = Modifier.clickable(onClick = { navController.navigate(Screen.WatchScreen.route)}),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(

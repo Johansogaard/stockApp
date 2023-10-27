@@ -47,7 +47,7 @@ fun MainNavHost(
     }
     else
     {
-        Screen.IndexScreen.route
+        Screen.TransactionScreen.route
     }
 
     Scaffold(
@@ -104,6 +104,18 @@ fun MainNavHost(
                     }
                     composable(route = Screen.IndexScreen.route) {
                         IndexScreen(navController = navController)
+                        showNavigate = true
+                    }
+                    composable(route = Screen.TransactionScreen.route) {
+                        TransactionScreen(navController = navController)
+                        showNavigate = true
+                    }
+                    composable(route = Screen.OrderScreen.route) {
+                        OrderScreen(navController = navController)
+                        showNavigate = true
+                    }
+                    composable(route = Screen.WatchScreen.route) {
+                        WatchScreen(navController = navController)
                         showNavigate = true
                     }
                 }

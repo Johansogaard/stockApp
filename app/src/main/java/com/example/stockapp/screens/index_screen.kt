@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.example.stockapp.ui.theme.Stock
 
 import androidx.compose.material3.*
 
@@ -72,97 +72,11 @@ fun StockColumn() {
     Column {
         repeat(6) {
             Stock(country="mikkel", text="Mikkel", price="420", perftdy="69")
+            
         }
     }
 }
 
-@Composable
-fun Stock(
-    country: String,
-    text:String,
-    price: String,
-    perftdy:String
-) {
-    Row(
-        modifier = Modifier.padding(16.dp)
-        .fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.CenterVertically
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable::class.java.getDeclaredField(country).getInt(null)),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(46.dp)
-                    .clip(CircleShape)
-                    .background(Color.White, CircleShape)
-            )
-            Text(
-                text = text
-                ,
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-            )
-        }
-        Column(
-            horizontalAlignment = Alignment.End
-
-        )
-        {
-            Text(
-                text="Perf. TDY",
-                        style = TextStyle(
-                        fontSize = 15.sp,
-                            color = Color.Gray
-            ),
-            )
-            Text(
-                text=perftdy+"%",
-                color = if (perftdy.startsWith("-")) Color.Red else Color.Green
-                ,
-                style = TextStyle(
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-
-            )
-        }
-        Column(
-horizontalAlignment = Alignment.End
-        )
-        {
-            Text(
-                text="Price"
-                ,
-                style = TextStyle(
-                    fontSize = 15.sp,
-                ),
-                color = Color.Gray
-            )
-            Text(
-                text=price,
-
-                style = TextStyle(
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-            )
-        }
-    }
-    Divider(
-        color = Color.Black,
-        modifier = Modifier.fillMaxWidth()
-    )
-}
 
 
 @Composable
