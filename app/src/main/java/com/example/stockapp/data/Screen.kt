@@ -10,6 +10,7 @@ sealed class Screen(val route: String) {
     object SearchScreen: Screen("search_screen")
     object BuyScreen: Screen("buy_screen")
 
+    object IndexScreen: Screen("index_screen")
     fun withArgs(vararg args: String): String{
         return buildString {
             append(route)

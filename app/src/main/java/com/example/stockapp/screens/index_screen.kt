@@ -1,0 +1,245 @@
+package com.example.stockapp.screens
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+
+import androidx.compose.material3.*
+
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.ui.theme.Accent
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
+
+import com.example.stockapp.R
+@Stable
+var activeButton by mutableStateOf("")
+
+@Composable
+fun IndexScreen(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        IndexLayout(navController)
+    }
+}
+
+@Composable
+fun IndexLayout(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = "Today's stock market",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(800)
+                )
+            )
+            ButtonRow()
+
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            StockColumn()
+}
+        }
+    }
+
+@Composable
+fun StockColumn() {
+    Column {
+        repeat(6) {
+            Stock(country="mikkel", text="Mikkel", price="420", perftdy="69")
+        }
+    }
+}
+
+@Composable
+fun Stock(
+    country: String,
+    text:String,
+    price: String,
+    perftdy:String
+) {
+    Row(
+        modifier = Modifier.padding(16.dp)
+        .fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable::class.java.getDeclaredField(country).getInt(null)),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(46.dp)
+                    .clip(CircleShape)
+                    .background(Color.White, CircleShape)
+            )
+            Text(
+                text = text
+                ,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+        }
+        Column(
+            horizontalAlignment = Alignment.End
+
+        )
+        {
+            Text(
+                text="Perf. TDY",
+                        style = TextStyle(
+                        fontSize = 15.sp,
+                            color = Color.Gray
+            ),
+            )
+            Text(
+                text=perftdy+"%",
+                color = if (perftdy.startsWith("-")) Color.Red else Color.Green
+                ,
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+
+            )
+        }
+        Column(
+horizontalAlignment = Alignment.End
+        )
+        {
+            Text(
+                text="Price"
+                ,
+                style = TextStyle(
+                    fontSize = 15.sp,
+                ),
+                color = Color.Gray
+            )
+            Text(
+                text=price,
+
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+        }
+    }
+    Divider(
+        color = Color.Black,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+
+@Composable
+fun ButtonRow() {
+
+
+    Row(
+        modifier = Modifier.padding(16.dp)
+        .fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        IndexButton(
+            text = "World",
+            picture = "mikkel.jpg",
+        )
+        IndexButton(
+            text = "USA",
+            picture = "mikkel.jpg",
+        )
+        IndexButton(
+            text = "Denmark",
+            picture = "mikkel.jpg",
+        )
+    }
+}
+
+@Composable
+fun IndexButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    picture: String,
+) {
+    Button(
+        onClick = { activeButton=text },
+        modifier = modifier.then(Modifier.width(110.dp).height(40.dp)),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (activeButton == text) Accent else Color.Red
+        ),
+        contentPadding = PaddingValues(4.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable::class.java.getDeclaredField(picture.substringBeforeLast(".")).getInt(null)),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(30.dp)
+                    .clip(CircleShape)
+                    .background(Accent, CircleShape)
+            )
+
+            Spacer(modifier = Modifier.weight(1f))  // This spacer will take up all available space to the left of the text
+
+            Text(
+                text = text,
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.align(Alignment.CenterVertically)  // This modifier is optional as verticalAlignment is already set in the Row
+            )
+
+            Spacer(modifier = Modifier.weight(1f))  // This spacer will take up all available space to the right of the text
+        }
+
+    }
+}
+
+
+
+@Composable
+@Preview
+fun IndexScreenPreview() {
+    val navController = rememberNavController()
+    IndexScreen(navController)
+}

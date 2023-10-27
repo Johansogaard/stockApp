@@ -13,13 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
-import com.example.stockapp.screens.ChoseSignupScreen
-import com.example.stockapp.screens.ExplorerScreen
-import com.example.stockapp.screens.IntroScreen
-import com.example.stockapp.screens.LoginScreen
-import com.example.stockapp.screens.PortfolioScreen
-import com.example.stockapp.screens.SearchScreen
-import com.example.stockapp.screens.SignUpScreen
 import com.example.stockapp.ui.NavigationBar
 import com.example.stockapp.viewModels.CompetitionViewModel
 import com.example.stockapp.viewModels.CurrentAppViewModel
@@ -29,7 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.stockapp.screens.BuyScreen
+import com.example.stockapp.screens.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +47,7 @@ fun MainNavHost(
     }
     else
     {
-        Screen.IntroScreen.route
+        Screen.IndexScreen.route
     }
 
     Scaffold(
@@ -107,6 +100,10 @@ fun MainNavHost(
                     }
                     composable(route = Screen.BuyScreen.route) {
                         BuyScreen(navController = navController)
+                        showNavigate = true
+                    }
+                    composable(route = Screen.IndexScreen.route) {
+                        IndexScreen(navController = navController)
                         showNavigate = true
                     }
                 }
