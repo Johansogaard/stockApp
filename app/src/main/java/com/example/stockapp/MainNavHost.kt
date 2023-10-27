@@ -47,7 +47,7 @@ fun MainNavHost(
     }
     else
     {
-        Screen.TransactionScreen.route
+        Screen.IntroScreen.route
     }
 
     Scaffold(

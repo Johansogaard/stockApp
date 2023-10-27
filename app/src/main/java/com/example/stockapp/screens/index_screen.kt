@@ -60,6 +60,7 @@ fun IndexLayout(navController: NavController) {
                 )
             )
             ButtonRow()
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
 
             Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
             StockColumn()
@@ -72,7 +73,7 @@ fun StockColumn() {
     Column {
         repeat(6) {
             Stock(country="mikkel", text="Mikkel", price="420", perftdy="69")
-            
+
         }
     }
 }

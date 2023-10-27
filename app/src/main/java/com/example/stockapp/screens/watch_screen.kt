@@ -57,6 +57,15 @@ fun WatchLayout(navController: NavController) {
                     fontWeight = FontWeight(800)
                 )
             )
+            Divider(
+                color = Color.Black,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
 
             Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
         }
