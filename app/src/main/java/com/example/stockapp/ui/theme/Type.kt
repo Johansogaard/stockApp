@@ -1,10 +1,15 @@
 package com.example.stockapp.ui.theme
 
+import android.graphics.fonts.Font
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.stockapp.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -14,8 +19,7 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
+    ),
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -30,5 +34,19 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )
-    */
+)
+
+val robotoFontFamily = FontFamily(
+    Font(R.font.roboto_black),
+    Font(R.font.roboto_black_italic),
+    Font(R.font.roboto_bold),
+    Font(R.font.roboto_bold_italic),
+    Font(R.font.roboto_italic),
+    Font(R.font.roboto_light),
+    Font(R.font.roboto_light_italic),
+    Font(R.font.roboto_medium),
+    Font(R.font.roboto_medium_italic),
+    Font(R.font.roboto_regular),
+    Font(R.font.roboto_thin),
+    Font(R.font.roboto_thin_italic)
 )
