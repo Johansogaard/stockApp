@@ -33,6 +33,7 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.example.stockapp.R
+import com.example.stockapp.ui.theme.TopBarGoBack
 
 
 @Composable
@@ -100,98 +101,103 @@ fun StockViewScreen(navController: NavController) {
         yAxisData = YAxisData,
         gridLines = GridLines(color = MaterialTheme.colorScheme.outlineVariant)
     )
-
-    Column(modifier = Modifier
-        .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    Column {
         Column() {
-            Text(text = "OMX C25")
-            Text(text = "Index NASDAQ: OMX C25")
+            TopBarGoBack("Details", navController = navController)
         }
-        Divider(color = Color.LightGray, thickness = 1.dp)
-        Column() {
-            Row() {
-                Text(
-                    text = "USD 1,789.00",
-                    modifier = Modifier.padding(end = 20.dp))
-                Text(text = "-15,03 (0,91%) today")
+        Column(modifier = Modifier
+            .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Column() {
+                Text(text = "OMX C25", textStyle = MaterialTheme.typography.labelSmall)
+                Text(text = "Index NASDAQ: OMX C25")
             }
-            Text(
-                text = "01.57.41 PM",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.DarkGray
+            Divider(color = Color.LightGray, thickness = 1.dp)
+            Column() {
+                Row() {
+                    Text(
+                        text = "USD 1,789.00",
+                        modifier = Modifier.padding(end = 20.dp))
+                    Text(text = "-15,03 (0,91%) today")
+                }
+                Text(
+                    text = "01.57.41 PM",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.DarkGray
+                )
+            }
+            Divider(color = Color.LightGray, thickness = 1.dp)
+            LineChart(modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+                lineChartData = lineChartData
             )
-        }
-        Divider(color = Color.LightGray, thickness = 1.dp)
-        LineChart(modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-            lineChartData = lineChartData
-        )
-        Divider(color = Color.LightGray, thickness = 1.dp)
-        Column() {
-            Row() {
-                Column(modifier = Modifier.padding(end = 24.dp)) {
-                    Text(
-                        text = "Opening",
-                        fontSize = 14.sp,
+            Divider(color = Color.LightGray, thickness = 1.dp)
+            Column() {
+                Row() {
+                    Column(modifier = Modifier.padding(end = 24.dp)) {
+                        Text(
+                            text = "Opening",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "HIGH",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "HIGH",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "LOW",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "LOW",
+                            fontSize = 14.sp,
                         )
-                }
-                Column(modifier = Modifier.padding(end = 36.dp)) {
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
-                    )
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
+                    }
+                    Column(modifier = Modifier.padding(end = 36.dp)) {
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
                         )
-                }
-                Column(modifier = Modifier.padding(end = 24.dp)) {
-                    Text(
-                        text = "Prev. close",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "High in 52W",
-                        fontSize = 14.sp,
+                    }
+                    Column(modifier = Modifier.padding(end = 24.dp)) {
+                        Text(
+                            text = "Prev. close",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "Low in 52W",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "High in 52W",
+                            fontSize = 14.sp,
                         )
-                }
-                Column() {
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "Low in 52W",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
+                    }
+                    Column() {
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
                         )
-                    Text(
-                        text = "X",
-                        fontSize = 14.sp,
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
                         )
+                        Text(
+                            text = "X",
+                            fontSize = 14.sp,
+                        )
+                    }
                 }
             }
         }
     }
+
 }
 
 @Preview (showBackground = true)

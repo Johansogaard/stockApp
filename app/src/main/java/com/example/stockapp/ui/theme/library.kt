@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.material3.R
 import androidx.compose.runtime.Composable
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 // Set of Material typography styles to start with
 @OptIn(ExperimentalMaterial3Api::class)
@@ -361,19 +364,33 @@ fun ClickableText(
         )
 }
 
-        /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
+@Composable
+fun TopBarGoBack(
+        title: String,
+        navController: NavController
+) {
+        Box(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp)
+        ) {
+                Icon(
+                        Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Go Back",
+                        Modifier
+                                .size(45.dp)
+                                .align(Alignment.CenterStart)
+                                .clickable { navController.popBackStack() }
+                )
+
+                Text(
+                        text = title,
+                        style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.align(Alignment.Center)
+                )
+        }
+}
+
