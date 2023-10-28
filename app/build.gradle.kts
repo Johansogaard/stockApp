@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.stockapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -56,6 +56,7 @@ dependencies {
 
     val nav_version = "2.7.3"
 
+    implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01")
     implementation("androidx.core:core-ktx:1.9.0")
