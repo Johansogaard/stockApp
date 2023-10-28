@@ -12,6 +12,7 @@ sealed class Screen(val route: String) {
     object WatchScreen: Screen("watch_screen")
     object OrderScreen: Screen("order_screen")
     object TransactionScreen: Screen("transaction_screen")
+    object StockViewScreen: Screen("stockView_screen")
 
     object IndexScreen: Screen("index_screen")
     fun withArgs(vararg args: String): String{

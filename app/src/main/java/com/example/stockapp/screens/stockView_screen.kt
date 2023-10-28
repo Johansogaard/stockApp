@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
@@ -34,7 +36,7 @@ import com.example.stockapp.R
 
 
 @Composable
-fun StockViewScreen() {
+fun StockViewScreen(navController: NavController) {
 
     val steps = 5
     val pointsData = listOf(
@@ -195,5 +197,5 @@ fun StockViewScreen() {
 @Preview (showBackground = true)
 @Composable
 fun StockViewScreenPreview() {
-    StockViewScreen()
+    StockViewScreen(navController = rememberNavController())
 }

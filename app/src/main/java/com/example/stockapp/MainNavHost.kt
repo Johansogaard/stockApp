@@ -118,6 +118,10 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
+                    composable(route = Screen.StockViewScreen.route) {
+                        StockViewScreen(navController = navController)
+                        showNavigate = true
+                    }
                 }
             }
         }

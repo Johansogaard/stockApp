@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -99,13 +100,15 @@ fun Stock(
         country: String,
         text:String,
         price: String,
-        perftdy:String
+        perftdy:String,
+        onclick: () -> Unit = {}
 ) {
         Row(
                 modifier = Modifier.padding(16.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable { onclick() },
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
 
         ) {
                 Row(

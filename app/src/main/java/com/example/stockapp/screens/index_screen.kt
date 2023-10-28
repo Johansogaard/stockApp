@@ -31,6 +31,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
+import com.example.stockapp.data.Screen
+
 @Stable
 var activeButton by mutableStateOf("")
 
@@ -60,19 +62,19 @@ fun IndexLayout(navController: NavController) {
                 )
             )
             ButtonRow()
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            StockColumn()
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
+            StockColumn(navController)
 }
         }
     }
 
 @Composable
-fun StockColumn() {
+fun StockColumn(navController: NavController) {
     Column {
         repeat(6) {
-            Stock(country="mikkel", text="Mikkel", price="420", perftdy="69")
+            Stock(country="mikkel", text="Mikkel", price="420", perftdy="69", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
         }
     }
@@ -82,8 +84,6 @@ fun StockColumn() {
 
 @Composable
 fun ButtonRow() {
-
-
     Row(
         modifier = Modifier.padding(16.dp)
         .fillMaxWidth(),
