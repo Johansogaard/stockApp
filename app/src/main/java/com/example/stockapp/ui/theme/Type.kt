@@ -1,6 +1,5 @@
 package com.example.stockapp.ui.theme
 
-import android.graphics.fonts.Font
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Typography
