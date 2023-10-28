@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.ui.res.fontResource
 import com.example.stockapp.ui.theme.StockAppTheme
+import com.example.stockapp.ui.theme.robotoFontFamily
 import com.example.stockapp.viewModels.CompetitionViewModel
 import com.example.stockapp.viewModels.CurrentAppViewModel
 import com.example.stockapp.viewModels.StockViewModel
@@ -15,7 +17,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            StockAppTheme {
+            // now we set the fontFamily = robotoFontFamily
+            StockAppTheme() {
 
                 val userViewModel: UserViewModel by viewModels()
                 val stockViewModel: StockViewModel by viewModels()

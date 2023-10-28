@@ -34,6 +34,7 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.example.stockapp.R
 import com.example.stockapp.ui.theme.TopBarGoBack
+import com.example.stockapp.ui.theme.robotoFontFamily
 
 
 @Composable
@@ -110,21 +111,23 @@ fun StockViewScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column() {
-                Text(text = "OMX C25", textStyle = MaterialTheme.typography.labelSmall)
-                Text(text = "Index NASDAQ: OMX C25")
+                Text(text = "OMX C25", fontFamily = robotoFontFamily,)
+                Text(text = "Index NASDAQ: OMX C25", fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal)
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Column() {
                 Row() {
                     Text(
                         text = "USD 1,789.00",
-                        modifier = Modifier.padding(end = 20.dp))
-                    Text(text = "-15,03 (0,91%) today")
+                        modifier = Modifier.padding(end = 20.dp), fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal
+                    )
+                    Text(text = "-15,03 (0,91%) today", fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal)
                 }
                 Text(
                     text = "01.57.41 PM",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = robotoFontFamily,
                     color = Color.DarkGray
                 )
             }
@@ -141,56 +144,80 @@ fun StockViewScreen(navController: NavController) {
                         Text(
                             text = "Opening",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "HIGH",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "LOW",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                     }
                     Column(modifier = Modifier.padding(end = 36.dp)) {
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                     }
                     Column(modifier = Modifier.padding(end = 24.dp)) {
                         Text(
                             text = "Prev. close",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "High in 52W",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "Low in 52W",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                     }
                     Column() {
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                         Text(
                             text = "X",
                             fontSize = 14.sp,
+                            fontFamily = robotoFontFamily,
+                            fontWeight = FontWeight.Normal
                         )
                     }
                 }
