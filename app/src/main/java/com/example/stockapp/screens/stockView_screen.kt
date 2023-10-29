@@ -111,23 +111,22 @@ fun StockViewScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column() {
-                Text(text = "OMX C25", fontFamily = robotoFontFamily,)
-                Text(text = "Index NASDAQ: OMX C25", fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal)
+                Text(text = "OMX C25", style = MaterialTheme.typography.titleMedium)
+                Text(text = "Index NASDAQ: OMX C25", style = MaterialTheme.typography.titleMedium)
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Column() {
                 Row() {
                     Text(
                         text = "USD 1,789.00",
-                        modifier = Modifier.padding(end = 20.dp), fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal
+                        modifier = Modifier.padding(end = 20.dp),
+                        style = MaterialTheme.typography.bodyLarge
                     )
-                    Text(text = "-15,03 (0,91%) today", fontFamily = robotoFontFamily, fontWeight = FontWeight.Normal)
+                    Text(text = "-15,03 (0,91%) today", style = MaterialTheme.typography.bodyLarge)
                 }
                 Text(
                     text = "01.57.41 PM",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = robotoFontFamily,
+                    style = MaterialTheme.typography.labelSmall,
                     color = Color.DarkGray
                 )
             }
@@ -143,81 +142,57 @@ fun StockViewScreen(navController: NavController) {
                     Column(modifier = Modifier.padding(end = 24.dp)) {
                         Text(
                             text = "Opening",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "HIGH",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "LOW",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                     Column(modifier = Modifier.padding(end = 36.dp)) {
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                     Column(modifier = Modifier.padding(end = 24.dp)) {
                         Text(
                             text = "Prev. close",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "High in 52W",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "Low in 52W",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                     Column() {
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
                             text = "X",
-                            fontSize = 14.sp,
-                            fontFamily = robotoFontFamily,
-                            fontWeight = FontWeight.Normal
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }
