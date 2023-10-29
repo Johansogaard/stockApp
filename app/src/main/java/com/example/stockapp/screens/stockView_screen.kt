@@ -35,19 +35,14 @@ import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.example.stockapp.R
 import com.example.stockapp.ui.theme.TopBarGoBack
 import com.example.stockapp.ui.theme.robotoFontFamily
-
+import com.example.stockapp.viewModels.StocksViewModel
 
 @Composable
-fun StockViewScreen(navController: NavController) {
+fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewModel) {
 
-    val steps = 5
-    val pointsData = listOf(
-        Point(0f, 40f),
-        Point(1f, 90f),
-        Point(2f, 0f),
-        Point(3f, 60f),
-        Point(4f, 10f),
-    )
+    stocksViewModel.addTestStock()
+    val steps = stocksViewModel.state.value.stocks[0].stockData.steps
+    val pointsData = stocksViewModel.state.value.stocks[0].stockData.pointsData
 
     val XAxisData = AxisData.Builder()
         .axisStepSize(100.dp)
@@ -102,6 +97,7 @@ fun StockViewScreen(navController: NavController) {
         yAxisData = YAxisData,
         gridLines = GridLines(color = MaterialTheme.colorScheme.outlineVariant)
     )
+
     Column {
         Column() {
             TopBarGoBack("Details", navController = navController)
@@ -205,5 +201,5 @@ fun StockViewScreen(navController: NavController) {
 @Preview (showBackground = true)
 @Composable
 fun StockViewScreenPreview() {
-    StockViewScreen(navController = rememberNavController())
+    StockViewScreen(navController = rememberNavController(), stocksViewModel = StocksViewModel())
 }

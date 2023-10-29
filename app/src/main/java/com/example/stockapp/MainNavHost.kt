@@ -1,7 +1,5 @@
 package com.example.stockapp
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,7 +14,7 @@ import com.example.stockapp.data.Screen
 import com.example.stockapp.ui.NavigationBar
 import com.example.stockapp.viewModels.CompetitionViewModel
 import com.example.stockapp.viewModels.CurrentAppViewModel
-import com.example.stockapp.viewModels.StockViewModel
+import com.example.stockapp.viewModels.StocksViewModel
 import com.example.stockapp.viewModels.UserViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +26,7 @@ import com.example.stockapp.screens.*
 @Composable
 fun MainNavHost(
     userViewModel: UserViewModel,
-    stockViewModel: StockViewModel,
+    stocksViewModel: StocksViewModel,
     competitionViewModel: CompetitionViewModel,
     currentAppViewModel: CurrentAppViewModel
 ) {
@@ -119,7 +117,7 @@ fun MainNavHost(
                         showNavigate = true
                     }
                     composable(route = Screen.StockViewScreen.route) {
-                        StockViewScreen(navController = navController)
+                        StockViewScreen(navController = navController, stocksViewModel = stocksViewModel)
                         showNavigate = true
                     }
                 }
