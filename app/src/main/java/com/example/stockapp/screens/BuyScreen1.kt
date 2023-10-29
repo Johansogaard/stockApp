@@ -82,7 +82,7 @@ fun BuyLayout1(navController: NavController)
             ) {
                 IconButton(
                     onClick = {
-                        // Add code to navigate back to the previous page
+                        navController.popBackStack()
                     }, modifier = Modifier
                         .size(48.dp)
                 ) {
