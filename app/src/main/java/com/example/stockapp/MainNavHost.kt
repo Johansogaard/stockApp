@@ -104,9 +104,17 @@ fun MainNavHost(
                         SearchScreen(navController = navController)
                         showNavigate = false
                     }
-                    composable(route = Screen.BuyScreen.route) {
-                        BuyScreen(navController = navController)
-                        showNavigate = true
+                    composable(route = Screen.BuyScreen1.route) {
+                        BuyScreen1(navController = navController)
+                        showNavigate = false
+                    }
+                    composable(route = Screen.BuyScreen2.route) {
+                        BuyScreen2(navController = navController)
+                        showNavigate = false
+                    }
+                    composable(route = Screen.BuyScreen3.route) {
+                        BuyScreen3(navController = navController)
+                        showNavigate = false
                     }
                     composable(route = Screen.IndexScreen.route) {
                         IndexScreen(navController = navController)

@@ -46,24 +46,25 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
 
 @Composable
-fun BuyScreen(navController: NavController) {
+fun BuyScreen1(navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
 
     )
     {
-        BuyLayout(navController)
+        BuyLayout1(navController)
 
     }
 
 }
 @Composable
-fun BuyLayout(navController: NavController)
+fun BuyLayout1(navController: NavController)
 {
     var moneyText by remember { mutableStateOf("") }
 
@@ -312,5 +313,5 @@ fun ButtonWithBorder() {
 @Preview
 fun BuyScreenPreview() {
     val navController = rememberNavController()
-    BuyScreen(navController)
+    BuyScreen1(navController)
 }
