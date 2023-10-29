@@ -7,8 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.text.input.KeyboardType
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,14 +21,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +48,18 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.Screen
 import com.example.stockapp.authentication.EmailAuthManager
+import com.google.android.gms.wallet.button.ButtonConstants
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.KeyboardCapitalization
 
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 @Composable
 fun BuyScreen(navController: NavController) {
     Box(modifier = Modifier
@@ -52,6 +76,8 @@ fun BuyScreen(navController: NavController) {
 @Composable
 fun BuyLayout(navController: NavController)
 {
+    var moneyText by remember { mutableStateOf("") }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -75,7 +101,7 @@ fun BuyLayout(navController: NavController)
                 }
                 Spacer(modifier = Modifier.weight(1f))
 
-                Text(
+               Text(
                     text = "Buy",
                     fontSize = 20.sp ,
                     modifier = Modifier.padding(end=180.dp)
@@ -94,12 +120,17 @@ fun BuyLayout(navController: NavController)
             // Buy Button with Dropdown
             // Implement the button and dropdown for buying stocks
 
+            Spacer(modifier = Modifier.weight(1f))
+            MoneyTextField { newMoneyText ->
+                moneyText = newMoneyText
+            }
             // Amount of DKK TextField
-            // Implement the text field for entering the amount of DKK
+
+
 
             // Cash Available
-            Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp)
-            Spacer(modifier = Modifier.weight(1f))
+            Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp)
+                )
             // Continue Button
             Button(
 
@@ -112,11 +143,13 @@ fun BuyLayout(navController: NavController)
                 Text(text = "Continue", modifier = Modifier
                     .padding(120.dp,7.dp,120.dp,7.dp))
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            Numpad { digit ->
-                // Handle the clicked digit, for example, append it to a text field
-            }
+            Numpad(onDigitClick = { digit ->
+                val newText = moneyText + digit.toString()
+                moneyText = newText // Update the moneyText variable
+            })
+
             // Numpad
             // Implement the numpad layout, including digits and a backspace button
         }
@@ -159,17 +192,19 @@ fun Numpad(onDigitClick: (Int) -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp,0.dp,0.dp,35.dp),
+                .padding(0.dp, 0.dp, 0.dp, 35.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(modifier = Modifier.weight(0.5f))
             NumpadButton(0, onDigitClick)
             Spacer(modifier = Modifier.weight(0.5f))
+
         }
     }
 
 
 }
+
 
 
 @Composable
@@ -189,6 +224,41 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
     }
 
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MoneyTextField(onValueChanged: (String) -> Unit) {
+    val textState = remember { mutableStateOf("DKK 0") }
+
+    TextField(
+        value = textState.value,
+        onValueChange = {
+            if (it.startsWith("DKK ")) {
+                textState.value = it
+                onValueChanged(it)
+            } else if (it.isEmpty()) {
+                textState.value = "DKK 0"
+                onValueChanged("0")
+            } else {
+                textState.value = "DKK $it"
+                onValueChanged(it)
+            }
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number
+        ),
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+
+
+
+
+
+
+
+
 
 @Composable
 @Preview
