@@ -74,14 +74,14 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        CustomButton(onClick = {
-            EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
+        CustomButton(onClick = { navController.navigate(Screen.PortfolioScreen.route)
+           /* EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
                 if (userViewModel.state.value.isLoggedIn) {
                     navController.navigate(Screen.PortfolioScreen.route)
                 }
                 else { /*TODO: Show error message*/
                 }
-            }
+            }*/
         }, text = "Login")
         OrDivider()
 
