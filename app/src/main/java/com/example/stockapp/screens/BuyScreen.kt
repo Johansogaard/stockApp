@@ -48,7 +48,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.Screen
 import com.example.stockapp.authentication.EmailAuthManager
-import com.google.android.gms.wallet.button.ButtonConstants
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
