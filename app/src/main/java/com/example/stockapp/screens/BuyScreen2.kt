@@ -78,7 +78,7 @@ fun BuyScreen2Layout(navController: NavController)
         ) {
             IconButton(
                 onClick = {
-                    // Add code to navigate back to the previous page
+                    navController.popBackStack()
                 }, modifier = Modifier
                     .size(48.dp)
             ) {
@@ -199,7 +199,7 @@ Text(text = "Buy in DKK")
 
         Button(
             onClick = {
-                // Add code to handle the buy action
+                navController.navigate(Screen.BuyScreen3.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF1A65E7)

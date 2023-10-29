@@ -82,7 +82,7 @@ fun BuyLayout1(navController: NavController)
             ) {
                 IconButton(
                     onClick = {
-                        // Add code to navigate back to the previous page
+                        navController.popBackStack()
                     }, modifier = Modifier
                         .size(48.dp)
                 ) {
@@ -157,7 +157,7 @@ fun BuyLayout1(navController: NavController)
             // Continue Button
             Button(
                 onClick = {
-                    // Add code to handle the buy action
+                    navController.navigate(Screen.BuyScreen2.route)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF1A65E7)

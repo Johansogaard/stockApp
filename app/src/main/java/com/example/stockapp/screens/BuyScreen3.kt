@@ -123,7 +123,7 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
 
     Button(
         onClick = {
-            // Add code to handle the buy action
+            navController.navigate(Screen.PortfolioScreen.route)
         },modifier = Modifier
             .height(52.dp)
             .width(320.dp),
@@ -138,7 +138,9 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
     Button(
 
         onClick = {
-            // Add code to handle the buy action
+            navController.popBackStack()
+            navController.popBackStack()
+            navController.popBackStack()
         },modifier = Modifier
             .height(52.dp)
             .width(320.dp),
