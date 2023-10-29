@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.R
 import com.example.stockapp.Screen
 import com.example.stockapp.authentication.EmailAuthManager
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
@@ -99,11 +101,14 @@ fun BuyScreen2Layout(navController: NavController)
         Spacer(modifier = Modifier.size(10.dp))
 
 
-Row (modifier = Modifier.width(320.dp).height(48.dp)){
-    Column (modifier = Modifier.padding(end=5.dp)){
-Button(onClick = { /*TODO*/ }, modifier = Modifier.size(48.dp)) {
-
-}    }
+        Row (modifier = Modifier
+            .width(320.dp)
+            .height(48.dp)){
+            Column (modifier = Modifier.padding(end=5.dp)){
+                Image(
+                    painter = painterResource(id = R.drawable.dk),
+                    contentDescription = "stringResource(id = R.string.dog_content_description)"
+                )  }
     Spacer(modifier = Modifier.weight(1f))
 
 

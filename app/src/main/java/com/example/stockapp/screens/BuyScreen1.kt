@@ -1,4 +1,6 @@
 package com.example.stockapp.screens
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -7,10 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.ui.text.input.KeyboardType
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,11 +21,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,27 +37,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.Screen
-import com.example.stockapp.authentication.EmailAuthManager
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.res.painterResource
 
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.stockapp.R
+
 @Composable
 fun BuyScreen(navController: NavController) {
     Box(modifier = Modifier
@@ -82,7 +72,8 @@ fun BuyLayout(navController: NavController)
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // Back Button
+            Spacer(modifier = Modifier.size(30.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -91,30 +82,61 @@ fun BuyLayout(navController: NavController)
                 IconButton(
                     onClick = {
                         // Add code to navigate back to the previous page
-                    }
+                    }, modifier = Modifier
+                        .size(48.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Back")
 
-               Text(
-                    text = "Buy",
-                    fontSize = 20.sp ,
-                    modifier = Modifier.padding(end=180.dp)
+                }
+                Spacer(modifier = Modifier.weight(0.75f))
+                Text(
+                    text = "Preview Buy",
+                    fontSize = 20.sp, fontWeight=FontWeight.Bold ,
+                    modifier = Modifier.padding(end=150.dp)
 
                 )
+
+            }
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Row (modifier = Modifier
+                .width(320.dp)
+                .height(48.dp)){
+                Column (modifier = Modifier.padding(end=5.dp)){
+                    Image(
+                        painter = painterResource(id = R.drawable.dk),
+                        contentDescription = "stringResource(id = R.string.dog_content_description)"
+                    )  }
+                Spacer(modifier = Modifier.weight(1f))
+
+
+                Column () {
+
+                    Row {
+                        Text(text = "OMX Copenhagen 25")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row {
+                        Text(text = "Index NASDAQ: OMXC25")
+                    }
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Column(modifier = Modifier.height(48.dp), verticalArrangement=Arrangement.Center ){
+                    Text(text = "Buy in DKK")
+                }
 
 
             }
 
-            // Stock Details
-            // Add the stock logo, name, where it is sold, and the ticker symbol here
+            Spacer(modifier = Modifier.size(10.dp))
 
-            // Market Price
-            Text(text = "Market Price: XX", fontSize = 16.sp)
+            Divider(thickness = 1.dp, color = Color.Gray)
+
+            Spacer(modifier = Modifier.size(80.dp))
+
+            ButtonWithBorder()
 
             // Buy Button with Dropdown
             // Implement the button and dropdown for buying stocks
@@ -126,21 +148,22 @@ fun BuyLayout(navController: NavController)
             // Amount of DKK TextField
 
 
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Cash Available
             Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp)
                 )
             // Continue Button
             Button(
-
                 onClick = {
                     // Add code to handle the buy action
-                },colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1A65E7))
-
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1A65E7)
+                ),
+                modifier = Modifier.width(320.dp) // Set the width to 320.dp
             ) {
-                Text(text = "Continue", modifier = Modifier
-                    .padding(120.dp,7.dp,120.dp,7.dp))
+                Text(text = "Continue", modifier = Modifier.padding(7.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -191,12 +214,13 @@ fun Numpad(onDigitClick: (Int) -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 0.dp, 0.dp, 35.dp),
+                .padding(0.dp, 0.dp, 0.dp, 50.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(modifier = Modifier.weight(0.5f))
             NumpadButton(0, onDigitClick)
             Spacer(modifier = Modifier.weight(0.5f))
+
 
         }
     }
@@ -227,33 +251,58 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoneyTextField(onValueChanged: (String) -> Unit) {
-    val textState = remember { mutableStateOf("DKK 0") }
+    var textState by remember { mutableStateOf("DKK 0") }
 
-    TextField(
-        value = textState.value,
-        onValueChange = {
-            if (it.startsWith("DKK ")) {
-                textState.value = it
-                onValueChanged(it)
-            } else if (it.isEmpty()) {
-                textState.value = "DKK 0"
-                onValueChanged("0")
-            } else {
-                textState.value = "DKK $it"
-                onValueChanged(it)
+    BasicTextField(
+        value = textState,
+        onValueChange = { textState = it },
+        textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
+        cursorBrush = SolidColor(Color.Black),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = Modifier
+                    .width(320.dp)
+                    .height(140.dp)
+                    .border(4.dp, Color(0xFF1A65E7), RoundedCornerShape(35.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    innerTextField()
+
+                }
             }
-        },
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number
-        ),
-        modifier = Modifier.fillMaxWidth()
+        }
     )
 }
 
 
 
 
-
+@Composable
+fun ButtonWithBorder() {
+    Button(
+        onClick = {
+            // Your onclick code
+        },
+        border = BorderStroke(2.dp, Color(0xFF1A65E7)),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1A65E7)), modifier = Modifier.height(35.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Buy in DKK",
+                color = Color(0xFF1A65E7))
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = "down",
+                tint = Color.Black
+            )
+        }
+    }
+}
 
 
 
