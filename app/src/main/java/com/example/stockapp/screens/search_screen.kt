@@ -79,7 +79,7 @@ fun SearchableBar(navController: NavController) {
             }
         }
         Text(modifier = Modifier
-            .clickable { navController.navigate(Screen.ExplorerScreen.route) }
+            .clickable { navController.popBackStack() }
             .height(25.dp)
             .align(Alignment.Bottom)
             .padding(horizontal = 10.dp),

@@ -1,5 +1,11 @@
 package com.example.stockapp
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -20,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavBackStackEntry
 import com.example.stockapp.screens.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +63,12 @@ fun MainNavHost(
         },
         content = { innerPadding ->
             Box(Modifier.padding(innerPadding)) {
-                NavHost(navController = navController, startDestination = startDestination)
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination,
+                    //enterTransition = { EnterTransition.None },
+                    //exitTransition = { ExitTransition.None },
+                    )
                 {
                     composable(route = Screen.IntroScreen.route) {
                         IntroScreen(navController = navController)
@@ -80,18 +92,14 @@ fun MainNavHost(
                         LoginScreen(navController = navController, userViewModel = userViewModel)
                         showNavigate = false
                     }
-                    composable(route = Screen.ExplorerScreen.route) {
+                    composable(
+                        route = Screen.ExplorerScreen.route,) {
+                        val searchTerm = remember { mutableStateOf("") }
                         ExplorerScreen(navController = navController)
                         showNavigate = true
                     }
                     composable(
                         route = Screen.SearchScreen.route,
-                        enterTransition = {
-                            null
-                        },
-                        exitTransition = {
-                            null
-                        }
                     ) {
                         SearchScreen(navController = navController)
                         showNavigate = false
