@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 {
     val username = remember { mutableStateOf(TextFieldValue()) }
     val password = remember { mutableStateOf(TextFieldValue()) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -80,6 +82,8 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
                     navController.navigate(Screen.PortfolioScreen.route)
                 }
                 else { /*TODO: Show error message*/
+                    Toast.makeText(context,"Login failed: $errorMessage",Toast.LENGTH_SHORT).show()
+                    println("Login failed. Error message: $errorMessage")
                 }
             }
         }, text = "Login")
