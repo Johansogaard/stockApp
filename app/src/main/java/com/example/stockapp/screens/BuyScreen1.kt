@@ -63,6 +63,8 @@ fun BuyScreen1(navController: NavController) {
     }
 
 }
+
+
 @Composable
 fun BuyLayout1(navController: NavController)
 {
