@@ -1,4 +1,5 @@
 package com.example.stockapp.screens
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,7 +8,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stockapp.ui.theme.Stock
-
 import androidx.compose.material3.*
 
 import androidx.compose.ui.Alignment
@@ -28,13 +28,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
 import com.example.stockapp.data.Screen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.stockapp.viewModels.IndexViewModel
+
 
 @Stable
 var activeButton by mutableStateOf("")
+
 
 @Composable
 fun IndexScreen(navController: NavController) {
@@ -62,21 +67,42 @@ fun IndexLayout(navController: NavController) {
                 )
             )
             ButtonRow()
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
             StockColumn(navController)
 }
         }
     }
 
-@Composable
-fun StockColumn(navController: NavController) {
-    Column {
-        repeat(6) {
+
+        @Composable
+        fun StockColumn(navController: NavController, viewModel: IndexViewModel = viewModel()) {
+
+            Column {
+                if (activeButton=="USA") {
+
+                        viewModel.usaStocks.value.forEach { stockInfo ->
+                            Stock(
+                                country = "mikkel", // Replace with the actual country code
+                                text = stockInfo.symbol,
+                                price = stockInfo.currentPrice,
+                                perftdy = stockInfo.previousClosePrice, // You might want to calculate the performance based on `currentPrice` and `previousClosePrice`
+                                onclick = { navController.navigate(Screen.StockViewScreen.route) }
+                            )
+                            Text("hey")
+                        }
+                    Text("hey")
+                    }
+
+       else {
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
+
+            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
             Stock(country="mikkel", text="Mikkel", price="420", perftdy="69", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
+
         }
+
+
     }
 }
 
@@ -154,7 +180,9 @@ fun IndexButton(
 
 @Composable
 @Preview
+
 fun IndexScreenPreview() {
     val navController = rememberNavController()
     IndexScreen(navController)
+
 }
