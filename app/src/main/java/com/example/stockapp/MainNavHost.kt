@@ -28,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavBackStackEntry
 import com.example.stockapp.screens.*
-import com.example.stockapp.stockApi.ApiManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,18 +44,14 @@ fun MainNavHost(
         mutableStateOf(true)
     }
 
-    val apiManager = ApiManager()
     val navController = rememberNavController();
     val startDestination = if(userViewModel.state.value.isLoggedIn)
     {
-        apiManager.setupApiManger()
-        apiManager.getCandels()
         Screen.PortfolioScreen.route
 
     }
     else
-    {apiManager.setupApiManger()
-        apiManager.getCandels()
+    {
         Screen.IntroScreen.route
 
     }

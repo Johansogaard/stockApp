@@ -2,28 +2,35 @@ package com.example.stockapp.stockApi
 
 import io.finnhub.api.apis.DefaultApi
 import io.finnhub.api.infrastructure.ApiClient
+import org.junit.Test
+import org.junit.Assert.*
 
+class FinnhubApiTest {
 
-class ApiManager {
-    val apiKey = "ckvnsohr01qq199j3h9gckvnsohr01qq199j3ha0" // Replace YOUR_API_KEY with your actual Finnhub API key
-    val baseUrl = "https://finnhub.io/api/v1/"
-    val apiClient = DefaultApi()
-fun setupApiManger(){
+    init {
+        ApiClient.apiKey["token"] = "key" // Replace with your actual API key
+    }
 
-    ApiClient.apiKey["token"] = apiKey
+    private val apiClient = DefaultApi()
+
+    @Test
+    fun technicalIndicator() {
+        val result = apiClient.technicalIndicator(
+            symbol = "AAPL",
+            resolution = "D",
+            from = 1583098857L,
+            to = 1584308457L,
+            indicator = "sma",
+            indicatorFields = mapOf("timeperiod" to 3)
+        )
+        println(result)
+    }
+
+    @Test
+    fun stockCandles() {
+        val result = apiClient.stockCandles("AAPL", "D", 1590988249, 1591852249)
+        println(result)
+    }
 }
-
-
-
-        fun getCandels(){
-
-
-
-
-
-        println(apiClient.stockCandles("AAPL", "D", 1590988249, 1591852249))
-    }
-    }
-
 
 
