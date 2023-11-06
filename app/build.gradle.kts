@@ -55,6 +55,7 @@ android {
 dependencies {
 
     val nav_version = "2.7.3"
+    val finnhubApiVersion = "0.2.0"
 
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -80,6 +81,10 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 
+    //add finhub the stock api for our app
+   implementation("com.hibernix.finnhub:finnhub-websocket-[PLATFORM]:$finnhubApiVersion") // for real-time updates
+    implementation("com.hibernix.finnhub:finnhub-api:$finnhubApiVersion") // for REST API
+    implementation ("io.finnhub:kotlin-client:2.0.20")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
