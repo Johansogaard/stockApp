@@ -8,7 +8,7 @@ import org.junit.Assert.*
 class FinnhubApiTest {
 
     init {
-        ApiClient.apiKey["token"] = "key" // Replace with your actual API key
+        ApiClient.apiKey["token"] = "ckvnsohr01qq199j3h9gckvnsohr01qq199j3ha0" // Replace with your actual API key
     }
 
     private val apiClient = DefaultApi()

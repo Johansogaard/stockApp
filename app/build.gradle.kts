@@ -54,7 +54,7 @@ android {
 
 dependencies {
 
-    implementation("org.testng:testng:6.9.6")
+    implementation("junit:junit:4.12")
     val nav_version = "2.7.3"
 
     implementation("co.yml:ycharts:2.1.0")
