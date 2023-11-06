@@ -47,12 +47,13 @@ fun MainNavHost(
     val navController = rememberNavController();
     val startDestination = if(userViewModel.state.value.isLoggedIn)
     {
+      //  Screen.PortfolioScreen.route
         Screen.PortfolioScreen.route
-
     }
     else
     {
-        Screen.IntroScreen.route
+        Screen.PortfolioScreen.route
+       // Screen.IntroScreen.route
 
     }
 

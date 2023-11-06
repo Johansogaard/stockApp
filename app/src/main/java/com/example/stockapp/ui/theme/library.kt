@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
-import androidx.compose.material3.R
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -99,12 +97,12 @@ fun CustomButton(
 }
 
 @Composable
-fun Stock(
-        country: String,
-        text:String,
-        price: String,
-        perftdy:String,
-        onclick: () -> Unit = {}
+fun StockComposable(
+    country: String,
+    text: String,
+    price: String,
+    perftdy:String,
+    onclick: () -> Unit = {}
 ) {
         Row(
                 modifier = Modifier.padding(16.dp)

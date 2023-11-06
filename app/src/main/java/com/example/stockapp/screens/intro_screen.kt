@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
 import com.example.stockapp.data.Screen
+
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 
@@ -51,10 +52,12 @@ fun IntroLayout(navController: NavController)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .offset(y = (-32).dp)
         ) {
@@ -68,6 +71,7 @@ fun IntroLayout(navController: NavController)
        }
    }
 }
+
 
 @Composable
 fun BeginText(text: String) {
