@@ -28,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
@@ -55,7 +56,7 @@ fun IndexLayout(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Today's stock market",
+                text = stringResource(R.string.today),
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight(800)
@@ -85,21 +86,22 @@ fun StockColumn(navController: NavController) {
 @Composable
 fun ButtonRow() {
     Row(
-        modifier = Modifier.padding(16.dp)
-        .fillMaxWidth(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
     horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
         IndexButton(
-            text = "World",
+            text = stringResource(R.string.index_word),
             picture = "mikkel.jpg",
         )
         IndexButton(
-            text = "USA",
+            text = stringResource(R.string.index_usa),
             picture = "mikkel.jpg",
         )
         IndexButton(
-            text = "Denmark",
+            text = stringResource(R.string.index_denmark),
             picture = "mikkel.jpg",
         )
     }
@@ -113,7 +115,10 @@ fun IndexButton(
 ) {
     Button(
         onClick = { activeButton=text },
-        modifier = modifier.then(Modifier.width(110.dp).height(40.dp)),
+        modifier = modifier.then(
+            Modifier
+                .width(110.dp)
+                .height(40.dp)),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (activeButton == text) Accent else Color.Red
         ),

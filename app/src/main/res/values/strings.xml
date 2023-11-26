@@ -1,3 +1,48 @@
 <resources>
+
+    <!-- App name -->
     <string name="app_name">stockApp</string>
+
+
+    <!-- Explorer Screen -->
+    <string name="search_icon_desc">Search Icon</string>
+
+
+    <!-- Choose Signup Screen -->
+    <string name="get_started">Get Started!</string>
+    <string name="email">Email</string>
+    <string name="create_account">Create a new account</string>
+    <string name="with_google">Continue with Google</string>
+    <string name="with_apple">Continue with Apple</string>
+    <string name="have_account">I already have an account</string>
+    <string name="login">Login</string>
+    <string name="terms_text">By using this app, I agrre to the </string>
+    <string name="terms_link_text">Terms and conditions</string>
+
+
+    <!-- Competition -->
+
+
+    <!-- Index Screen -->
+    <string name="today">Today\'s stock market</string>
+    <string name="index_word">World</string>
+    <string name="index_usa">USA</string>
+    <string name="index_denmark">Denmark</string>
+
+
+    <!-- Intro Screen -->
+
+    <string-array name="intro_text">
+        <item>Market Wisdom </item>
+        <item>at your </item>
+        <item>fingertips: </item>
+        <item>Tune into </item>
+        <item>Success. </item>
+    </string-array>
+
+
+    <string name="have_account_q">Already have an account? </string>
+    <string name="log_in">Log in</string>
+
+
 </resources>
