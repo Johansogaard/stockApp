@@ -64,7 +64,7 @@ fun searchBar(navController: NavController) {
 
         ) {
             Icon(imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.search_icon_desc),
+                contentDescription = stringResource(R.string.explorer_search_icon_desc),
                 modifier = Modifier.size(26.dp)
             )
             Text(

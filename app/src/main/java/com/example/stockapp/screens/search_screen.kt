@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.R
 import com.example.stockapp.data.Screen
 
 @Composable
@@ -69,11 +71,11 @@ fun SearchableBar(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Icon(imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
+                    contentDescription = stringResource(R.string.search_icon_desc),
                 )
                 Text(
                     color = Color.Black,
-                    text = "What would you like to find?",
+                    text = stringResource(R.string.search_q),
                     fontStyle = FontStyle.Italic
                 )
             }
@@ -84,7 +86,7 @@ fun SearchableBar(navController: NavController) {
             .align(Alignment.Bottom)
             .padding(horizontal = 10.dp),
             color = Color.Black,
-            text = "Cancel",
+            text = stringResource(R.string.common_cancel),
             fontWeight = FontWeight.Bold
         )
     }
@@ -120,7 +122,7 @@ fun LatestSearches() {
                         .align(Alignment.CenterEnd)
                     ) {
                         Icon(imageVector = Icons.Default.Clear,
-                            contentDescription = "Remove Icon",
+                            contentDescription = stringResource(R.string.search_remove_desc),
                             modifier = Modifier
                                 .size(26.dp)
                                 .align(Alignment.CenterEnd)

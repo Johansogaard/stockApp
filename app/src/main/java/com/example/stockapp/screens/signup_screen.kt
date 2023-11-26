@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.R
 import com.example.stockapp.data.Screen
 import com.example.stockapp.authentication.EmailAuthManager
 import com.example.stockapp.ui.theme.ClickableText
@@ -57,7 +59,7 @@ fun SignUpLayout(navController: NavController)
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = "Get started",
+            text = stringResource(R.string.signup_get_started),
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight(700)
@@ -68,27 +70,27 @@ fun SignUpLayout(navController: NavController)
         // Full Name
         CustomTextField(
             value = fullName,
-            label = "Full name"
+            label = stringResource(R.string.signup_name)
         )
 
         CustomTextField(
             value = email,
-            label = "Email"
+            label = stringResource(R.string.common_email)
         )
 
         CustomTextField(
             value = username,
-            label = "Create a Username"
+            label = stringResource(R.string.signup_username)
         )
 
         CustomTextField(
             value = password,
-            label = "Create a Password"
+            label = stringResource(R.string.signup_password)
         )
 
         CustomTextField(
             value = referralCode,
-            label = "Referral Code (Optional)"
+            label = stringResource(R.string.signup_referral_opt)
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Signup Button
@@ -112,7 +114,7 @@ fun SignUpLayout(navController: NavController)
 
 
             },
-            text = "Sign Up"
+            text = stringResource(R.string.signup_sign_up),
         )
     }
 
@@ -120,21 +122,22 @@ fun SignUpLayout(navController: NavController)
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .offset(y = (-32).dp)
         ) {
 
             ClickableText(
-                normalText = "Already have an account?",
-                clickableText = " Login",
+                normalText = stringResource(R.string.signup_have_account_q),
+                clickableText = stringResource(R.string.common_log_in),
                 onClick = {navController.navigate(Screen.LoginScreen.route)}
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             ClickableText(
-                normalText = "By signing up, you agree to the ",
-                clickableText = "Terms and Conditions",
+                normalText = stringResource(R.string.signup_terms_text),
+                clickableText = stringResource(R.string.signup_terms_link),
                 onClick = {
                     /*do something*/
                 }

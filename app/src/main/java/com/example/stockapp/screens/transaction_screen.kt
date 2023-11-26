@@ -30,6 +30,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 
@@ -58,15 +59,15 @@ fun TransactionLayout(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, bottom=4.dp, top = 24.dp),
+                    .padding(start = 16.dp, bottom = 4.dp, top = 24.dp),
             ) {
                 ClickableText(
-                    text = AnnotatedString("Orders"),
+                    text = AnnotatedString(stringResource(R.string.transaction_orders)),
                     onClick = { navController.navigate(Screen.OrderScreen.route) },
                     style = TextStyle(fontSize = 24.sp)
                 )
                 ClickableText(
-                    text = AnnotatedString("Transactions"),
+                    text = AnnotatedString(stringResource(R.string.transaction_transactions)),
                     onClick = {
 
                     },

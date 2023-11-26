@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -105,15 +106,15 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
 
     Column {
         Column() {
-            TopBarGoBack("Details", navController = navController)
+            TopBarGoBack(stringResource(R.string.stockview_details), navController = navController)
         }
         Column(modifier = Modifier
             .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Column() {
-                Text(text = "OMX C25", style = MaterialTheme.typography.titleMedium)
-                Text(text = "Index NASDAQ: OMX C25", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.stockview_omx_c25), style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.stockview_nasdaq), style = MaterialTheme.typography.titleMedium)
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Column() {
@@ -142,15 +143,15 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                 Row() {
                     Column(modifier = Modifier.padding(end = 24.dp)) {
                         Text(
-                            text = "Opening",
+                            text = stringResource(R.string.stockview_opening),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "HIGH",
+                            text = stringResource(R.string.stockview_high),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "LOW",
+                            text = stringResource(R.string.stockview_low),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -170,15 +171,15 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     }
                     Column(modifier = Modifier.padding(end = 24.dp)) {
                         Text(
-                            text = "Prev. close",
+                            text = stringResource(R.string.stockview_prev_close),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "High in 52W",
+                            text = stringResource(R.string.stockview_high_52w),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "Low in 52W",
+                            text = stringResource(R.string.stockview_low_52w),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -215,7 +216,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                             .padding(horizontal = 28.dp)
                             .fillMaxWidth(),
                         onClick = { navController.navigate(Screen.BuyScreen1.route) },) {
-                        Text(text = "TRADE", style = MaterialTheme.typography.labelLarge)
+                        Text(text = stringResource(R.string.stockview_trade_button), style = MaterialTheme.typography.labelLarge)
                     }
                 }
             }

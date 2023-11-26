@@ -28,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
@@ -51,7 +52,7 @@ fun WatchLayout(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Watchlist",
+                text = stringResource(R.string.watch_watchlist),
                 style = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight(800)

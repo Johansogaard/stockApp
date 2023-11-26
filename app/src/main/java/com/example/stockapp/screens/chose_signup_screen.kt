@@ -58,7 +58,7 @@ fun ChoseSignupLayOut(navController: NavController)
       horizontalAlignment = Alignment.CenterHorizontally
    )
    {
-      Text(text = stringResource(R.string.signup_get_started))
+      Text(text = stringResource(R.string.choose_signup_get_started))
 
       CustomTextField(
          value = email,
@@ -68,7 +68,7 @@ fun ChoseSignupLayOut(navController: NavController)
 
       CustomButton(onClick = {
          navController.navigate(Screen.SignUpScreen.route)
-      }, text = stringResource(R.string.signup_create_account))
+      }, text = stringResource(R.string.choose_signup_create_account))
 
       OrDivider()
 
@@ -96,15 +96,15 @@ fun ChoseSignupLayOut(navController: NavController)
       ) {
 
          ClickableText(
-            normalText = stringResource(R.string.signup_have_account),
+            normalText = stringResource(R.string.choose_signup_have_account),
             clickableText = stringResource(R.string.common_login),
             onClick = {navController.navigate(Screen.LoginScreen.route)}
          )
          Spacer(modifier = Modifier.height(16.dp))
 
          ClickableText(
-            normalText = stringResource(R.string.signup_terms_text),
-            clickableText = stringResource(R.string.signup_terms_link_text),
+            normalText = stringResource(R.string.choose_signup_terms_text),
+            clickableText = stringResource(R.string.choose_signup_terms_link_text),
             onClick = {
                /*do something*/
             }

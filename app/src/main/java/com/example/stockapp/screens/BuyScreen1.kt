@@ -46,6 +46,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
@@ -88,12 +89,12 @@ fun BuyLayout1(navController: NavController)
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowLeft,
-                        contentDescription = "Back")
+                        contentDescription = stringResource(R.string.common_back))
 
                 }
                 Spacer(modifier = Modifier.weight(0.75f))
                 Text(
-                    text = "Preview Buy",
+                    text = stringResource(R.string.buy_previous),
                     fontSize = 20.sp, fontWeight=FontWeight.Bold ,
                     modifier = Modifier.padding(end=150.dp)
 
@@ -108,7 +109,7 @@ fun BuyLayout1(navController: NavController)
                 Column (modifier = Modifier.padding(end=5.dp)){
                     Image(
                         painter = painterResource(id = R.drawable.dk),
-                        contentDescription = "stringResource(id = R.string.dog_content_description)"
+                        contentDescription = ""
                     )  }
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -116,16 +117,16 @@ fun BuyLayout1(navController: NavController)
                 Column () {
 
                     Row {
-                        Text(text = "OMX Copenhagen 25")
+                        Text(text = stringResource(R.string.buy_omx_copenhagen))
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Row {
-                        Text(text = "Index NASDAQ: OMXC25")
+                        Text(text = stringResource(R.string.buy_nasdaq))
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Column(modifier = Modifier.height(48.dp), verticalArrangement=Arrangement.Center ){
-                    Text(text = "Buy in DKK")
+                    Text(text = stringResource(R.string.buy_in_dkk))
                 }
 
 
@@ -152,8 +153,7 @@ fun BuyLayout1(navController: NavController)
             Spacer(modifier = Modifier.height(20.dp))
 
             // Cash Available
-            Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp)
-                )
+            Text(text = stringResource(R.string.buy_funds_available) + "24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp))
             // Continue Button
             Button(
                 onClick = {
@@ -164,7 +164,7 @@ fun BuyLayout1(navController: NavController)
                 ),
                 modifier = Modifier.width(320.dp) // Set the width to 320.dp
             ) {
-                Text(text = "Continue", modifier = Modifier.padding(7.dp))
+                Text(text = stringResource(R.string.common_continue), modifier = Modifier.padding(7.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -294,11 +294,11 @@ fun ButtonWithBorder() {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Buy in DKK",
+                text = stringResource(R.string.buy_in_dkk),
                 color = Color(0xFF1A65E7))
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "down",
+                contentDescription = "",
                 tint = Color.Black
             )
         }

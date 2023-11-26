@@ -8,21 +8,24 @@
     <string name="common_email">Email</string>
     <string name="common_login">Login</string>
     <string name="common_log_in">Log in</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_back">Back</string>
+    <string name="common_continue">Continue</string>
     <string name="common_with_google">Continue with Google</string>
     <string name="common_with_apple">Continue with Apple</string>
     <!-- ... other common strings ... -->
 
 
     <!-- Explorer Screen -->
-    <string name="search_icon_desc">Search Icon</string>
+    <string name="explorer_search_icon_desc">Search Icon</string>
 
 
     <!-- Choose Signup Screen -->
-    <string name="signup_get_started">Get Started!</string>
-    <string name="signup_create_account">Create a new account</string>
-    <string name="signup_have_account">I already have an account</string>
-    <string name="signup_terms_text">By using this app, I agree to the </string>
-    <string name="signup_terms_link_text">Terms and conditions</string>
+    <string name="choose_signup_get_started">Get Started!</string>
+    <string name="choose_signup_create_account">Create a new account</string>
+    <string name="choose_signup_have_account">I already have an account</string>
+    <string name="choose_signup_terms_text">By using this app, I agree to the </string>
+    <string name="choose_signup_terms_link_text">Terms and conditions</string>
 
 
     <!-- Competition -->
@@ -62,7 +65,74 @@
     <string name="login_terms_link_text">Terms and conditions</string>
 
 
-    <string name=""></string>
+    <!-- Order Screen -->
+    <string name="order_orders"></string>
+    <string name="order_transactions"></string>
+
+
+    <!-- Portfolio Screen -->
+    <string name="portfolio_overview"></string>
+    <string name="portfolio_exit_desc"></string>
+
+
+    <!-- Search Screen -->
+    <string name="search_icon_desc"></string>
+    <string name="search_q"></string>
+    <string name="search_remove_desc"></string>
+
+
+    <!-- Signup Screen -->
+    <string name="signup_get_started">Get started</string>
+    <string name="signup_name">Full Name</string>
+    <string name="signup_username">Choose a username</string>
+    <string name="signup_password">Choose a password</string>
+    <string name="signup_referral_opt">Referral Code (Optional)</string>
+    <string name="signup_sign_up">Sign up</string>
+    <string name="signup_have_account_q">Already have an account? </string>
+    <string name="signup_terms_text">By signing up, you agree to the </string>
+    <string name="signup_terms_link">Terms and Conditions</string>
+
+
+    <!-- StockView Screen -->
+    <string name="stockview_details">Details</string>
+    <string name="stockview_omx_c25">OMX C25</string>
+    <string name="stockview_nasdaq">Index NASDAQ: OMX C25</string>
+    <string name="stockview_opening">Opening</string>
+    <string name="stockview_high">HIGH</string>
+    <string name="stockview_low">LOW</string>
+    <string name="stockview_prev_close">Prev. close</string>
+    <string name="stockview_high_52w">High in 52w</string>
+    <string name="stockview_low_52w">Low in 52w</string>
+    <string name="stockview_trade_button">TRADE</string>
+
+
+    <!-- Transaction Screen -->
+    <string name="transaction_orders">Orders</string>
+    <string name="transaction_transactions">Transactions</string>
+
+
+    <!-- Watch Screen -->
+    <string name="watch_watchlist">Watchlist</string>
+
+
+    <!-- Buy Screen(s) -->
+    <string name="buy_previous">Preview Buy</string>
+    <string name="buy_omx_copenhagen">OMX Copenhagen 25</string>
+    <string name="buy_nasdaq">Index NASDAQ: OMXC25</string>
+    <string name="buy_in_dkk">Buy in DKK</string>
+    <string name="buy_funds_available">Available funds: </string>
+    <string name="buy_market_price">Market Price</string>
+    <string name="buy_num_of_shares">Number of shares</string>
+    <string name="buy_amount">Amount</string>
+    <string name="buy_trading_fee">Trading fee</string>
+    <string name="buy_total">Total Cost</string>
+    <string name="buy_buy_now_button">Buy now</string>
+    <string name="buy_order_received">Buy Order Received!</string>
+    <string name="buy_received_confirmation">Your order has been received and will be\n" +
+            "executed as soon as the market opens</string>
+    <string name="buy_view_portfolio">View my portfolio</string>
+    <string name="buy_back_to_stock">Back to stock</string>
+    <string name="buy_omxc">OMXC25</string>
 
 
 </resources>
