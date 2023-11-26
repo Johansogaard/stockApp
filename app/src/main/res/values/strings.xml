@@ -4,34 +4,38 @@
     <string name="app_name">stockApp</string>
 
 
+    <!-- Common Strings -->
+    <string name="common_email">Email</string>
+    <string name="common_login">Login</string>
+    <string name="common_log_in">Log in</string>
+    <string name="common_with_google">Continue with Google</string>
+    <string name="common_with_apple">Continue with Apple</string>
+    <!-- ... other common strings ... -->
+
+
     <!-- Explorer Screen -->
     <string name="search_icon_desc">Search Icon</string>
 
 
     <!-- Choose Signup Screen -->
-    <string name="get_started">Get Started!</string>
-    <string name="email">Email</string>
-    <string name="create_account">Create a new account</string>
-    <string name="with_google">Continue with Google</string>
-    <string name="with_apple">Continue with Apple</string>
-    <string name="have_account">I already have an account</string>
-    <string name="login">Login</string>
-    <string name="terms_text">By using this app, I agrre to the </string>
-    <string name="terms_link_text">Terms and conditions</string>
+    <string name="signup_get_started">Get Started!</string>
+    <string name="signup_create_account">Create a new account</string>
+    <string name="signup_have_account">I already have an account</string>
+    <string name="signup_terms_text">By using this app, I agree to the </string>
+    <string name="signup_terms_link_text">Terms and conditions</string>
 
 
     <!-- Competition -->
 
 
     <!-- Index Screen -->
-    <string name="today">Today\'s stock market</string>
+    <string name="index_today">Today\'s stock market</string>
     <string name="index_word">World</string>
     <string name="index_usa">USA</string>
     <string name="index_denmark">Denmark</string>
 
 
     <!-- Intro Screen -->
-
     <string-array name="intro_text">
         <item>Market Wisdom </item>
         <item>at your </item>
@@ -39,10 +43,26 @@
         <item>Tune into </item>
         <item>Success. </item>
     </string-array>
+    <string name="intro_have_account_q">Already have an account? </string>
 
 
-    <string name="have_account_q">Already have an account? </string>
-    <string name="log_in">Log in</string>
+    <!-- Login Screen -->
+    <string name="login_name_email">Enter Email or Username</string>
+    <string name="login_enter_password">Enter your password</string>
+
+    <string-array name="login_forgot">
+        <item>Forgot your </item>
+        <item>password?</item>
+    </string-array>
+
+    <string name="login_failed">Login failed. Error message: %1$s</string>
+    <string name="login_no_account_q">Don\'t have an account?</string>
+    <string name="login_sign_up">Sign up</string>
+    <string name="login_terms_text">By signing up, you agree to the </string>
+    <string name="login_terms_link_text">Terms and conditions</string>
+
+
+    <string name=""></string>
 
 
 </resources>

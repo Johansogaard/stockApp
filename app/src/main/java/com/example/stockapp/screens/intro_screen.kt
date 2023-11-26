@@ -63,8 +63,8 @@ fun IntroLayout(navController: NavController)
             CustomButton( onClick = {navController.navigate(Screen.ChoseSignupScreen.route)}, text = "Get Started")
             Spacer(modifier = Modifier.height(16.dp))
             ClickableText(
-                normalText = stringResource(R.string.have_account_q),
-                clickableText = stringResource(R.string.log_in),
+                normalText = stringResource(R.string.intro_have_account_q),
+                clickableText = stringResource(R.string.common_log_in),
                 onClick = { navController.navigate(Screen.LoginScreen.route) }
             )
        }

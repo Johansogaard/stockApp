@@ -56,7 +56,7 @@ fun IndexLayout(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.today),
+                text = stringResource(R.string.index_today),
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight(800)

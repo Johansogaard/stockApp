@@ -58,30 +58,30 @@ fun ChoseSignupLayOut(navController: NavController)
       horizontalAlignment = Alignment.CenterHorizontally
    )
    {
-      Text(text = stringResource(R.string.get_started))
+      Text(text = stringResource(R.string.signup_get_started))
 
       CustomTextField(
          value = email,
-         label = stringResource(R.string.email)
+         label = stringResource(R.string.common_email)
       )
       Spacer(modifier = Modifier.height(16.dp))
 
       CustomButton(onClick = {
          navController.navigate(Screen.SignUpScreen.route)
-      }, text = stringResource(R.string.create_account))
+      }, text = stringResource(R.string.signup_create_account))
 
       OrDivider()
 
 
       CustomButton(onClick = {
          navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text))
-      }, text = stringResource(R.string.with_google), outlined = true)
+      }, text = stringResource(R.string.common_with_google), outlined = true)
 
       Spacer(modifier = Modifier.height(16.dp))
 
       CustomButton(onClick = {
          navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text)) },
-         text = stringResource(R.string.with_apple),
+         text = stringResource(R.string.common_with_apple),
          outlined = true)
       }
 
@@ -96,15 +96,15 @@ fun ChoseSignupLayOut(navController: NavController)
       ) {
 
          ClickableText(
-            normalText = stringResource(R.string.have_account),
-            clickableText = stringResource(R.string.login),
+            normalText = stringResource(R.string.signup_have_account),
+            clickableText = stringResource(R.string.common_login),
             onClick = {navController.navigate(Screen.LoginScreen.route)}
          )
          Spacer(modifier = Modifier.height(16.dp))
 
          ClickableText(
-            normalText = stringResource(R.string.terms_text),
-            clickableText = stringResource(R.string.terms_link_text),
+            normalText = stringResource(R.string.signup_terms_text),
+            clickableText = stringResource(R.string.signup_terms_link_text),
             onClick = {
                /*do something*/
             }
