@@ -28,12 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavBackStackEntry
 import com.example.stockapp.screens.*
+import com.example.stockapp.viewModels.BuyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavHost(
     userViewModel: UserViewModel,
     stocksViewModel: StocksViewModel,
+    buyViewModel: BuyViewModel,
     competitionViewModel: CompetitionViewModel,
     currentAppViewModel: CurrentAppViewModel
 ) {
@@ -105,7 +107,7 @@ fun MainNavHost(
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen1.route) {
-                        BuyScreen1(navController = navController)
+                        BuyScreen1(navController = navController, buyViewModel = buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen2.route) {

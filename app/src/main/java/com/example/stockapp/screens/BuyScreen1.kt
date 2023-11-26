@@ -31,9 +31,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,30 +41,19 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
+import com.example.stockapp.viewModels.BuyViewModel
 
 @Composable
-fun BuyScreen1(navController: NavController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
-
-    )
-    {
-        BuyLayout1(navController)
-
-    }
-
-}
-@Composable
-fun BuyLayout1(navController: NavController)
-{
-    var moneyText by remember { mutableStateOf("") }
+fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewModel()) {
+    val buyUiState by buyViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -125,9 +111,6 @@ fun BuyLayout1(navController: NavController)
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Column(modifier = Modifier.height(48.dp), verticalArrangement=Arrangement.Center ){
-                    Text(text = stringResource(R.string.buy_in_dkk))
-                }
 
 
             }
@@ -144,16 +127,31 @@ fun BuyLayout1(navController: NavController)
             // Implement the button and dropdown for buying stocks
 
             Spacer(modifier = Modifier.weight(1f))
-            MoneyTextField { newMoneyText ->
-                moneyText = newMoneyText
-            }
-            // Amount of DKK TextField
+            MoneyTextField(
+                isValueOverMax = buyUiState.isMaxAmount,
+                currentAmount = buyViewModel.currentAmount,
+            )
 
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Cash Available
-            Text(text = stringResource(R.string.buy_funds_available) + "24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp))
+            if (buyUiState.isMaxAmount) {
+                Text(
+                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
+                    color = Color.Red,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+            }
+            else {
+                Text(
+                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+            }
             // Continue Button
             Button(
                 onClick = {
@@ -168,16 +166,46 @@ fun BuyLayout1(navController: NavController)
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Numpad(onDigitClick = { digit ->
-                val newText = moneyText + digit.toString()
-                moneyText = newText // Update the moneyText variable
+            Numpad(onDigitClick = {
+                buyViewModel.updateAmount(it)
             })
 
             // Numpad
             // Implement the numpad layout, including digits and a backspace button
         }
     }
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MoneyTextField(isValueOverMax: Boolean,
+                   currentAmount: String,
+                   modifier: Modifier = Modifier) {
+
+    BasicTextField(
+        value = currentAmount,
+        onValueChange = {  },
+        textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
+        cursorBrush = SolidColor(Color.Black),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = Modifier
+                    .width(320.dp)
+                    .height(140.dp)
+                    .border(4.dp, Color(0xFF1A65E7), RoundedCornerShape(35.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    innerTextField()
+
+                }
+            }
+        }
+    )
 }
 
 @Composable
@@ -247,37 +275,6 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
             )
     }
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MoneyTextField(onValueChanged: (String) -> Unit) {
-    var textState by remember { mutableStateOf("DKK 0") }
-
-    BasicTextField(
-        value = textState,
-        onValueChange = { textState = it },
-        textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
-        cursorBrush = SolidColor(Color.Black),
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(140.dp)
-                    .border(4.dp, Color(0xFF1A65E7), RoundedCornerShape(35.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    innerTextField()
-
-                }
-            }
-        }
-    )
 }
 
 
