@@ -117,7 +117,7 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
         ) {
 
             ClickableText(
-                normalText = stringResource(R.string.login_have_account_q),
+                normalText = stringResource(R.string.login_no_account_q),
                 clickableText = stringResource(R.string.login_sign_up),
                 onClick = {navController.navigate(Screen.ChoseSignupScreen.route)}
             )
