@@ -11,19 +11,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 
@@ -44,12 +52,30 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
-
+const val NUMPAD_BUTTON_ONE = 1
+const val NUMPAD_BUTTON_TWO = 2
+const val NUMPAD_BUTTON_THREE = 3
+const val NUMPAD_BUTTON_FOUR = 4
+const val NUMPAD_BUTTON_FIVE = 5
+const val NUMPAD_BUTTON_SIX = 6
+const val NUMPAD_BUTTON_SEVEN = 7
+const val NUMPAD_BUTTON_EIGHT = 8
+const val NUMPAD_BUTTON_NINE = 9
+const val NUMPAD_BUTTON_ZERO = 0
 @Composable
 fun BuyScreen1(navController: NavController) {
     Box(modifier = Modifier
@@ -68,7 +94,7 @@ fun BuyScreen1(navController: NavController) {
 @Composable
 fun BuyLayout1(navController: NavController)
 {
-    var moneyText by remember { mutableStateOf("") }
+    var textState by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -93,7 +119,7 @@ fun BuyLayout1(navController: NavController)
                         contentDescription = "Back")
 
                 }
-                Spacer(modifier = Modifier.weight(0.75f))
+                Spacer(modifier = Modifier.weight(0.5f))
                 Text(
                     text = "Preview Buy",
                     fontSize = 20.sp, fontWeight=FontWeight.Bold ,
@@ -137,17 +163,17 @@ fun BuyLayout1(navController: NavController)
 
             Divider(thickness = 1.dp, color = Color.Gray)
 
-            Spacer(modifier = Modifier.size(80.dp))
+            Spacer(modifier = Modifier.size(10.dp))
 
             ButtonWithBorder()
 
             // Buy Button with Dropdown
             // Implement the button and dropdown for buying stocks
 
-            Spacer(modifier = Modifier.weight(1f))
-            MoneyTextField { newMoneyText ->
-                moneyText = newMoneyText
-            }
+            Spacer(modifier = Modifier.weight(0.5f))
+            CustomTextField(onValueChanged = { text ->
+                textState = text
+            })
             // Amount of DKK TextField
 
 
@@ -155,7 +181,7 @@ fun BuyLayout1(navController: NavController)
 
             // Cash Available
             Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp)
-                )
+            )
             // Continue Button
             Button(
                 onClick = {
@@ -170,10 +196,9 @@ fun BuyLayout1(navController: NavController)
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Numpad(onDigitClick = { digit ->
-                val newText = moneyText + digit.toString()
-                moneyText = newText // Update the moneyText variable
-            })
+            Numpad { digit ->
+                textState += digit.toString()
+            }
 
             // Numpad
             // Implement the numpad layout, including digits and a backspace button
@@ -194,41 +219,37 @@ fun Numpad(onDigitClick: (Int) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            NumpadButton(1, onDigitClick)
-            NumpadButton(2, onDigitClick)
-            NumpadButton(3, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_ONE, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_TWO, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_THREE, onDigitClick)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            NumpadButton(4, onDigitClick)
-            NumpadButton(5, onDigitClick)
-            NumpadButton(6, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_FOUR, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_FIVE, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_SIX, onDigitClick)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            NumpadButton(7, onDigitClick)
-            NumpadButton(8, onDigitClick)
-            NumpadButton(9, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_SEVEN, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_EIGHT, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_NINE, onDigitClick)
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 0.dp, 0.dp, 50.dp),
+                .padding(0.dp, 0.dp, 0.dp, 0.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(modifier = Modifier.weight(0.5f))
-            NumpadButton(0, onDigitClick)
+            NumpadButton(NUMPAD_BUTTON_ZERO, onDigitClick)
             Spacer(modifier = Modifier.weight(0.5f))
-
-
         }
     }
-
-
 }
 
 
@@ -241,26 +262,35 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent)
 
-        ) {
+    ) {
         Text(text = digit.toString(),
             fontSize = 25.sp,
             color = Color.Black,
             fontWeight= FontWeight.ExtraBold
-            )
+        )
     }
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoneyTextField(onValueChanged: (String) -> Unit) {
     var textState by remember { mutableStateOf("DKK 0") }
+    val focusRequester = remember { FocusRequester() }
 
     BasicTextField(
         value = textState,
-        onValueChange = { textState = it },
+        onValueChange = { textState = it
+                        },
         textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
         cursorBrush = SolidColor(Color.Black),
+        modifier = Modifier
+            .focusable(true)
+            .focusRequester(focusRequester)
+            .onFocusChanged { focusState ->
+                if (focusState.isFocused) {
+                    focusRequester.freeFocus()
+                }
+            },
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier
@@ -275,15 +305,62 @@ fun MoneyTextField(onValueChanged: (String) -> Unit) {
                 ) {
                     Spacer(modifier = Modifier.width(10.dp))
                     innerTextField()
-
                 }
             }
         }
     )
 }
 
+@Composable
+fun CustomTextField(onValueChanged: (String) -> Unit) {
+    var textState by remember { mutableStateOf("") }
 
-
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = LocalConfiguration.current.screenHeightDp.dp * 0.2f)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(0.1f)
+                    .fillMaxHeight()
+            )
+            Box(
+                modifier = Modifier
+                    .weight(0.8f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BasicTextField(
+                        value = textState,
+                        onValueChange = {
+                            textState = it
+                            onValueChanged(it)
+                        },
+                        modifier = Modifier.width(IntrinsicSize.Min), // Use wrapContentWidth here
+                        textStyle = TextStyle(color = Color.Black, textAlign = TextAlign.End), // Align text to the end
+                        cursorBrush = SolidColor(Color.Black)
+                    )
+                    Text(text = "kr.", modifier = Modifier.wrapContentWidth()) // Use wrapContentWidth here
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .weight(0.1f)
+                    .fillMaxHeight()
+            )
+        }
+    }
+}
 
 @Composable
 fun ButtonWithBorder() {
