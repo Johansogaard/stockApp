@@ -76,6 +76,7 @@ fun PortfolioLayout(navController: NavController) {
 
 
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {
