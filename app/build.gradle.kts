@@ -71,7 +71,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-
+    implementation ("com.google.code.gson:gson:2.8.6")
 
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
