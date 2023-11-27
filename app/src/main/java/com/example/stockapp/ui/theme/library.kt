@@ -336,6 +336,7 @@ fun ClickableText(
         val context = LocalContext.current
         val annotatedString = buildAnnotatedString {
                 append(normalText)
+                append(" ")
                 withStyle(style = SpanStyle(color = color)) {
                         val start = length
                         append(clickableText)

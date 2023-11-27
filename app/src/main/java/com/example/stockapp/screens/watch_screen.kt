@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
+import com.example.stockapp.data.Screen
 
 @Composable
 fun WatchScreen(navController: NavController) {
@@ -63,15 +64,11 @@ fun WatchLayout(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+            StockColumn(navController)
         }
     }
 }
+
 
 
 

@@ -96,9 +96,9 @@ fun transactionsColumn(){
         color = Color.Black,
         modifier = Modifier.fillMaxWidth()
     )
-    Transaction( name="Johan",status="sold", quantity="420", rate="360", amount="21.42")
+    Transaction( name="NOVO",status="sold", quantity="420", rate="360", amount="21.42")
     repeat(6) {
-        Transaction( name="mikkel",status="bought", quantity="360", rate="420", amount="69")
+        Transaction( name="APPL",status="bought", quantity="360", rate="420", amount="69")
 
     }
 }

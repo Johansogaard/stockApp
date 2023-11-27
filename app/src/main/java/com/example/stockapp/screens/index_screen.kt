@@ -63,9 +63,9 @@ fun IndexLayout(navController: NavController) {
                 )
             )
             ButtonRow()
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
+            Stock(country="usa", text="APPL", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
+            Stock(country="dk", text="NOVO", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
             StockColumn(navController)
 }
         }
@@ -75,7 +75,7 @@ fun IndexLayout(navController: NavController) {
 fun StockColumn(navController: NavController) {
     Column {
         repeat(6) {
-            Stock(country="mikkel", text="Mikkel", price="420", perftdy="69", onclick = {navController.navigate(Screen.StockViewScreen.route)})
+            Stock(country="usa", text="TMT", price="420", perftdy="69", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
         }
     }
@@ -94,15 +94,15 @@ fun ButtonRow() {
 
         IndexButton(
             text = stringResource(R.string.index_word),
-            picture = "mikkel.jpg",
+            picture = "usa.png",
         )
         IndexButton(
             text = stringResource(R.string.index_usa),
-            picture = "mikkel.jpg",
+            picture = "usa.png",
         )
         IndexButton(
             text = stringResource(R.string.index_denmark),
-            picture = "mikkel.jpg",
+            picture = "dk.png",
         )
     }
 }

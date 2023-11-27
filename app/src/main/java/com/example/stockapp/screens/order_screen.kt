@@ -98,9 +98,9 @@ fun orderColumn(){
         color = Color.Black,
         modifier = Modifier.fillMaxWidth()
     )
-    Transaction( name="Johan",status="order", quantity="420", rate="360", amount="21.42")
+    Transaction( name="NOVO",status="order", quantity="420", rate="360", amount="21.42")
     repeat(6) {
-        Transaction( name="mikkel",status="order", quantity="360", rate="420", amount="69")
+        Transaction( name="APPL",status="order", quantity="360", rate="420", amount="69")
 
     }
 }
