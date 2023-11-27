@@ -77,7 +77,8 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 
         Spacer(modifier = Modifier.height(16.dp))
         CustomButton(onClick = {
-            EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
+            navController.navigate(Screen.PortfolioScreen.route)
+           /* EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
                 if (userViewModel.state.value.isLoggedIn) {
                     navController.navigate(Screen.PortfolioScreen.route)
                 }
@@ -85,7 +86,7 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
                     Toast.makeText(context,"Login failed: $errorMessage",Toast.LENGTH_SHORT).show()
                     println("Login failed. Error message: $errorMessage")
                 }
-            }
+            }*/
         }, text = "Login")
         OrDivider()
 

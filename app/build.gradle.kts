@@ -7,6 +7,10 @@ plugins {
 }
 
 android {
+
+
+
+
     namespace = "com.example.stockapp"
     compileSdk = 34
 
@@ -50,11 +54,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+
 }
 
 dependencies {
 
     val nav_version = "2.7.3"
+    val cucumberVersion = "7.14.0"
 
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -82,6 +89,14 @@ dependencies {
 
 
     testImplementation("junit:junit:4.13.2")
+    //cucumber
+    testImplementation ("io.cucumber:cucumber-android:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-junit:7.14.0")
+    testImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.4.0")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
