@@ -117,5 +117,6 @@ class apiTest {
         val strings: List<String> = gson.fromJson(response, listType)
         assertTrue(strings.isNotEmpty())
         println("Response as List<String>: $strings")
+        //returns a list with strings like [NOVO, APPLE]
     }
 }

@@ -100,7 +100,7 @@ fun CustomButton(
 
 @Composable
 fun Stock(
-        country: String,
+        picture: String,
         text:String,
         price: String,
         perftdy:String,
@@ -120,7 +120,7 @@ fun Stock(
 
                         ) {
                         Image(
-                                painter = painterResource(id = com.example.stockapp.R.drawable::class.java.getDeclaredField(country).getInt(null)),
+                                painter = painterResource(id = com.example.stockapp.R.drawable::class.java.getDeclaredField(picture.substringBeforeLast(".")).getInt(null)),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier

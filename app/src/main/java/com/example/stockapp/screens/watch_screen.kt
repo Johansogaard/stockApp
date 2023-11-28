@@ -31,6 +31,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
+import com.example.stockapp.data.Screen
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun WatchScreen(navController: NavController) {
@@ -45,35 +48,77 @@ fun WatchScreen(navController: NavController) {
 
 @Composable
 fun WatchLayout(navController: NavController) {
+    val coroutineScope = rememberCoroutineScope()
+    var stockNames by remember { mutableStateOf<List<String>>(emptyList()) }
+    var stockPrices by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+    var stockStarts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+    var isLoading by remember { mutableStateOf(true) } // To handle loading state
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                stockNames = getGroupTickers("YourGroupName") // Update this as per your logic
+
+                val tempStockPrices = mutableMapOf<String, String>()
+                val tempStockStarts = mutableMapOf<String, String>()
+                stockNames.forEach { stockName ->
+                    val priceString = getStockPrice(stockName, "MINUTE")
+                    val startString = getStockPrice(stockName, "DAY")
+                    val price = priceString.toDoubleOrNull() ?: 0.0
+                    val start = startString.toDoubleOrNull() ?: 0.0
+                    val change = price - start
+
+                    tempStockPrices[stockName] = priceString
+                    tempStockStarts[stockName] = "%.2f".format(change)
+                }
+
+                withContext(Dispatchers.Main) {
+                    stockPrices = tempStockPrices
+                    stockStarts = tempStockStarts
+                    isLoading = false
+                }
+            } catch (e: Exception) {
+                // Handle exceptions
+                isLoading = false
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = "Watchlist",
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight(800)
+        if (isLoading) {
+            CircularProgressIndicator() // Show loading indicator
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Watchlist",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight(800)
+                    )
                 )
-            )
-            Divider(
-                color = Color.Black,
-                modifier = Modifier.fillMaxWidth()
-            )
+                Divider(
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
-
-            Stock(country="mikkel", text="Johan", price="3", perftdy="-11")
+                stockNames.forEach { stockName ->
+                    val price = stockPrices[stockName] ?: "Fetching..."
+                    val change = stockStarts[stockName] ?: "Fetching..."
+                    Stock(
+                        picture = activeButtonPicture, // Make sure this is correctly managed
+                        text = stockName,
+                        price = price,
+                        perftdy = change,
+                        onclick = { navController.navigate(Screen.StockViewScreen.route) }
+                    )
+                }
+            }
         }
     }
 }
-
-
-
 
 @Composable
 @Preview

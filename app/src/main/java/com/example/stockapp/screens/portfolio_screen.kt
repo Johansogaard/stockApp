@@ -62,29 +62,33 @@ fun StockGraph(triplets: List<Triple<Float, Float, Float>>) {
 }
 @Composable
 fun PortfolioScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize())
-    {
+    Box(modifier = Modifier.fillMaxSize()) {
         PortfolioLayout(navController)
-
     }
-
 }
+
 @Composable
 fun PortfolioLayout(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
+    var apiError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
-            stockData = getStockData("AAPL", "MINUTE", 150)
+            try {
+                stockData = getStockData("AAPL", "MINUTE", 150)
+                apiError = null // Reset the error message
+            } catch (exception: Exception) {
+                apiError = exception.localizedMessage // Capture the error message
+            }
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(14.dp)
-    )
-    {
+    ) {
         Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, // Align children to the start and end of the Row
             verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Overview")
@@ -103,11 +107,13 @@ fun PortfolioLayout(navController: NavController) {
                 )
             }
         }
-        if (stockData.isNotEmpty()) {
+        if (apiError != null) {
+            Text("API Error: $apiError")
+        } else if (stockData.isNotEmpty()) {
             StockGraph(stockData)
         }
-        }
     }
+}
 suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
     // Replace with your actual API call logic
     val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
