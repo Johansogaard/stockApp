@@ -104,12 +104,12 @@ fun Stock(
         text:String,
         price: String,
         perftdy:String,
-        onclick: () -> Unit = {}
+        navController: NavController
 ) {
         Row(
                 modifier = Modifier.padding(16.dp)
                         .fillMaxWidth()
-                        .clickable { onclick() },
+                        .clickable { navController.navigate("StockViewScreen/$text") },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
 

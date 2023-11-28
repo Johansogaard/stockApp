@@ -34,6 +34,7 @@ import com.example.stockapp.R
 import com.example.stockapp.data.Screen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun WatchScreen(navController: NavController) {
@@ -57,7 +58,8 @@ fun WatchLayout(navController: NavController) {
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
-                stockNames = getGroupTickers("YourGroupName") // Update this as per your logic
+             stockNames = listOf("NOVO","NOVO","OIL","OIL","APPL","APPL")
+                // Update this as per your logic
 
                 val tempStockPrices = mutableMapOf<String, String>()
                 val tempStockStarts = mutableMapOf<String, String>()
@@ -112,7 +114,7 @@ fun WatchLayout(navController: NavController) {
                         text = stockName,
                         price = price,
                         perftdy = change,
-                        onclick = { navController.navigate(Screen.StockViewScreen.route) }
+                        navController
                     )
                 }
             }

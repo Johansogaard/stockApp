@@ -133,8 +133,12 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
-                    composable(route = Screen.StockViewScreen.route) {
-                        StockViewScreen(navController = navController, stocksViewModel = stocksViewModel)
+                    composable(route = "StockViewScreen/{stockSymbol}") { backStackEntry ->
+                        StockViewScreen(
+                            navController = navController,
+                            stocksViewModel = stocksViewModel,
+                            stockSymbol = backStackEntry.arguments?.getString("stockSymbol") ?: "NOVO"
+                        )
                         showNavigate = true
                     }
                 }

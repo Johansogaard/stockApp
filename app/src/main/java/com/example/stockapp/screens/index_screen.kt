@@ -93,7 +93,7 @@ fun IndexScreen(navController: NavController) {
                     text = stockName,
                     price = price,
                     perftdy = change,
-                    onclick = { navController.navigate(Screen.StockViewScreen.route) }
+                    navController
                 )
             }
         }
