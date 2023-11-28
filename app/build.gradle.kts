@@ -56,7 +56,7 @@ dependencies {
 
     implementation("junit:junit:4.12")
     val nav_version = "2.7.3"
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01")

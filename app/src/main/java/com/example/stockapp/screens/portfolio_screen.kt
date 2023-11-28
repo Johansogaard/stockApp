@@ -12,7 +12,6 @@ import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +21,45 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
 import com.example.stockapp.authentication.EmailAuthManager
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.AndroidView
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import androidx.compose.runtime.*
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
 
+@Composable
+fun StockGraph(triplets: List<Triple<Float, Float, Float>>) {
+    AndroidView(
+        modifier = Modifier.fillMaxSize(), // Updated this line
+        factory = { context ->
+            LineChart(context).apply {
+                val entries = triplets.mapIndexed { index, triple ->
+                    Entry(index.toFloat(), triple.first) // Using the average value for the Y-axis
+                }
+
+                val dataSet = LineDataSet(entries, "Stock Prices").apply {
+                    // Configure the dataset appearance, like colors, value formatter, etc.
+                }
+
+                data = LineData(dataSet)
+
+                // Additional chart configurations
+                description.isEnabled = false
+                xAxis.isEnabled = true
+                axisLeft.isEnabled = true
+                axisRight.isEnabled = false
+            }
+        }
+    )
+}
 @Composable
 fun PortfolioScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize())
@@ -33,8 +70,15 @@ fun PortfolioScreen(navController: NavController) {
 
 }
 @Composable
-fun PortfolioLayout(navController: NavController)
-{
+fun PortfolioLayout(navController: NavController) {
+    val coroutineScope = rememberCoroutineScope()
+    var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            stockData = getStockData("AAPL", "MINUTE", 150)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,9 +103,25 @@ fun PortfolioLayout(navController: NavController)
                 )
             }
         }
+        if (stockData.isNotEmpty()) {
+            StockGraph(stockData)
+        }
         }
     }
+suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
+    // Replace with your actual API call logic
+    val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
+    val httpURLConnection = url.openConnection() as HttpURLConnection
+    httpURLConnection.requestMethod = "GET"
 
+    val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
+    val gson = Gson()
+    val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
+    val result: List<Triple<Double, Double, Double>> = gson.fromJson(inputStream, listType)
+
+    // Convert the result to Float
+    return result.map { Triple(it.first.toFloat(), it.second.toFloat(), it.third.toFloat()) }
+}
 @Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {
