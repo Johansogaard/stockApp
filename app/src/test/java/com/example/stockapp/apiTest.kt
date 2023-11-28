@@ -21,7 +21,7 @@ class apiTest {
     fun testGetHistoricalData() {
         val ticker = "AAPL"
         val interval = "MINUTE"
-        val count = 3
+        val count = 150
 
         val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
         val httpURLConnection = url.openConnection() as HttpURLConnection
@@ -31,19 +31,78 @@ class apiTest {
         val response = inputStream.bufferedReader().use(BufferedReader::readText)
 
         val gson = Gson()
-        val listType = object : TypeToken<List<List<Double>>>() {}.type
-        val result: List<List<Double>> = gson.fromJson(response, listType)
+        val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
+        val result: List<Triple<Double, Double, Double>> = gson.fromJson(response, listType)
 
+        println("Response as List<Triple<Double, Double, Double>>: $result")
         assertEquals(count, result.size)
-        result.forEach { assertEquals(3, it.size) } // Each inner list should have 3 values (average, max, min)
-        println("Response as 2D List<Double>: $result")
+        result.forEach { triple ->
+            // Assert that each Triple contains non-zero values
+            assertTrue(triple.first != 0.0)
+            assertTrue(triple.second != 0.0)
+            assertTrue(triple.third != 0.0)
+        }
     }
+
+    @Test
+    fun testGetHistoricalData2() {
+        val ticker = "NOVO"
+        val interval = "FIFTEEN_MINUTES"
+        val count = 20
+
+        val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
+        val httpURLConnection = url.openConnection() as HttpURLConnection
+        httpURLConnection.requestMethod = "GET"
+
+        val inputStream = BufferedInputStream(httpURLConnection.inputStream)
+        val response = inputStream.bufferedReader().use(BufferedReader::readText)
+
+        val gson = Gson()
+        val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
+        val result: List<Triple<Double, Double, Double>> = gson.fromJson(response, listType)
+
+        println("Response as List<Triple<Double, Double, Double>>: $result")
+        assertEquals(count, result.size)
+        result.forEach { triple ->
+            // Assert that each Triple contains non-zero values
+            assertTrue(triple.first != 0.0)
+            assertTrue(triple.second != 0.0)
+            assertTrue(triple.third != 0.0)
+        }
+    }
+
+    @Test
+    fun testGetHistoricalData3() {
+        val ticker = "NOVO"
+        val interval = "HOUR"
+        val count = 5
+
+        val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
+        val httpURLConnection = url.openConnection() as HttpURLConnection
+        httpURLConnection.requestMethod = "GET"
+
+        val inputStream = BufferedInputStream(httpURLConnection.inputStream)
+        val response = inputStream.bufferedReader().use(BufferedReader::readText)
+
+        val gson = Gson()
+        val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
+        val result: List<Triple<Double, Double, Double>> = gson.fromJson(response, listType)
+
+        println("Response as List<Triple<Double, Double, Double>>: $result")
+        assertEquals(count, result.size)
+        result.forEach { triple ->
+            // Assert that each Triple contains non-zero values
+            assertTrue(triple.first != 0.0)
+            assertTrue(triple.second != 0.0)
+            assertTrue(triple.third != 0.0)
+        }
+    }
+
 
 
     @Test
     fun testGetGroupTickers() {
         val groupName = "C25" // Example ticker
-
 
         val url = URL("http://localhost:8080/group/tickers/$groupName")
         val httpURLConnection = url.openConnection() as HttpURLConnection
