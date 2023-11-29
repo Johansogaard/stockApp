@@ -38,25 +38,24 @@ import kotlinx.coroutines.Dispatchers
 @Composable
 fun StockGraph(triplets: List<Triple<Float, Float, Float>>) {
     AndroidView(
-        modifier = Modifier.fillMaxSize(), // Updated this line
+        modifier = Modifier.fillMaxSize(), // This will be the modifier for the view
         factory = { context ->
             LineChart(context).apply {
-                val entries = triplets.mapIndexed { index, triple ->
-                    Entry(index.toFloat(), triple.first) // Using the average value for the Y-axis
-                }
-
-                val dataSet = LineDataSet(entries, "Stock Prices").apply {
-                    // Configure the dataset appearance, like colors, value formatter, etc.
-                }
-
-                data = LineData(dataSet)
-
-                // Additional chart configurations
-                description.isEnabled = false
-                xAxis.isEnabled = true
-                axisLeft.isEnabled = true
-                axisRight.isEnabled = false
+                // Initial chart setup goes here
             }
+        },
+        update = { lineChart ->
+            val entries = triplets.mapIndexed { index, triple ->
+                Entry(index.toFloat(), triple.first) // Using the average value for the Y-axis
+            }
+
+            val dataSet = LineDataSet(entries, "Stock Prices").apply {
+                // Configure the dataset appearance, like colors, value formatter, etc.
+            }
+
+            lineChart.data = LineData(dataSet)
+            lineChart.notifyDataSetChanged() // Notify the chart that the data has changed
+            lineChart.invalidate() // Invalidate the chart to trigger a redraw
         }
     )
 }

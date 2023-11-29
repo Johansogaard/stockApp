@@ -1,14 +1,15 @@
 package com.example.stockapp.screens
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -22,38 +23,38 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import co.yml.charts.axis.AxisData
-import co.yml.charts.common.model.Point
-import co.yml.charts.ui.linechart.LineChart
-import co.yml.charts.ui.linechart.model.GridLines
-import co.yml.charts.ui.linechart.model.IntersectionPoint
-import co.yml.charts.ui.linechart.model.Line
-import co.yml.charts.ui.linechart.model.LineChartData
-import co.yml.charts.ui.linechart.model.LinePlotData
-import co.yml.charts.ui.linechart.model.LineStyle
-import co.yml.charts.ui.linechart.model.LineType
-import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
-import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
-import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import com.example.stockapp.R
 import com.example.stockapp.data.Screen
 import com.example.stockapp.ui.theme.TopBarGoBack
-import com.example.stockapp.ui.theme.robotoFontFamily
 import com.example.stockapp.viewModels.StocksViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+enum class IntervalOption(val interval: String, val count: Int) {
+    HOUR("MINUTE", 60),
+    HOUR12("FIFTEEN_MINUTES", 48),
+    HOUR24("FIFTEEN_MINUTES", 96),
+    WEEK("HOUR", 24*7),
+    MONTH("DAY", 1),
+    YEAR("DAY", 7)
+}
+
+fun intervalToLabel(intervalOption: IntervalOption): String = when(intervalOption) {
+    IntervalOption.HOUR -> "last Hour"
+    IntervalOption.HOUR12 -> "last 12 Hour"
+    IntervalOption.HOUR24 -> "LAST 24H"
+    IntervalOption.WEEK -> "LAST WEEK"
+    IntervalOption.MONTH -> "Last Month X"
+    IntervalOption.YEAR -> "Last YEAR X"
+}
 fun findMaxValue(data: List<Triple<Float, Float, Float>>): Float {
     return data.maxOfOrNull { triple ->
         maxOf(triple.first, triple.second, triple.third)
@@ -65,6 +66,7 @@ fun findMinValue(data: List<Triple<Float, Float, Float>>): Float {
         minOf(triple.first, triple.second, triple.third)
     } ?: Float.MAX_VALUE // Replace with an appropriate default or handle null
 }
+
 @Composable
 fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewModel, stockSymbol: String) {
     // Trigger loading stock data based on the symbol
@@ -76,15 +78,14 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
-                stockData = getStockData("AAPL", "MINUTE", 150)
+                stockData = getStockData("$stockSymbol", "MINUTE", 60)
                 apiError = null
                 //you should make these methods public suspend fun getStockData(
                 //    ticker: String,
                 //    interval: String,
                 //    count: Int
                 //): List<Triple<Float, Float, Float>> float 1 = avarage foat 2 = min float 3 = max, when using count 150 you get the last 150 of the chosen interval
-                var high=findMaxValue(stockData).toString()
-                var low= findMinValue(stockData).toString()
+
                 //are these next possible?
 
             } catch (exception: Exception) {
@@ -93,7 +94,24 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
         }
     }
 
-
+    fun updateStockData(interval: IntervalOption) {
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                // Trigger a loading state if needed
+                val newData = getStockData("$stockSymbol", interval.interval, interval.count)
+                withContext(Dispatchers.Main) {
+                    // Update the state in the main thread
+                    stockData = newData
+                    apiError = null
+                }
+            } catch (exception: Exception) {
+                withContext(Dispatchers.Main) {
+                    // Handle the error on the main thread
+                    apiError = exception.localizedMessage
+                }
+            }
+        }
+    }
 
     Column {
         Column() {
@@ -133,16 +151,38 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                 )
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
+
             Box( modifier = Modifier
                 .fillMaxWidth() // Fill the entire width
                 .fillMaxHeight(0.5f) ){
+
                 if (apiError != null) {
                     Text("API Error: $apiError")
                 } else if (stockData.isNotEmpty()) {
-                    StockGraph(stockData)
+                    StockGraph( stockData)
+                } else {
+                    Text("Loading...")
                 }
             }
 
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                IntervalOption.values().forEach { intervalOption ->
+                    Button(
+                        onClick = { updateStockData(intervalOption) },
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp) // Add padding between buttons.
+                            .wrapContentWidth() // Allow buttons to wrap content.
+                    ) {
+                        Text(text = intervalToLabel(intervalOption))
+                    }
+                }
+            }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Column() {
                 Row() {
