@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,6 +38,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.stockapp.ui.theme.*
 
 enum class IntervalOption(val interval: String, val count: Int) {
     HOUR("MINUTE", 60),
@@ -69,7 +71,8 @@ fun findMinValue(data: List<Triple<Float, Float, Float>>): Float {
 
 @Composable
 fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewModel, stockSymbol: String) {
-    // Trigger loading stock data based on the symbol
+    var activeButton by remember { mutableStateOf(IntervalOption.HOUR) } // Default active button is HOUR
+
     val coroutineScope = rememberCoroutineScope()
     var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
     var apiError by remember { mutableStateOf<String?>(null) }
@@ -80,13 +83,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
             try {
                 stockData = getStockData("$stockSymbol", "MINUTE", 60)
                 apiError = null
-                //you should make these methods public suspend fun getStockData(
-                //    ticker: String,
-                //    interval: String,
-                //    count: Int
-                //): List<Triple<Float, Float, Float>> float 1 = avarage foat 2 = min float 3 = max, when using count 150 you get the last 150 of the chosen interval
 
-                //are these next possible?
 
             } catch (exception: Exception) {
                 apiError = exception.localizedMessage // Capture the error message
@@ -95,6 +92,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
     }
 
     fun updateStockData(interval: IntervalOption) {
+        activeButton = interval
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 // Trigger a loading state if needed
@@ -130,7 +128,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                 Row() {
                     if (stockData.isNotEmpty()) {
                         Text(
-                            text = "USD ${stockData.last().first}",
+                            text = "USD ${"%.2f".format(stockData.last().first)}",
                             modifier = Modifier.padding(end = 20.dp),
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -176,8 +174,12 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     Button(
                         onClick = { updateStockData(intervalOption) },
                         modifier = Modifier
-                            .padding(horizontal = 4.dp) // Add padding between buttons.
-                            .wrapContentWidth() // Allow buttons to wrap content.
+                            .padding(horizontal = 4.dp)
+                            .wrapContentWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor =  if (activeButton == intervalOption) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.secondary
+                        )
                     ) {
                         Text(text = intervalToLabel(intervalOption))
                     }
@@ -187,10 +189,10 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
             Column() {
                 Row() {
                     Column(modifier = Modifier.padding(end = 24.dp)) {
-                        Text(
-                            text = "Opening",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+//                        Text(
+//                            text = "Opening",
+//                            style = MaterialTheme.typography.bodyMedium
+//                        )
                         Text(
                             text = "HIGH",
                             style = MaterialTheme.typography.bodyMedium
@@ -202,8 +204,8 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     }
                     Column(modifier = Modifier.padding(end = 36.dp)) {
                         if (stockData.isNotEmpty()) {
-                            val high = findMaxValue(stockData).toString()
-                            val low = findMinValue(stockData).toString()
+                            val high = "%.2f".format(findMaxValue(stockData).toString())
+                            val low = "%.2f".format(findMinValue(stockData).toString())
 
                             Text(
                                 text = "x",
@@ -224,10 +226,10 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                             )
                         }}
                     Column(modifier = Modifier.padding(end = 24.dp)) {
-                        Text(
-                            text = "Prev. close",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+//                        Text(
+//                            text = "Prev. close",
+//                            style = MaterialTheme.typography.bodyMedium
+//                        )
                         Text(
                             text = "High in 52W",
                             style = MaterialTheme.typography.bodyMedium
@@ -263,7 +265,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Column() {
                         Text(text = "Price", style = MaterialTheme.typography.bodyMedium)
-                        Text(text = "1,789.00", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "${"%.2f".format(stockData.last().first)}", style = MaterialTheme.typography.titleMedium)
                     }
                     Button(
                         modifier = Modifier

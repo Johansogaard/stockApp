@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,11 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
 import com.example.stockapp.authentication.EmailAuthManager
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.AndroidView
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.example.stockapp.ui.theme.*
 import androidx.compose.runtime.*
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
@@ -35,30 +32,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 
-@Composable
-fun StockGraph(triplets: List<Triple<Float, Float, Float>>) {
-    AndroidView(
-        modifier = Modifier.fillMaxSize(), // This will be the modifier for the view
-        factory = { context ->
-            LineChart(context).apply {
-                // Initial chart setup goes here
-            }
-        },
-        update = { lineChart ->
-            val entries = triplets.mapIndexed { index, triple ->
-                Entry(index.toFloat(), triple.first) // Using the average value for the Y-axis
-            }
 
-            val dataSet = LineDataSet(entries, "Stock Prices").apply {
-                // Configure the dataset appearance, like colors, value formatter, etc.
-            }
-
-            lineChart.data = LineData(dataSet)
-            lineChart.notifyDataSetChanged() // Notify the chart that the data has changed
-            lineChart.invalidate() // Invalidate the chart to trigger a redraw
-        }
-    )
-}
 @Composable
 fun PortfolioScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -106,11 +80,15 @@ fun PortfolioLayout(navController: NavController) {
                 )
             }
         }
+        Box( modifier = Modifier
+            .fillMaxWidth() // Fill the entire width
+            .fillMaxHeight(0.5f) ){
         if (apiError != null) {
             Text("API Error: $apiError")
         } else if (stockData.isNotEmpty()) {
             StockGraph(stockData)
         }
+    }
     }
 }
 suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {

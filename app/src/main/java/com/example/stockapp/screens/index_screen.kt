@@ -75,7 +75,7 @@ fun IndexScreen(navController: NavController) {
                         val start = startString.toDoubleOrNull() ?: 0.0
                         val change = price - start
 
-                        stockPrices[stockName] = priceString
+                        stockPrices[stockName] = "%.2f".format(priceString)
                         println(stockPrices[stockName])
                         println(stockPrices)
                         stockStarts[stockName] = "%.2f".format(change)
