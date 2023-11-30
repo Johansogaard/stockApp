@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.MainActivity
 import com.example.stockapp.screens.IntroScreen
+import com.example.stockapp.stockApi.getcurrentvalue
 import com.example.stockapp.ui.theme.StockAppTheme
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -21,30 +22,22 @@ import org.junit.Test
 class NavigationSteps {
 
 
-  //  @JvmField
- /* @get:Rule
-  val composeTestRule = createComposeRule()*/
-    //val rule = createComposeRule()
-
-  //  private val idlingResource = SimpleIdlingResource()*/
 
 
-    @Given("i start the application")
-    fun i_start_app() {
-      // activityRule.launchActivity(null)
-
+    @Given("I have connection to the api")
+    fun i_start_connection() {
 
 
     }
 
-   @Test
-  @When("I click the {string} button")
-    fun iNavigateTo(btnText: String) {
+
+  @When("I call for the {stockName} stock price")
+    fun iCall_for_data(stockName: String) {
 
     }
-    @Test
-    @Then("I should see the {string}")
-    fun iShouldSee(screen: String) {
+
+    @Then("I should have the {stockName} stock price")
+    fun iShouldSee(stockName: String) {
         // Your code to validate that the current screen matches the expected screen
         // For demonstration purposes, let's assume you have a TextView with the screen name
        // onView(withText(screen)).check(matches(isDisplayed()))

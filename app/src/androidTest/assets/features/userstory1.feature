@@ -1,6 +1,7 @@
 Feature:  Stock app navigation
 
-  Scenario: Navigate to a specific screen
-    Given i start the application
-    When I click the "Get Started" button
-    Then I should see the "login_screen"
+  Scenario: I want to check "Apple" stock price
+    Given I have connection to the api
+    When I call for the "Apple" stock price
+    Then I should see the Apple stock price
+
