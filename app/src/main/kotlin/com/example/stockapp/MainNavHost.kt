@@ -46,15 +46,16 @@ fun MainNavHost(
         mutableStateOf(true)
     }
 
-
     val navController = rememberNavController();
     val startDestination = if(userViewModel.state.value.isLoggedIn)
     {
         Screen.PortfolioScreen.route
+
     }
     else
     {
         Screen.IntroScreen.route
+
     }
 
     Scaffold(
@@ -134,8 +135,12 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
-                    composable(route = Screen.StockViewScreen.route) {
-                        StockViewScreen(navController = navController, stocksViewModel = stocksViewModel)
+                    composable(route = "StockViewScreen/{stockSymbol}") { backStackEntry ->
+                        StockViewScreen(
+                            navController = navController,
+                            stocksViewModel = stocksViewModel,
+                            stockSymbol = backStackEntry.arguments?.getString("stockSymbol") ?: "NOVO"
+                        )
                         showNavigate = true
                     }
                 }

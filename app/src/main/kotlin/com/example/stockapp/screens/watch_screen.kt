@@ -25,14 +25,19 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
-
+import com.example.stockapp.stockApi.ShowStockists
+import com.example.stockapp.stockApi.getcurrentvalue
+import com.example.stockapp.stockApi.getytd
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
 import com.example.stockapp.data.Screen
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun WatchScreen(navController: NavController) {
@@ -47,30 +52,35 @@ fun WatchScreen(navController: NavController) {
 
 @Composable
 fun WatchLayout(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = stringResource(R.string.watch_watchlist),
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight(800)
-                )
-            )
-            Divider(
-                color = Color.Black,
-                modifier = Modifier.fillMaxWidth()
-            )
 
-            StockColumn(navController)
+
+    var stockNames = listOf("NOVO", "OIL", "AAPL")
+
+    Box(modifier = Modifier.fillMaxSize()) {
+
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Watchlist",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight(800)
+                    )
+                )
+                Divider(
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                if (stockNames.isNotEmpty()) {
+                    ShowStockists(navController, stockNames)
+                }
+            }
         }
     }
-}
-
-
-
 
 
 @Composable
