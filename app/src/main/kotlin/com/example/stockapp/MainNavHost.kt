@@ -28,12 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavBackStackEntry
 import com.example.stockapp.screens.*
+import com.example.stockapp.viewModels.BuyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavHost(
     userViewModel: UserViewModel,
     stocksViewModel: StocksViewModel,
+    buyViewModel: BuyViewModel,
     competitionViewModel: CompetitionViewModel,
     currentAppViewModel: CurrentAppViewModel
 ) {
@@ -44,15 +46,16 @@ fun MainNavHost(
         mutableStateOf(true)
     }
 
-
     val navController = rememberNavController();
     val startDestination = if(userViewModel.state.value.isLoggedIn)
     {
         Screen.PortfolioScreen.route
+
     }
     else
     {
         Screen.IntroScreen.route
+
     }
 
     Scaffold(
@@ -105,7 +108,7 @@ fun MainNavHost(
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen1.route) {
-                        BuyScreen1(navController = navController)
+                        BuyScreen1(navController = navController, buyViewModel = buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen2.route) {
@@ -132,8 +135,12 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
-                    composable(route = Screen.StockViewScreen.route) {
-                        StockViewScreen(navController = navController, stocksViewModel = stocksViewModel)
+                    composable(route = "StockViewScreen/{stockSymbol}") { backStackEntry ->
+                        StockViewScreen(
+                            navController = navController,
+                            stocksViewModel = stocksViewModel,
+                            stockSymbol = backStackEntry.arguments?.getString("stockSymbol") ?: "NOVO"
+                        )
                         showNavigate = true
                     }
                 }

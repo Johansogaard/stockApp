@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,26 +45,26 @@ fun IntroLayout(navController: NavController)
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        BeginText("Market Wisdom")
-        BeginText("at Your")
-        BeginText("Fingertips:")
-        BeginText("Tune into")
-        BeginText("Success.")
+        val textArray = stringArrayResource(R.array.intro_text)
+        for (text in textArray) {
+            BeginText(text)
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .offset(y = (-32).dp)
         ) {
             CustomButton( onClick = {navController.navigate(Screen.ChoseSignupScreen.route)}, text = "Get Started")
             Spacer(modifier = Modifier.height(16.dp))
             ClickableText(
-                normalText = "Already have an account? ",
-                clickableText = "Log in",
+                normalText = stringResource(R.string.intro_have_account_q),
+                clickableText = stringResource(R.string.common_log_in),
                 onClick = { navController.navigate(Screen.LoginScreen.route) }
             )
        }
