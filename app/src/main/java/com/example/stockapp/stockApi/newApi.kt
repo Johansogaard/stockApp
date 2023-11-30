@@ -48,6 +48,7 @@ class ApiTest {
     }
 }
 
+
 suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
     // Replace with your actual API call logic
     val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
