@@ -11,7 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.stockapp.screens.getStockData
+
 import com.example.stockapp.ui.theme.Stock
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -46,6 +46,21 @@ class ApiTest {
             }
         }.start()
     }
+}
+
+suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
+    // Replace with your actual API call logic
+    val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
+    val httpURLConnection = url.openConnection() as HttpURLConnection
+    httpURLConnection.requestMethod = "GET"
+
+    val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
+    val gson = Gson()
+    val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
+    val result: List<Triple<Double, Double, Double>> = gson.fromJson(inputStream, listType)
+
+    // Convert the result to Float
+    return result.map { Triple(it.first.toFloat(), it.second.toFloat(), it.third.toFloat()) }
 }
 
 fun findMinValue(data: List<Triple<Float, Float, Float>>): Float {
