@@ -54,8 +54,9 @@ android {
 
 dependencies {
 
+    implementation("junit:junit:4.12")
     val nav_version = "2.7.3"
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01")
@@ -63,6 +64,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0") // Replace with the latest version
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -70,7 +72,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-
+    implementation ("com.google.code.gson:gson:2.8.6")
 
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
@@ -80,6 +82,11 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 
+//finhnhubb
+    implementation ("io.finnhub:kotlin-client:2.0.20")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0") // Check for the latest version
+    implementation ("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

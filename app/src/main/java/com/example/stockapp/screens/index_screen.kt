@@ -21,8 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.ui.theme.Accent
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
@@ -32,78 +31,63 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 
 import com.example.stockapp.R
-import com.example.stockapp.data.Screen
+import com.example.stockapp.stockApi.ShowStockists
+import com.example.stockapp.stockApi.getGroupTickers
+import com.example.stockapp.stockApi.getcurrentvalue
+import com.example.stockapp.stockApi.getytd
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.example.stockapp.ui.theme.Stock
 
 @Stable
-var activeButton by mutableStateOf("")
+var activeButton by mutableStateOf("WORLD")
+
+
 
 @Composable
 fun IndexScreen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        IndexLayout(navController)
-    }
-}
+    val coroutineScope = rememberCoroutineScope()
+    var stockNames by remember { mutableStateOf<List<String>>(emptyList()) }
 
-@Composable
-fun IndexLayout(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Text(
                 text = stringResource(R.string.index_today),
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight(800)
                 )
-            )
-            ButtonRow()
-            Stock(country="usa", text="APPL", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
 
-            Stock(country="dk", text="NOVO", price="3", perftdy="-11", onclick = {navController.navigate(Screen.StockViewScreen.route)})
-            StockColumn(navController)
-}
+            ButtonRow { selectedButton, _ ->
+                activeButton = selectedButton
+            }
+
+            LaunchedEffect(activeButton) {
+                coroutineScope.launch(Dispatchers.IO) {
+                    stockNames = getGroupTickers(activeButton)
+                    println(stockNames)
+                }
+            }
+
+            if (stockNames.isNotEmpty()) {
+                ShowStockists(navController, stockNames)
+            }
         }
     }
 
 @Composable
-fun StockColumn(navController: NavController) {
-    Column {
-        repeat(6) {
-            Stock(country="usa", text="TMT", price="420", perftdy="69", onclick = {navController.navigate(Screen.StockViewScreen.route)})
-
-        }
-    }
-}
-
-
-
-@Composable
-fun ButtonRow() {
+fun ButtonRow(onButtonClick: (String, String) -> Unit) {
     Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
-        IndexButton(
-            text = stringResource(R.string.index_word),
-            picture = "usa.png",
-        )
-        IndexButton(
-            text = stringResource(R.string.index_usa),
-            picture = "usa.png",
-        )
-        IndexButton(
-            text = stringResource(R.string.index_denmark),
-            picture = "dk.png",
-        )
+        IndexButton(text = "WORLD", picture = "mikkel.jpg", onClick = { text, picture -> onButtonClick(text, picture) })
+        IndexButton(text = "S&P500", picture = "usa.jpg", onClick = { text, picture -> onButtonClick(text, picture) })
+        IndexButton(text = "C25", picture = "dk.png", onClick = { text, picture -> onButtonClick(text, picture) })
     }
 }
 
@@ -112,13 +96,11 @@ fun IndexButton(
     text: String,
     modifier: Modifier = Modifier,
     picture: String,
+    onClick: (String, String) -> Unit
 ) {
     Button(
-        onClick = { activeButton=text },
-        modifier = modifier.then(
-            Modifier
-                .width(110.dp)
-                .height(40.dp)),
+        onClick = { onClick(text, picture) }, // Pass both text and picture
+        modifier = Modifier.width(110.dp).height(40.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (activeButton == text) Accent else Color.Red
         ),
@@ -138,7 +120,7 @@ fun IndexButton(
                     .background(Accent, CircleShape)
             )
 
-            Spacer(modifier = Modifier.weight(1f))  // This spacer will take up all available space to the left of the text
+            Spacer(modifier = Modifier.weight(1f))
 
             Text(
                 text = text,
@@ -146,10 +128,10 @@ fun IndexButton(
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 ),
-                modifier = Modifier.align(Alignment.CenterVertically)  // This modifier is optional as verticalAlignment is already set in the Row
+                modifier = Modifier.align(Alignment.CenterVertically)
             )
 
-            Spacer(modifier = Modifier.weight(1f))  // This spacer will take up all available space to the right of the text
+            Spacer(modifier = Modifier.weight(1f))
         }
 
     }
@@ -157,8 +139,8 @@ fun IndexButton(
 
 
 
-@Composable
 @Preview
+@Composable
 fun IndexScreenPreview() {
     val navController = rememberNavController()
     IndexScreen(navController)
