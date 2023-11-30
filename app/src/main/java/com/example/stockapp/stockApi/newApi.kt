@@ -93,7 +93,6 @@ fun ShowStockists(
                 stockNames.forEach { stockName ->
                     val priceString = getStockData(stockName, "MINUTE", 1)
                     val startString = getStockData(stockName, "DAY", 52)
-
                     val change = getytd(priceString, startString)
 
                     tempStockPrices[stockName] = "%.2f".format(getcurrentvalue(priceString))
@@ -132,14 +131,14 @@ fun ShowStockists(
 fun getAdjustedPictureName(picture: String): String {
     return when (picture) {
         "C25" -> "dk.png"
-       "S&P500" -> "USA"
-        else -> picture
+       "S&P500" -> "usa.png"
+        else -> "mikkel.jpg"
     }
 }
 
 suspend fun getNationalities(tickers: List<String>): Map<String, String> {
     val gson = Gson()
-    val url = URL("http://localhost:8080/stock/nationalities/${tickers.joinToString(",")}")
+    val url = URL("http://10.0.2.2:8080/stock/nationalities/${tickers.joinToString(",")}")
     val httpURLConnection = url.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
 

@@ -40,7 +40,7 @@ fun WatchScreen(navController: NavController) {
 fun WatchLayout(navController: NavController) {
 
 
-    var stockNames = listOf("NOVO", "OIL", "APPL","NOVO", "OIL", "APPL")
+    var stockNames = listOf("NOVO", "OIL", "AAPL")
 
     Box(modifier = Modifier.fillMaxSize()) {
 
