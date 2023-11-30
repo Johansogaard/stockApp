@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.text.style.TextAlign
@@ -73,18 +74,18 @@ Column( modifier = Modifier.fillMaxSize(),
             .height(90.dp),horizontalArrangement=Arrangement.Center) {
         Image(
             painter = painterResource(id = R.drawable.dk),
-            contentDescription = "stringResource(id = R.string.dog_content_description)"
+            contentDescription = ""
         )
 
     }
     Spacer(modifier = Modifier.size(10.dp))
 
     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.Center){
-Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+Text(text = stringResource(R.string.buy_omx_copenhagen), fontSize = 28.sp, fontWeight = FontWeight.Bold)
 }
     Spacer(modifier = Modifier.size(2.dp))
     Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.Center){
-        Text(text = "OMXC25", fontSize = 12.sp, fontWeight = FontWeight.Normal)
+        Text(text = stringResource(R.string.buy_omxc), fontSize = 12.sp, fontWeight = FontWeight.Normal)
     }
     Spacer(modifier = Modifier.size(18.dp))
 
@@ -99,7 +100,7 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             .height(200.dp),horizontalArrangement=Arrangement.Center) {
         Image(
             painter = painterResource(id = R.drawable.fireworks),
-            contentDescription = "stringResource(id = R.string.dog_content_description)"
+            contentDescription = ""
         )
 
     }
@@ -110,13 +111,12 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
     }
     Spacer(modifier = Modifier.size(30.dp))
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.Center) {
-        Text(text = "Buy Order Received!", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.buy_order_received), fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
     Spacer(modifier = Modifier.size(10.dp))
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement=Arrangement.Center) {
-    Text(text = "Your order has been received and will be\n" +
-            "executed as soon as the market opens")
+    Text(text = stringResource(R.string.buy_received_confirmation))
 
 }
     Spacer(modifier = Modifier.size(35.dp))
@@ -131,7 +131,7 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             containerColor = Color(0xFF1A65E7))
 
     ) {
-        Text(text = "View my portfolio", fontSize = 16.sp)}
+        Text(text = stringResource(R.string.buy_view_portfolio), fontSize = 16.sp)}
 
     Spacer(modifier = Modifier.size(20.dp))
 
@@ -148,7 +148,7 @@ Text(text = "OMX Copenhagen 25", fontSize = 28.sp, fontWeight = FontWeight.Bold)
             containerColor = Color(0xFFDDE8FC))
 
     ) {
-        Text(text = "Back to OMXC25 stock", fontSize = 16.sp, color= Color(0xFF1A65E7))}
+        Text(text = stringResource(R.string.buy_back_to_stock), fontSize = 16.sp, color= Color(0xFF1A65E7))}
 
 
     Spacer(modifier = Modifier.size(40.dp))

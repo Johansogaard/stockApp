@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
+import androidx.compose.ui.res.stringResource
+import com.example.stockapp.R
 
 @Composable
 fun ExplorerScreen(navController: NavController) {
@@ -62,7 +64,7 @@ fun searchBar(navController: NavController) {
 
         ) {
             Icon(imageVector = Icons.Default.Search,
-                contentDescription = "Search Icon",
+                contentDescription = stringResource(R.string.explorer_search_icon_desc),
                 modifier = Modifier.size(26.dp)
             )
             Text(

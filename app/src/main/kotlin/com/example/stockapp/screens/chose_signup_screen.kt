@@ -5,6 +5,7 @@ package com.example.stockapp.screens
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import com.example.stockapp.R
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,53 +58,53 @@ fun ChoseSignupLayOut(navController: NavController)
       horizontalAlignment = Alignment.CenterHorizontally
    )
    {
-      Text(text = "Get Started")
+      Text(text = stringResource(R.string.choose_signup_get_started))
 
       CustomTextField(
          value = email,
-         label = "Email"
+         label = stringResource(R.string.common_email)
       )
       Spacer(modifier = Modifier.height(16.dp))
 
       CustomButton(onClick = {
          navController.navigate(Screen.SignUpScreen.route)
-      }, text = "Create Account")
+      }, text = stringResource(R.string.choose_signup_create_account))
 
       OrDivider()
 
 
       CustomButton(onClick = {
          navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text))
-      }, text = "Continue with Google", outlined = true)
+      }, text = stringResource(R.string.common_with_google), outlined = true)
 
       Spacer(modifier = Modifier.height(16.dp))
 
-      CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text)) }
-         , text = "Continue with Apple", outlined = true)
-
-
-
+      CustomButton(onClick = {
+         navController.navigate(Screen.PortfolioScreen.withArgs(email.value.text)) },
+         text = stringResource(R.string.common_with_apple),
+         outlined = true)
       }
 
    Box(modifier = Modifier.fillMaxSize()) {
       Column(
          verticalArrangement = Arrangement.Bottom,
          horizontalAlignment = Alignment.CenterHorizontally,
-         modifier = Modifier.align(Alignment.BottomCenter)
+         modifier = Modifier
+            .align(Alignment.BottomCenter)
             .fillMaxWidth()
             .offset(y = (-32).dp)
       ) {
 
          ClickableText(
-            normalText = "Already have an account?",
-            clickableText = " Login",
+            normalText = stringResource(R.string.choose_signup_have_account),
+            clickableText = stringResource(R.string.common_login),
             onClick = {navController.navigate(Screen.LoginScreen.route)}
          )
          Spacer(modifier = Modifier.height(16.dp))
 
          ClickableText(
-            normalText = "By signing up, you agree to the ",
-            clickableText = "Terms and Conditions",
+            normalText = stringResource(R.string.choose_signup_terms_text),
+            clickableText = stringResource(R.string.choose_signup_terms_link_text),
             onClick = {
                /*do something*/
             }

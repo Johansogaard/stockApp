@@ -12,7 +12,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
-import androidx.compose.material3.R
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -34,7 +32,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+
 
 // Set of Material typography styles to start with
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +74,10 @@ fun CustomButton(
         if (outlined) {
                 OutlinedButton(
                         onClick = onClick,
-                        modifier = modifier.then(Modifier.width(350.dp).height(50.dp)),
+                        modifier = modifier.then(
+                                Modifier
+                                        .width(350.dp)
+                                        .height(50.dp)),
                         border = BorderStroke(1.dp, Accent),
                         colors = ButtonDefaults.buttonColors(Color.Transparent, contentColor = Accent)
                 ) {
@@ -84,7 +92,10 @@ fun CustomButton(
         } else {
                 Button(
                         onClick = onClick,
-                        modifier = modifier.then(Modifier.width(350.dp).height(50.dp)),
+                        modifier = modifier.then(
+                                Modifier
+                                        .width(350.dp)
+                                        .height(50.dp)),
                         colors = ButtonDefaults.buttonColors(Accent)
                 ) {
                         Text(
@@ -100,16 +111,17 @@ fun CustomButton(
 
 @Composable
 fun Stock(
-        country: String,
+        picture: String,
         text:String,
         price: String,
         perftdy:String,
-        onclick: () -> Unit = {}
+        navController: NavController
 ) {
         Row(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                        .padding(16.dp)
                         .fillMaxWidth()
-                        .clickable { onclick() },
+                        .clickable { navController.navigate("StockViewScreen/$text") },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
 
@@ -120,7 +132,7 @@ fun Stock(
 
                         ) {
                         Image(
-                                painter = painterResource(id = com.example.stockapp.R.drawable::class.java.getDeclaredField(country).getInt(null)),
+                                painter = painterResource(id = com.example.stockapp.R.drawable::class.java.getDeclaredField(picture.substringBeforeLast(".")).getInt(null)),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -129,8 +141,7 @@ fun Stock(
                                         .background(Color.White, CircleShape)
                         )
                         Text(
-                                text = text
-                                ,
+                                text = text,
                                 style = TextStyle(
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold
@@ -143,16 +154,15 @@ fun Stock(
                 )
                 {
                         Text(
-                                text="Perf. TDY",
+                                text="Perf. YTD",
                                 style = TextStyle(
                                         fontSize = 15.sp,
                                         color = Color.Gray
                                 ),
                         )
                         Text(
-                                text=perftdy+"%",
-                                color = if (perftdy.startsWith("-")) Color.Red else Color.Green
-                                ,
+                                text = perftdy + "%",
+                                color = if (perftdy.startsWith("-")) Color.Red else Color.Green,
                                 style = TextStyle(
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold
@@ -336,6 +346,7 @@ fun ClickableText(
         val context = LocalContext.current
         val annotatedString = buildAnnotatedString {
                 append(normalText)
+                append(" ")
                 withStyle(style = SpanStyle(color = color)) {
                         val start = length
                         append(clickableText)
@@ -393,5 +404,36 @@ fun TopBarGoBack(
                         modifier = Modifier.align(Alignment.Center)
                 )
         }
+}
+
+@Composable
+fun StockGraph(triplets: List<Triple<Float, Float, Float>>, ) {
+        AndroidView(
+                modifier = Modifier.fillMaxSize(), // Modifier for the view
+                factory = { context ->
+                        LineChart(context).apply {
+                                // Setup properties of the LineChart here
+                                description.text = "maybe some text"
+                                xAxis.position = XAxis.XAxisPosition.BOTTOM // Set X-axis at the bottom
+                                axisLeft.granularity = 1f // Set granularity for Y-axis if needed
+                        }
+                },
+                update = { lineChart ->
+                        val entries = triplets.mapIndexed { index, triple ->
+                                Entry(index.toFloat(), triple.first) // Using the average value for the Y-axis
+                        }
+
+                        val dataSet = LineDataSet(entries, "Stock Prices").apply {
+                                 // Set the color of the line
+                                setDrawValues(false) // Do not draw values at each data point
+                                setDrawCircles(false) // Optional: if you don't want circles at data points
+                                lineWidth = 2f // Optional: set the line width
+                        }
+
+                        lineChart.data = LineData(dataSet)
+                        lineChart.notifyDataSetChanged() // Notify the chart that the data has changed
+                        lineChart.invalidate() // Invalidate the chart to trigger a redraw
+                }
+        )
 }
 

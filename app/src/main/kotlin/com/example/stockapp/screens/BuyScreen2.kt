@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -84,12 +85,13 @@ fun BuyScreen2Layout(navController: NavController)
             ) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = "Back")
+                    contentDescription = stringResource(R.string.common_back)
+                )
 
             }
             Spacer(modifier = Modifier.weight(0.75f))
             Text(
-                text = "Preview Buy",
+                text = stringResource(R.string.buy_previous),
                 fontSize = 20.sp, fontWeight=FontWeight.Bold ,
                 modifier = Modifier.padding(end=150.dp)
 
@@ -107,7 +109,7 @@ fun BuyScreen2Layout(navController: NavController)
             Column (modifier = Modifier.padding(end=5.dp)){
                 Image(
                     painter = painterResource(id = R.drawable.dk),
-                    contentDescription = "stringResource(id = R.string.dog_content_description)"
+                    contentDescription = ""
                 )  }
     Spacer(modifier = Modifier.weight(1f))
 
@@ -115,16 +117,16 @@ fun BuyScreen2Layout(navController: NavController)
     Column () {
 
         Row {
-            Text(text = "OMX Copenhagen 25")
+            Text(text = stringResource(R.string.buy_omx_copenhagen))
         }
 Spacer(modifier = Modifier.weight(1f))
         Row {
-            Text(text = "Index NASDAQ: OMXC25")
+            Text(text = stringResource(R.string.buy_nasdaq))
         }
     }
     Spacer(modifier = Modifier.weight(1f))
 Column(modifier = Modifier.height(48.dp), verticalArrangement=Arrangement.Center ){
-Text(text = "Buy in DKK")
+Text(text = stringResource(R.string.buy_in_dkk))
 }
 
 
@@ -154,13 +156,13 @@ Text(text = "Buy in DKK")
             ) {
                 Column() {
                     Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
-                        Text(text = "Market Price",            modifier = Modifier.weight(1f) // Push the text to the end
+                        Text(text = stringResource(R.string.buy_market_price),            modifier = Modifier.weight(1f) // Push the text to the end
                         )
 
                         Text(text = "DKK 1.726.88",fontWeight = FontWeight.Bold)
                     }
                     Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
-                        Text(text = "Number of Shares",            modifier = Modifier.weight(1f) // Push the text to the end
+                        Text(text = stringResource(R.string.buy_num_of_shares),            modifier = Modifier.weight(1f) // Push the text to the end
                         )
 
                         Text(text = "5,7907903271",fontWeight = FontWeight.Bold)
@@ -168,13 +170,13 @@ Text(text = "Buy in DKK")
                     Divider(thickness = 1.dp, color = Color.Gray)
 
                     Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
-                        Text(text = "Amount",            modifier = Modifier.weight(1f) // Push the text to the end
+                        Text(text = stringResource(R.string.buy_amount),            modifier = Modifier.weight(1f) // Push the text to the end
                         )
 
                         Text(text = "DKK 10.000,00",fontWeight = FontWeight.Bold)
                     }
                     Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
-                        Text(text = "Trading Fee",           modifier = Modifier.weight(1f) // Push the text to the end
+                        Text(text = stringResource(R.string.buy_trading_fee),           modifier = Modifier.weight(1f) // Push the text to the end
                         )
 
                         Text(text = "DKK 50,00",fontWeight = FontWeight.Bold)
@@ -184,7 +186,7 @@ Text(text = "Buy in DKK")
 
 
                     Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
-                        Text(text = "Total Cost",            modifier = Modifier.weight(1f) // Push the text to the end
+                        Text(text = stringResource(R.string.buy_total),            modifier = Modifier.weight(1f) // Push the text to the end
                         )
 
                         Text(text = "DKK 10.050,00",fontWeight = FontWeight.Bold)
@@ -206,7 +208,7 @@ Text(text = "Buy in DKK")
             ),
             modifier = Modifier.width(320.dp) // Set the width to 320.dp
         ) {
-            Text(text = "Buy Now", modifier = Modifier.padding(7.dp))
+            Text(text = stringResource(R.string.buy_buy_now_button), modifier = Modifier.padding(7.dp))
         }
 
         Spacer(modifier = Modifier.size(50.dp))

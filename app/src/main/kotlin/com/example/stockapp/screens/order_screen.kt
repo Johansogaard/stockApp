@@ -29,6 +29,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 
@@ -60,15 +61,15 @@ fun OrderLayout(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, bottom=4.dp, top = 24.dp),
+                    .padding(start = 16.dp, bottom = 4.dp, top = 24.dp),
             ) {
                 ClickableText(
-                    text = AnnotatedString("Orders"),
+                    text = AnnotatedString(stringResource(R.string.order_orders)),
                     onClick = {  },
                     style = TextStyle(fontSize = 24.sp, color = Color.Blue)
                 )
                 ClickableText(
-                    text = AnnotatedString("Transactions"),
+                    text = AnnotatedString(stringResource(R.string.order_transactions)),
                     onClick = {
                         navController.navigate(Screen.TransactionScreen.route)
                     },
@@ -97,9 +98,9 @@ fun orderColumn(){
         color = Color.Black,
         modifier = Modifier.fillMaxWidth()
     )
-    Transaction( name="Johan",status="order", quantity="420", rate="360", amount="21.42")
+    Transaction( name="NOVO",status="order", quantity="420", rate="360", amount="21.42")
     repeat(6) {
-        Transaction( name="mikkel",status="order", quantity="360", rate="420", amount="69")
+        Transaction( name="APPL",status="order", quantity="360", rate="420", amount="69")
 
     }
 }
