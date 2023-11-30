@@ -56,11 +56,9 @@ fun IndexScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = stringResource(R.string.index_today),
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight(800)
-                )
+                text = "Today's stock market",
+                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight(800))
+            )
 
             ButtonRow { selectedButton, _ ->
                 activeButton = selectedButton
@@ -78,6 +76,7 @@ fun IndexScreen(navController: NavController) {
             }
         }
     }
+}
 
 @Composable
 fun ButtonRow(onButtonClick: (String, String) -> Unit) {
@@ -86,7 +85,7 @@ fun ButtonRow(onButtonClick: (String, String) -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IndexButton(text = "WORLD", picture = "mikkel.jpg", onClick = { text, picture -> onButtonClick(text, picture) })
-        IndexButton(text = "S&P500", picture = "usa.jpg", onClick = { text, picture -> onButtonClick(text, picture) })
+        IndexButton(text = "S&P500", picture = "usa.png", onClick = { text, picture -> onButtonClick(text, picture) })
         IndexButton(text = "C25", picture = "dk.png", onClick = { text, picture -> onButtonClick(text, picture) })
     }
 }
