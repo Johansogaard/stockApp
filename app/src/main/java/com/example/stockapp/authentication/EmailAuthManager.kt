@@ -15,7 +15,7 @@ object EmailAuthManager  {
                     val userId = getUser()?.uid
                     Log.i("Tag","id = $userId")
                     userId?.let {
-                       DatabaseManager.addUser(email,username,userId.toString())
+                       DatabaseManager.addUser(email, username, userId.toString())
                     }
                     callback(true, null)
                 } else {

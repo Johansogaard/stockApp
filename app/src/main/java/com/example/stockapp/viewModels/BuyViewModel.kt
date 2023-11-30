@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 class BuyViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(BuyUiState())
-    val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow() // only read
 
     var currentAmount by mutableStateOf("0")
         private set
