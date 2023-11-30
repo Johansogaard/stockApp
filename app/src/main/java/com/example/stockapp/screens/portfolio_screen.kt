@@ -27,6 +27,7 @@ import com.example.stockapp.authentication.EmailAuthManager
 import androidx.compose.runtime.Composable
 import com.example.stockapp.ui.theme.*
 import androidx.compose.runtime.*
+import com.example.stockapp.stockApi.getStockData
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
@@ -93,20 +94,7 @@ fun PortfolioLayout(navController: NavController) {
     }
     }
 }
-suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
-    // Replace with your actual API call logic
-    val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
-    val httpURLConnection = url.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
 
-    val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-    val gson = Gson()
-    val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
-    val result: List<Triple<Double, Double, Double>> = gson.fromJson(inputStream, listType)
-
-    // Convert the result to Float
-    return result.map { Triple(it.first.toFloat(), it.second.toFloat(), it.third.toFloat()) }
-}
 @Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {

@@ -35,6 +35,7 @@ import com.example.stockapp.R
 import com.example.stockapp.data.Screen
 import com.example.stockapp.stockApi.findMaxValue
 import com.example.stockapp.stockApi.findMinValue
+import com.example.stockapp.stockApi.getStockData
 import com.example.stockapp.stockApi.getcurrentvalue
 import com.example.stockapp.stockApi.getytd
 import com.example.stockapp.ui.theme.TopBarGoBack
