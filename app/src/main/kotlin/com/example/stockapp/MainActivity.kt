@@ -5,11 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import com.example.stockapp.ui.theme.StockAppTheme
-import com.example.stockapp.viewModels.BuyViewModel
-import com.example.stockapp.viewModels.CompetitionViewModel
-import com.example.stockapp.viewModels.CurrentAppViewModel
-import com.example.stockapp.viewModels.StocksViewModel
-import com.example.stockapp.viewModels.UserViewModel
+import com.example.stockapp.mvvm.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.viewModels.CompetitionViewModel
+import com.example.stockapp.mvvm.viewModels.CurrentAppViewModel
+import com.example.stockapp.mvvm.viewModels.StocksViewModel
+import com.example.stockapp.mvvm.viewModels.UserViewModel
 
 class MainActivity : ComponentActivity() {
 
