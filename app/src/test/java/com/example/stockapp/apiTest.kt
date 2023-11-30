@@ -9,6 +9,7 @@ import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -119,4 +120,45 @@ class apiTest {
         println("Response as List<String>: $strings")
         //returns a list with strings like [NOVO, APPLE]
     }
+    @Test
+    fun testGetStockNationalities() {
+        val tickers = URLEncoder.encode("[NOVO,AAPL]", "UTF-8")
+        val url = URL("http://localhost:8080/stock/nationalities/$tickers")
+        val httpURLConnection = url.openConnection() as HttpURLConnection
+        httpURLConnection.requestMethod = "GET"
+
+        val inputStream = BufferedInputStream(httpURLConnection.inputStream)
+        val response = inputStream.bufferedReader().use(BufferedReader::readText)
+
+        val gson = Gson()
+        val type = object : TypeToken<Map<String, String>>() {}.type
+        val nationalities: Map<String, String> = gson.fromJson(response, type)
+
+        println("Response as Map<String, String>: $nationalities")
+
+        assertTrue(nationalities["NOVO"]=="C25")
+        assertTrue(nationalities.containsKey("AAPL"))
+    }
+
+    @Test
+    fun testSearchStocks() {
+        val query = "AAP" // Example search query
+
+        val url = URL("http://localhost:8080/search/stocks/${URLEncoder.encode(query, "UTF-8")}")
+        val httpURLConnection = url.openConnection() as HttpURLConnection
+        httpURLConnection.requestMethod = "GET"
+
+        val inputStream = BufferedInputStream(httpURLConnection.inputStream)
+        val response = inputStream.bufferedReader().use(BufferedReader::readText)
+
+        val gson = Gson()
+        val listType = object : TypeToken<List<String>>() {}.type
+        val searchResults: List<String> = gson.fromJson(response, listType)
+
+        println("Response as List<String>: $searchResults")
+
+        // Check if the search results contain the query string
+        assertTrue(searchResults.any { it.contains(query, ignoreCase = true) })
+    }
+
 }

@@ -154,7 +154,7 @@ fun Stock(
                 )
                 {
                         Text(
-                                text="Perf. TDY",
+                                text="Perf. YTD",
                                 style = TextStyle(
                                         fontSize = 15.sp,
                                         color = Color.Gray

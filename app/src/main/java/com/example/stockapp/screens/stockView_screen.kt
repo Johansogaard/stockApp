@@ -30,6 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.data.Screen
+import com.example.stockapp.stockApi.findMaxValue
+import com.example.stockapp.stockApi.findMinValue
+import com.example.stockapp.stockApi.getcurrentvalue
+import com.example.stockapp.stockApi.getytd
 import com.example.stockapp.ui.theme.TopBarGoBack
 import com.example.stockapp.viewModels.StocksViewModel
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +43,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import com.example.stockapp.ui.theme.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 enum class IntervalOption(val interval: String, val count: Int) {
     HOUR("MINUTE", 60),
@@ -57,17 +63,11 @@ fun intervalToLabel(intervalOption: IntervalOption): String = when(intervalOptio
     IntervalOption.MONTH -> "Last Month X"
     IntervalOption.YEAR -> "Last YEAR X"
 }
-fun findMaxValue(data: List<Triple<Float, Float, Float>>): Float {
-    return data.maxOfOrNull { triple ->
-        maxOf(triple.first, triple.second, triple.third)
-    } ?: Float.MIN_VALUE // Replace with an appropriate default or handle null
-}
 
-fun findMinValue(data: List<Triple<Float, Float, Float>>): Float {
-    return data.minOfOrNull { triple ->
-        minOf(triple.first, triple.second, triple.third)
-    } ?: Float.MAX_VALUE // Replace with an appropriate default or handle null
-}
+
+
+
+
 
 @Composable
 fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewModel, stockSymbol: String) {
@@ -77,16 +77,19 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
     var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
     var apiError by remember { mutableStateOf<String?>(null) }
     val currentTime = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date()) }
-
+    var yearStockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
     LaunchedEffect(Unit) {
         coroutineScope.launch(Dispatchers.IO) {
             try {
                 stockData = getStockData("$stockSymbol", "MINUTE", 60)
                 apiError = null
-
-
+                val currentDate = LocalDate.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                val dateAsInt = currentDate.format(formatter).toInt()
+                yearStockData = getStockData("$stockSymbol", "DAY", dateAsInt)
+                println(yearStockData)
             } catch (exception: Exception) {
-                apiError = exception.localizedMessage // Capture the error message
+                apiError = exception.localizedMessage
             }
         }
     }
@@ -95,16 +98,13 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
         activeButton = interval
         coroutineScope.launch(Dispatchers.IO) {
             try {
-                // Trigger a loading state if needed
                 val newData = getStockData("$stockSymbol", interval.interval, interval.count)
                 withContext(Dispatchers.Main) {
-                    // Update the state in the main thread
                     stockData = newData
                     apiError = null
                 }
             } catch (exception: Exception) {
                 withContext(Dispatchers.Main) {
-                    // Handle the error on the main thread
                     apiError = exception.localizedMessage
                 }
             }
@@ -125,23 +125,25 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Column() {
-                Row() {
-                    if (stockData.isNotEmpty()) {
-                        Text(
-                            text = "USD ${"%.2f".format(stockData.last().first)}",
-                            modifier = Modifier.padding(end = 20.dp),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        // ... other texts
-                    } else {
-                        Text(
-                            text = "Loading...",
-                            modifier = Modifier.padding(end = 20.dp),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                    Row() {
+                        if (stockData.isNotEmpty() && yearStockData.isNotEmpty()) {
+
+                            val ytd = getytd(stockData, yearStockData)
+
+                            Text(
+                                text = "USD ${"%.2f".format(getcurrentvalue(stockData))}%",
+                                modifier = Modifier.padding(end = 20.dp),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            Text(text = "$ytd", style = MaterialTheme.typography.bodyLarge)
+                        } else {
+                            Text(
+                                text = "Loading...",
+                                modifier = Modifier.padding(end = 20.dp),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
                     }
-                    Text(text = "-15,03 (0,91%) today", style = MaterialTheme.typography.bodyLarge)
-                }
                 Text(
                     text = "$currentTime",
                     style = MaterialTheme.typography.labelSmall,
@@ -204,13 +206,13 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     }
                     Column(modifier = Modifier.padding(end = 36.dp)) {
                         if (stockData.isNotEmpty()) {
-                            val high = "%.2f".format(findMaxValue(stockData).toString())
-                            val low = "%.2f".format(findMinValue(stockData).toString())
+                            val high = "%.2f".format(findMaxValue(stockData))
+                            val low = "%.2f".format(findMinValue(stockData))
 
-                            Text(
-                                text = "x",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+//                            Text(
+//                                text = "x",
+//                                style = MaterialTheme.typography.bodyMedium
+//                            )
                             Text(
                                 text = " $high",
                                 style = MaterialTheme.typography.bodyMedium
@@ -240,16 +242,18 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                         )
                     }
                     Column() {
+                        val highyear ="%.2f".format(findMaxValue(yearStockData))
+                        val lowyear = "%.2f".format(findMinValue(yearStockData))
+//                        Text(
+//                            text = "X",
+//                            style = MaterialTheme.typography.bodyMedium
+//                        )
                         Text(
-                            text = "X",
+                            text = "$highyear",
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "X",
+                            text = "$lowyear",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -265,7 +269,7 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                     horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Column() {
                         Text(text = "Price", style = MaterialTheme.typography.bodyMedium)
-                        Text(text = "${"%.2f".format(stockData.last().first)}", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "${"%.2f".format(stockData.lastOrNull()?.first?: 0f)}", style = MaterialTheme.typography.titleMedium)
                     }
                     Button(
                         modifier = Modifier

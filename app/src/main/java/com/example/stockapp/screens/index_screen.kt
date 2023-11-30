@@ -21,7 +21,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import com.example.stockapp.R
-import com.example.stockapp.data.Screen
+import com.example.stockapp.stockApi.ShowStockists
+import com.example.stockapp.stockApi.getGroupTickers
+import com.example.stockapp.stockApi.getcurrentvalue
+import com.example.stockapp.stockApi.getytd
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
@@ -31,28 +34,14 @@ import com.google.gson.reflect.TypeToken
 import com.example.stockapp.ui.theme.Stock
 
 @Stable
-var activeButton by mutableStateOf("")
-var activeButtonPicture by mutableStateOf("mikkel.jpg") // Default picture
+var activeButton by mutableStateOf("WORLD")
 
-suspend fun getStockPrice(ticker: String, interval:String): String {
-    val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/1")
-    val httpURLConnection = url.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
 
-    val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-    val gson = Gson()
-    val listType = object : TypeToken<List<Triple<Double, Double, Double>>>() {}.type
-    val result: List<Triple<Double, Double, Double>> = gson.fromJson(inputStream, listType)
-
-    return if (result.isNotEmpty()) result.first().first.toString() else "No Data"
-}
 
 @Composable
 fun IndexScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var stockNames by remember { mutableStateOf<List<String>>(emptyList()) }
-    var stockPrices by remember { mutableStateOf(mutableMapOf<String, String>()) }
-    var stockStarts by remember { mutableStateOf(mutableMapOf<String, String>()) }
 
     Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -61,40 +50,19 @@ fun IndexScreen(navController: NavController) {
                 style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight(800))
             )
 
-            ButtonRow { selectedButton, selectedButtonPicture ->
+            ButtonRow { selectedButton, _ ->
                 activeButton = selectedButton
-                activeButtonPicture = selectedButtonPicture
+            }
+
+            LaunchedEffect(activeButton) {
                 coroutineScope.launch(Dispatchers.IO) {
-                    stockNames = getGroupTickers(selectedButton)
-
-
-                    stockNames.forEach { stockName ->
-                        val priceString = getStockPrice(stockName, "MINUTE")
-                        val startString = getStockPrice(stockName, "DAY")
-                        val price = priceString.toDoubleOrNull() ?: 0.0
-                        val start = startString.toDoubleOrNull() ?: 0.0
-                        val change = price - start
-
-                        stockPrices[stockName] = "%.2f".format(priceString)
-                        println(stockPrices[stockName])
-                        println(stockPrices)
-                        stockStarts[stockName] = "%.2f".format(change)
-                    }
+                    stockNames = getGroupTickers(activeButton)
+                    println(stockNames)
                 }
             }
 
-            stockNames.forEach { stockName ->
-                println(stockPrices[stockName])
-                println(stockPrices)
-                val price = stockPrices[stockName] ?: "Fetching..."
-                val change = stockStarts[stockName] ?: "Fetching..."
-                Stock(
-                    picture = activeButtonPicture,
-                    text = stockName,
-                    price = price,
-                    perftdy = change,
-                    navController
-                )
+            if (stockNames.isNotEmpty()) {
+                ShowStockists(navController, stockNames)
             }
         }
     }
@@ -157,16 +125,7 @@ fun IndexButton(
     }
 }
 
-suspend fun getGroupTickers(groupName: String): List<String> {
-    val url = URL("http://10.0.2.2:8080/group/tickers/$groupName")
-    val httpURLConnection = url.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
 
-    val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-    val gson = Gson()
-    val listType = object : TypeToken<List<String>>() {}.type
-    return gson.fromJson(inputStream, listType)
-}
 
 @Preview
 @Composable
