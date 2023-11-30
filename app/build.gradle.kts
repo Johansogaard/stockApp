@@ -15,13 +15,16 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.stockapp"
+
+        testInstrumentationRunner = "com.example.stockapp.test.RunCucumberTest"
+
+
         minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+       // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -48,6 +51,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
+
     }
     packaging {
         resources {
@@ -56,12 +60,14 @@ android {
     }
 
 
+
 }
 
 dependencies {
 
     val nav_version = "2.7.3"
     val cucumberVersion = "7.14.0"
+    val compose_version = "1.5.4"
 
     implementation("co.yml:ycharts:2.1.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -88,11 +94,16 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
 
 
-    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("junit:junit:4.13.2")
     //cucumber
-    testImplementation ("io.cucumber:cucumber-android:$cucumberVersion")
-    testImplementation("io.cucumber:cucumber-junit:7.14.0")
-    testImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+// Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+
+    androidTestImplementation("io.cucumber:cucumber-android:7.14.0")
+    androidTestImplementation("io.cucumber:cucumber-picocontainer:7.14.1")
 
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test:rules:1.4.0")
