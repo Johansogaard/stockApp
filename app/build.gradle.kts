@@ -96,5 +96,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //agurk
+    androidTestImplementation("io.cucumber:cucumber-android:7.14.0")
+    androidTestImplementation("io.cucumber:cucumber-picocontainer:7.14.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
 
 }
