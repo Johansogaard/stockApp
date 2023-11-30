@@ -171,9 +171,9 @@ fun BuyLayout1(navController: NavController)
             // Implement the button and dropdown for buying stocks
 
             Spacer(modifier = Modifier.weight(0.5f))
-            CustomTextField(onValueChanged = { text ->
-                textState = text
-            })
+            CustomTextField(textState) { newValue ->
+                textState = newValue
+            }
             // Amount of DKK TextField
 
 
@@ -197,8 +197,12 @@ fun BuyLayout1(navController: NavController)
             Spacer(modifier = Modifier.height(20.dp))
 
             Numpad { digit ->
-                textState += digit.toString()
+                if (textState.filter { it.isDigit() }.length < 7) {
+                    textState += digit.toString()
+                }
             }
+
+
 
             // Numpad
             // Implement the numpad layout, including digits and a backspace button
@@ -273,48 +277,7 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
 }
 
 @Composable
-fun MoneyTextField(onValueChanged: (String) -> Unit) {
-    var textState by remember { mutableStateOf("DKK 0") }
-    val focusRequester = remember { FocusRequester() }
-
-    BasicTextField(
-        value = textState,
-        onValueChange = { textState = it
-                        },
-        textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
-        cursorBrush = SolidColor(Color.Black),
-        modifier = Modifier
-            .focusable(true)
-            .focusRequester(focusRequester)
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    focusRequester.freeFocus()
-                }
-            },
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(140.dp)
-                    .border(4.dp, Color(0xFF1A65E7), RoundedCornerShape(35.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    innerTextField()
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun CustomTextField(onValueChanged: (String) -> Unit) {
-    var textState by remember { mutableStateOf("") }
-
+fun CustomTextField(value: String, onValueChanged: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -341,16 +304,17 @@ fun CustomTextField(onValueChanged: (String) -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     BasicTextField(
-                        value = textState,
+                        value = value,
                         onValueChange = {
-                            textState = it
-                            onValueChanged(it)
+                            if (it.filter { char -> char.isDigit() }.length <= 7) {
+                                onValueChanged(it)
+                            }
                         },
                         modifier = Modifier.width(IntrinsicSize.Min), // Use wrapContentWidth here
-                        textStyle = TextStyle(color = Color.Black, textAlign = TextAlign.End), // Align text to the end
+                        textStyle = TextStyle(fontSize = 45.sp, color = Color.Black, textAlign = TextAlign.End), // Align text to the end
                         cursorBrush = SolidColor(Color.Black)
                     )
-                    Text(text = "kr.", modifier = Modifier.wrapContentWidth()) // Use wrapContentWidth here
+                    Text(text = if (value.isNotEmpty()) "kr." else "", fontSize = 45.sp, modifier = Modifier.wrapContentWidth()) // Use wrapContentWidth here
                 }
             }
             Box(
