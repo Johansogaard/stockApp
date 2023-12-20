@@ -43,12 +43,13 @@ class BuyViewModel : ViewModel() {
     }
 
     fun setAmount() {
-        if (currentAmount != "0")
-        _uiState.update { currentState ->
-            currentState.copy(
-                isMaxAmount = false,
-                amount = currentAmount.toInt()
-            )
+        if (currentAmount != "0") {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isMaxAmount = false,
+                    amount = currentAmount.toInt()
+                )
+            }
         }
     }
 

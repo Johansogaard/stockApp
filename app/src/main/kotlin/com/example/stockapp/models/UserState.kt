@@ -7,5 +7,7 @@ data class UserState(
     val user: User? = null,
     var name: String = "",
     var email: String = "",
+    var stocks:  MutableMap<String, Int> = mutableMapOf(),
+    var money: Double? = 0.00,
     //var phoneNumber: String = ""
 )

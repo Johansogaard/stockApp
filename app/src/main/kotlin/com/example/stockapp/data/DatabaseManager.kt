@@ -8,24 +8,20 @@ object DatabaseManager {
     val database = Firebase.database(databaseUrl)
     val myRef = database.getReference("users")
 
-    fun addUser(email: String,username:String,userId:String)
-    {
-        val user = User(email, username)
+    fun addUser(email: String, username: String, userId: String) {
+        val user = User(email, username, 10000.00, mutableMapOf()) // Assuming default values
         myRef.child(userId).setValue(user)
     }
-    fun getUser(userId: String) : User?
-    {
-      /*  var user = null
+    fun getUser(userId: String, callback: (User?) -> Unit): Unit? {
         myRef.child(userId).get().addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-             user = task.result?.getValue(User::class.java)
-
-
-        } else {
-            // Handle the error case, e.g., callback with null or an error message
-
-        }
-    }*/
+            if (task.isSuccessful) {
+                val user = task.result?.getValue(User::class.java)
+                callback(user)
+            } else {
+                // Handle the error case, e.g., callback with null or an error message
+                callback(null)
+            }
+    }
         return null
     }
 }
