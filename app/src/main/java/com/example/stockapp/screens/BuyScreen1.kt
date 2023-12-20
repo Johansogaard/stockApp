@@ -10,14 +10,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -30,12 +27,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 
 import androidx.compose.material3.Icon
@@ -46,29 +38,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.withFrameNanos
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import com.example.stockapp.data.Screen
 
@@ -220,50 +205,40 @@ fun BuyLayout1(navController: NavController)
 
 @Composable
 fun Numpad(onDigitClick: (Int) -> Unit) {
-    Column(
+    // Container with rounded corners and elevation
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFFAFAFA)),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(16.dp), // Adjust the padding as needed
+        shape = RoundedCornerShape(8.dp), // Adjust the corner size as needed
+        color = Color(0xFFFAFAFA), // Adjust the background color as needed
+        shadowElevation = 4.dp // Adjust the elevation as needed
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            NumpadButton(NUMPAD_BUTTON_ONE, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_TWO, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_THREE, onDigitClick)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            NumpadButton(NUMPAD_BUTTON_FOUR, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_FIVE, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_SIX, onDigitClick)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            NumpadButton(NUMPAD_BUTTON_SEVEN, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_EIGHT, onDigitClick)
-            NumpadButton(NUMPAD_BUTTON_NINE, onDigitClick)
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 0.dp, 0.dp, 0.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.weight(0.5f))
-            NumpadButton(NUMPAD_BUTTON_ZERO, onDigitClick)
-            Spacer(modifier = Modifier.weight(0.5f))
+            NumpadRow(onDigitClick, NUMPAD_BUTTON_ONE, NUMPAD_BUTTON_TWO, NUMPAD_BUTTON_THREE)
+            NumpadRow(onDigitClick, NUMPAD_BUTTON_FOUR, NUMPAD_BUTTON_FIVE, NUMPAD_BUTTON_SIX)
+            NumpadRow(onDigitClick, NUMPAD_BUTTON_SEVEN, NUMPAD_BUTTON_EIGHT, NUMPAD_BUTTON_NINE)
+            NumpadRow(onDigitClick, null, NUMPAD_BUTTON_ZERO, null)
         }
     }
 }
-
-
+@Composable
+fun NumpadRow(onDigitClick: (Int) -> Unit, vararg digits: Int?) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly // This will space the buttons evenly
+    ) {
+        digits.forEach { digit ->
+            if (digit != null) {
+                NumpadButton(digit, onDigitClick)
+            } else {
+                Spacer(modifier = Modifier.width(120.dp).height(60.dp)) // Empty space for alignment
+            }
+        }
+    }
+}
 
 
 
@@ -279,7 +254,7 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
 
     Button(
         onClick = { onClick(digit) },
-        modifier = Modifier.width(130.dp).height(60.dp).padding(0.dp, 0.dp, 0.dp, 0.dp)
+        modifier = Modifier.width(120.dp).height(60.dp).padding(0.dp, 0.dp, 0.dp, 0.dp)
         ,
         shape= RectangleShape,
         colors = ButtonDefaults.buttonColors(
@@ -310,7 +285,7 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .weight(0.1f)
+                    .width(60.dp)
                     .fillMaxHeight()
             )
             Box(
@@ -329,7 +304,8 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                         fontSize = 45.sp,
                         color = Color.Black,
                         textAlign = TextAlign.End,
-                        modifier = Modifier.wrapContentWidth()
+                        modifier = Modifier.wrapContentWidth(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
                     )
                     Text(
                         text = "|",
@@ -337,7 +313,10 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                         color = Color.Black,
                         modifier = Modifier
                             .wrapContentWidth()
-                            .blink()
+                            .blink(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
+
+
                     )
 
                     Text(
@@ -345,22 +324,23 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                         fontSize = 45.sp,
                         color = Color.Black,
                         textAlign = TextAlign.End,
-                        modifier = Modifier.wrapContentWidth()
+                        modifier = Modifier.wrapContentWidth(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
+
                     )
 
                 }
             }
             Box(
                 modifier = Modifier
-                    .weight(0.1f)
+                    .width(60.dp)
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 IconButton(onClick = {onValueChange(value.dropLast(1))
                 }) {
 
-                Icon(Icons.Default.ArrowBack, contentDescription = "Delete")
-                }
+                    Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(start = 10.dp))                }
 
             }
         }
