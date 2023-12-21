@@ -28,7 +28,7 @@ class UserViewModel : ViewModel() {
     private fun fetchUserData(userId: String) {
         DatabaseManager.getUser(userId) { user ->
             if (user != null) {
-                setUserState(user)
+                setUserState(user, userId)
                 _state.value = _state.value.copy(isLoggedIn = true)
             } else {
                 _state.value = _state.value.copy(isLoggedIn = false)
@@ -36,8 +36,9 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    private fun setUserState(user: User) {
+    private fun setUserState(user: User, userId: String) {
         _state.value = _state.value.copy(
+            userid=userId,
             name = user.username ?: "",
             email = user.email ?: "",
             stocks = user.stocks,

@@ -43,6 +43,7 @@ import com.example.stockapp.authentication.EmailAuthManager
 //import androidx.compose.runtime.Composable
 import com.example.stockapp.ui.theme.*
 import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.stockApi.getStockData
 import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
@@ -50,7 +51,10 @@ import java.net.URL
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
-
+import kotlinx.coroutines.withContext
+import com.example.stockapp.data.DatabaseManager
+import com.example.stockapp.data.User
+import com.example.stockapp.viewModels.UserViewModel
 
 @Composable
 fun PortfolioScreen(navController: NavController) {
@@ -62,20 +66,47 @@ fun PortfolioScreen(navController: NavController) {
 @Composable
 fun PortfolioLayout(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
-    var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
-    var apiError by remember { mutableStateOf<String?>(null) }
+    val userViewModel: UserViewModel = viewModel()
+    val userState = userViewModel.state.collectAsState().value
 
-    LaunchedEffect(Unit) {
+    var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
+    var userStocks by remember { mutableStateOf<Map<String, Int>?>(null) }
+    var apiError by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    // Fetch user and stock data
+    LaunchedEffect(userViewModel) {
         coroutineScope.launch(Dispatchers.IO) {
-            try {
-                stockData = getStockData("AAPL", "MINUTE", 150)
-                apiError = null // Reset the error message
-            } catch (exception: Exception) {
-                apiError = exception.localizedMessage // Capture the error message
+            if (userState.user != null) {
+                try {
+                    userStocks = DatabaseManager.getStocks(userState.user.userid) // Replace with actual function call if different
+                    stockData = getStockData("AAPL", "MINUTE", 150) // Example stock data fetch
+                    isLoading = false
+                } catch (exception: Exception) {
+                    apiError = exception.localizedMessage
+                    isLoading = false
+                }
+            } else {
+                apiError = "User not found."
+                isLoading = false
             }
         }
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        if (apiError != null) {
+            Text("Error: $apiError")
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // UI components displaying user's portfolio
+                userStocks?.forEach { (stockName, quantity) ->
+                    Text("$stockName: $quantity")
+                }
+                }}}
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize(),

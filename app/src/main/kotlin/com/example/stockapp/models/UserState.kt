@@ -3,6 +3,7 @@ package com.example.stockapp.models
 import com.example.stockapp.data.User
 
 data class UserState(
+    val userid: String="",
     val isLoggedIn: Boolean = false,
     val user: User? = null,
     var name: String = "",
