@@ -2,6 +2,7 @@ package com.example.stockapp.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -59,6 +60,8 @@ import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 const val NUMPAD_BUTTON_ONE = 1
 const val NUMPAD_BUTTON_TWO = 2
@@ -70,6 +73,8 @@ const val NUMPAD_BUTTON_SEVEN = 7
 const val NUMPAD_BUTTON_EIGHT = 8
 const val NUMPAD_BUTTON_NINE = 9
 const val NUMPAD_BUTTON_ZERO = 0
+const val NUMPAD_BUTTON_COMMA = ","
+
 @Composable
 fun BuyScreen1(navController: NavController) {
     Box(modifier = Modifier
@@ -188,23 +193,25 @@ fun BuyLayout1(navController: NavController)
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            Numpad { digit ->
-                if (textState.filter { it.isDigit() }.length < 7) {
-                    textState += digit.toString()
+            Numpad { digitString ->
+                when (digitString) {
+                    "," -> if (!textState.contains(",")) textState += digitString
+                    else -> if (textState.filter { it.isDigit() || it == ',' }.length < 7) {
+                        textState += digitString
+                    }
                 }
             }
 
 
 
-            // Numpad
-            // Implement the numpad layout, including digits and a backspace button
+
         }
     }
 
 }
 
 @Composable
-fun Numpad(onDigitClick: (Int) -> Unit) {
+fun Numpad(onDigitClick: (String) -> Unit) {
     // Container with rounded corners and elevation
     Surface(
         modifier = Modifier
@@ -217,15 +224,15 @@ fun Numpad(onDigitClick: (Int) -> Unit) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            NumpadRow(onDigitClick, NUMPAD_BUTTON_ONE, NUMPAD_BUTTON_TWO, NUMPAD_BUTTON_THREE)
-            NumpadRow(onDigitClick, NUMPAD_BUTTON_FOUR, NUMPAD_BUTTON_FIVE, NUMPAD_BUTTON_SIX)
-            NumpadRow(onDigitClick, NUMPAD_BUTTON_SEVEN, NUMPAD_BUTTON_EIGHT, NUMPAD_BUTTON_NINE)
-            NumpadRow(onDigitClick, null, NUMPAD_BUTTON_ZERO, null)
+            NumpadRow(onDigitClick, "1", "2", "3")
+            NumpadRow(onDigitClick, "4", "5", "6")
+            NumpadRow(onDigitClick, "7", "8", "9")
+            NumpadRow(onDigitClick, ",", "0", null)
         }
     }
 }
 @Composable
-fun NumpadRow(onDigitClick: (Int) -> Unit, vararg digits: Int?) {
+fun NumpadRow(onDigitClick: (String) -> Unit, vararg digits: String?) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly // This will space the buttons evenly
@@ -243,7 +250,7 @@ fun NumpadRow(onDigitClick: (Int) -> Unit, vararg digits: Int?) {
 
 
 @Composable
-fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
+fun NumpadButton(digit: String, onClick: (String) -> Unit) {
     // Remember a MutableInteractionSource for this button, which allows us to track its interactions
     val interactionSource = remember { MutableInteractionSource() }
     // Collect the isPressed state from the interactionSource
@@ -263,7 +270,7 @@ fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
         elevation = null
 
     ) {
-        Text(text = digit.toString(),
+        Text(text = digit,
             fontSize = 25.sp,
             color = Color.Black,
             fontWeight= FontWeight.ExtraBold
@@ -335,16 +342,28 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                 modifier = Modifier
                     .width(60.dp)
                     .fillMaxHeight(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.CenterEnd
             ) {
-                IconButton(onClick = {onValueChange(value.dropLast(1))
-                }) {
+                IconButton(
+                    onClick = {onValueChange(value.dropLast(1))
+                },
+                    //no ripple effect
+                    interactionSource = NoRippleInteractionSource()
+                ) {
 
-                    Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(start = 10.dp))                }
-
+                    Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(end = 16.dp))
+                }
             }
         }
     }
+}
+
+//class for no ripple effect to buttons
+class NoRippleInteractionSource : MutableInteractionSource {
+
+    override val interactions: Flow<Interaction> = emptyFlow()
+    override suspend fun emit(interaction: Interaction) {}
+    override fun tryEmit(interaction: Interaction) = true
 }
 
 @Composable
