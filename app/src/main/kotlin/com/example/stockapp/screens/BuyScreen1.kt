@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 
@@ -40,7 +39,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,23 +47,21 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
+import com.example.stockapp.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -81,13 +77,9 @@ const val NUMPAD_BUTTON_EIGHT = 8
 const val NUMPAD_BUTTON_NINE = 9
 const val NUMPAD_BUTTON_ZERO = 0
 
-
-import com.example.stockapp.viewModels.BuyViewModel
-
 @Composable
 fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewModel()) {
     val buyUiState by buyViewModel.uiState.collectAsState()
-
     var textState by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -115,7 +107,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                 }
                 Spacer(modifier = Modifier.weight(0.5f))
                 Text(
-                    text = stringResource(R.string.buy_previous),
+                    text = "Preview Buy",
                     fontSize = 20.sp, fontWeight=FontWeight.Bold ,
                     modifier = Modifier.padding(end=150.dp)
 
@@ -138,11 +130,11 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                 Column () {
 
                     Row {
-                        Text(text = stringResource(R.string.buy_omx_copenhagen))
+                        Text(text = "OMX Copenhagen 25")
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Row {
-                        Text(text = stringResource(R.string.buy_nasdaq))
+                        Text(text = "Index NASDAQ: OMXC25")
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -172,22 +164,8 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             Spacer(modifier = Modifier.height(20.dp))
 
             // Cash Available
-            if (buyUiState.isMaxAmount) {
-                Text(
-                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
-                    color = Color.Red,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                )
-            }
-            else {
-                Text(
-                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
-                    color = Color.Black,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(bottom = 20.dp)
-                )
-            }
+            Text(text = "Balance cash available: 24.555 DKK", fontSize = 14.sp,modifier=Modifier.padding(bottom=20.dp)
+            )
             // Continue Button
             Button(
                 onClick = {
@@ -198,7 +176,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                 ),
                 modifier = Modifier.width(320.dp) // Set the width to 320.dp
             ) {
-                Text(text = stringResource(R.string.common_continue), modifier = Modifier.padding(7.dp))
+                Text(text = "Continue", modifier = Modifier.padding(7.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -207,14 +185,6 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                     textState += digitString
                 }
             }
-
-
-
-            Numpad(onDigitClick = {
-                buyViewModel.updateAmount(it)
-            })
-
-
         }
     }
 
@@ -255,8 +225,6 @@ fun NumpadRow(onDigitClick: (String) -> Unit, vararg digits: String?) {
             }
         }
     }
-
-
 }
 
 
@@ -356,15 +324,15 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                 contentAlignment = Alignment.CenterEnd
             ) {
                 if (value.isNotEmpty()){
-                IconButton(
-                    onClick = {onValueChange(value.dropLast(1))
-                },
-                    //no ripple effect
-                    interactionSource = NoRippleInteractionSource()
-                ) {
+                    IconButton(
+                        onClick = {onValueChange(value.dropLast(1))
+                        },
+                        //no ripple effect
+                        interactionSource = NoRippleInteractionSource()
+                    ) {
 
-                    Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(end = 16.dp))
-                }
+                        Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(end = 16.dp))
+                    }
                 }
             }
         }
@@ -403,11 +371,11 @@ fun ButtonWithBorder() {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = stringResource(R.string.buy_in_dkk),
+                text = "Buy in DKK",
                 color = Color(0xFF1A65E7))
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "",
+                contentDescription = "down",
                 tint = Color.Black
             )
         }
