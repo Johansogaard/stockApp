@@ -15,41 +15,52 @@ class BuyViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(BuyUiState())
     val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow()
 
-    var currentAmount by mutableStateOf("0")
-        private set
+    var currentAmount by mutableStateOf("")
+
 
     fun updateAmount(amount: Int) {
-        if (currentAmount == "0") {
-            currentAmount = ""
-        }
+        val newAmount = currentAmount + amount.toString()
 
-        currentAmount += amount
+        if (newAmount.length <= 7) {
+            currentAmount = newAmount
 
-        if (currentAmount.toInt() >= _uiState.value.balance) {
-            // error
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isMaxAmount = true,
-                )
-            }
-        }
-        else {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isMaxAmount = false,
-                )
+            try {
+                if (currentAmount.toInt() > _uiState.value.balance) {
+                    _uiState.update { it.copy(isMaxAmount = true) }
+                } else {
+                    _uiState.update { it.copy(isMaxAmount = false) }
+                }
+            } catch (e: NumberFormatException) {
+                // Handle conversion error
             }
         }
     }
-
+    private fun updateUiState() {
+        try {
+            val amount = currentAmount.toIntOrNull() ?: 0
+            if (amount > _uiState.value.balance) {
+                _uiState.update { it.copy(isMaxAmount = true) }
+            } else {
+                _uiState.update { it.copy(isMaxAmount = false) }
+            }
+        } catch (e: NumberFormatException) {
+            // Handle conversion error
+        }
+    }
+    fun removeLastDigit() {
+        if (currentAmount.isNotEmpty()) {
+            currentAmount = currentAmount.dropLast(1)
+            updateUiState()
+        }
+    }
     fun setAmount() {
-        if (currentAmount != "0")
-        _uiState.update { currentState ->
-            currentState.copy(
-                isMaxAmount = false,
-                amount = currentAmount.toInt()
-            )
+        try {
+            if (currentAmount.isNotEmpty()) {
+                val amount = currentAmount.toInt()
+                _uiState.update { it.copy(isMaxAmount = false, amount = amount) }
+            }
+        } catch (e: NumberFormatException) {
+            // Handle error if conversion fails
         }
-    }
 
-}
+}}
