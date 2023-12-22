@@ -73,7 +73,6 @@ const val NUMPAD_BUTTON_SEVEN = 7
 const val NUMPAD_BUTTON_EIGHT = 8
 const val NUMPAD_BUTTON_NINE = 9
 const val NUMPAD_BUTTON_ZERO = 0
-const val NUMPAD_BUTTON_COMMA = ","
 
 @Composable
 fun BuyScreen1(navController: NavController) {
@@ -194,13 +193,11 @@ fun BuyLayout1(navController: NavController)
             Spacer(modifier = Modifier.height(20.dp))
 
             Numpad { digitString ->
-                when (digitString) {
-                    "," -> if (!textState.contains(",")) textState += digitString
-                    else -> if (textState.filter { it.isDigit() || it == ',' }.length < 7) {
-                        textState += digitString
-                    }
+                if (textState.length < 7) {
+                    textState += digitString
                 }
             }
+
 
 
 
@@ -227,7 +224,7 @@ fun Numpad(onDigitClick: (String) -> Unit) {
             NumpadRow(onDigitClick, "1", "2", "3")
             NumpadRow(onDigitClick, "4", "5", "6")
             NumpadRow(onDigitClick, "7", "8", "9")
-            NumpadRow(onDigitClick, ",", "0", null)
+            NumpadRow(onDigitClick, null, "0", null)
         }
     }
 }
@@ -250,7 +247,7 @@ fun NumpadRow(onDigitClick: (String) -> Unit, vararg digits: String?) {
 
 
 @Composable
-fun NumpadButton(digit: String, onClick: (String) -> Unit) {
+fun NumpadButton(digit: String?, onClick: (String) -> Unit) {
     // Remember a MutableInteractionSource for this button, which allows us to track its interactions
     val interactionSource = remember { MutableInteractionSource() }
     // Collect the isPressed state from the interactionSource
@@ -260,7 +257,7 @@ fun NumpadButton(digit: String, onClick: (String) -> Unit) {
     val buttonColor = if (isPressed) Color.LightGray else Color.Transparent
 
     Button(
-        onClick = { onClick(digit) },
+        onClick = { onClick(digit.toString()) },
         modifier = Modifier.width(120.dp).height(60.dp).padding(0.dp, 0.dp, 0.dp, 0.dp)
         ,
         shape= RectangleShape,
@@ -270,7 +267,7 @@ fun NumpadButton(digit: String, onClick: (String) -> Unit) {
         elevation = null
 
     ) {
-        Text(text = digit,
+        Text(text = digit.toString(),
             fontSize = 25.sp,
             color = Color.Black,
             fontWeight= FontWeight.ExtraBold
@@ -307,8 +304,7 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${value.filter { it.isDigit() }}",
-                        fontSize = 45.sp,
+                        text = "${value.filter { it.isDigit() }}",                        fontSize = 45.sp,
                         color = Color.Black,
                         textAlign = TextAlign.End,
                         modifier = Modifier.wrapContentWidth(),
@@ -344,6 +340,7 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                     .fillMaxHeight(),
                 contentAlignment = Alignment.CenterEnd
             ) {
+                if (value.isNotEmpty()){
                 IconButton(
                     onClick = {onValueChange(value.dropLast(1))
                 },
@@ -352,6 +349,7 @@ fun CustomTextField(value: String,onValueChange: (String) -> Unit) {
                 ) {
 
                     Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(end = 16.dp))
+                }
                 }
             }
         }
