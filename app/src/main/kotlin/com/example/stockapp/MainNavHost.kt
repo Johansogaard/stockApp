@@ -1,11 +1,5 @@
 package com.example.stockapp
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -26,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavBackStackEntry
 import com.example.stockapp.screens.*
 import com.example.stockapp.viewModels.BuyViewModel
 
@@ -112,11 +105,11 @@ fun MainNavHost(
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen2.route) {
-                        BuyScreen2(navController = navController)
+                        BuyScreen2(navController = navController,buyViewModel= buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen3.route) {
-                        BuyScreen3(navController = navController)
+                        BuyScreen3(navController = navController,buyViewModel= buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.IndexScreen.route) {

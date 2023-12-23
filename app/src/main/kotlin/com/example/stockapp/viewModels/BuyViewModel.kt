@@ -1,5 +1,6 @@
 package com.example.stockapp.viewModels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,15 +11,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class BuyViewModel : ViewModel() {
-
-    private val _uiState = MutableStateFlow(BuyUiState())
+class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : ViewModel() {
+    private val _uiState = MutableStateFlow(initialUiState)
     val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow()
 
     var currentAmount by mutableStateOf("")
 
 
     fun updateAmount(amount: Int) {
+        Log.d("BuyViewModel", "Before update: currentAmount = $currentAmount")
+
         val newAmount = currentAmount + amount.toString()
 
         if (newAmount.length <= 7) {
@@ -34,6 +36,8 @@ class BuyViewModel : ViewModel() {
                 // Handle conversion error
             }
         }
+        Log.d("BuyViewModel", "updateAmount called with: $amount")
+
     }
     private fun updateUiState() {
         try {
