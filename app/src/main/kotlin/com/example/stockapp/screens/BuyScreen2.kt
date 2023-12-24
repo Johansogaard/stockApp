@@ -56,9 +56,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun BuyScreen2(navController: NavController, buyViewModel: BuyViewModel = viewModel()) {
-    val buyUiState by buyViewModel.uiState.collectAsState()
     val currentAmount = buyViewModel.currentAmount
-    Log.d("BuyScreen2", "Current Amount: $currentAmount")
 
     Box(modifier = Modifier.fillMaxSize())
     {
@@ -174,7 +172,7 @@ fun BuyScreen2(navController: NavController, buyViewModel: BuyViewModel = viewMo
                             Text(text = stringResource(R.string.buy_amount),            modifier = Modifier.weight(1f) // Push the text to the end
                             )
 
-                            Text(text =currentAmount ,fontWeight = FontWeight.Bold)
+                            Text(text ="DKK " + currentAmount ,fontWeight = FontWeight.Bold)
                         }
                         Row (modifier = Modifier.padding(bottom=15.dp,top=15.dp)){
                             Text(text = stringResource(R.string.buy_trading_fee),           modifier = Modifier.weight(1f) // Push the text to the end

@@ -45,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material3.AlertDialog
 
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Surface
@@ -66,12 +67,13 @@ import com.example.stockapp.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-
-
 @Composable
 fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewModel()) {
     val buyUiState by buyViewModel.uiState.collectAsState()
     val currentAmount = buyViewModel.currentAmount
+    var dialogState by remember { mutableStateOf(Triple(false, "", "")) } // (showDialog, title, message)
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -177,7 +179,16 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             // Continue Button
             Button(
                 onClick = {
-                    navController.navigate(Screen.BuyScreen2.route)
+                    val amount = currentAmount.toIntOrNull() ?: 0
+                    when {
+                        amount < 200 -> {
+                            dialogState = Triple(true, "Minimum Amount Required", "The minimum amount is 200 kr.")
+                        }
+                        amount > buyUiState.balance -> {
+                            dialogState = Triple(true, "Insufficient Funds", "You do not have enough funds to make this purchase.")
+                        }
+                        else -> navController.navigate(Screen.BuyScreen2.route)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF1A65E7)
@@ -186,6 +197,24 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             ) {
                 Text(text = stringResource(R.string.common_continue), modifier = Modifier.padding(7.dp))
             }
+
+
+            if (dialogState.first) {
+                AlertDialog(
+                    onDismissRequest = { dialogState = Triple(false, "", "") },
+                    title = { Text(dialogState.second) },
+                    text = { Text(dialogState.third) },
+                    confirmButton = {
+                        Button(onClick = { dialogState = Triple(false, "", "") },colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1A65E7)
+                        )) {
+                            Text("OK")
+                        }
+                    }
+                )
+            }
+
+
             Spacer(modifier = Modifier.height(20.dp))
 
             Numpad(onDigitClick = {

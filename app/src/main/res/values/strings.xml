@@ -128,7 +128,7 @@
     <string name="buy_total">Total Cost</string>
     <string name="buy_buy_now_button">Buy now</string>
     <string name="buy_order_received">Buy Order Received!</string>
-    <string name="buy_received_confirmation">Your order has been received and will be\n" +
+    <string name="buy_received_confirmation">Your order has been received and will be\n"
             "executed as soon as the market opens</string>
     <string name="buy_view_portfolio">View my portfolio</string>
     <string name="buy_back_to_stock">Back to stock</string>

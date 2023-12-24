@@ -11,13 +11,18 @@ class BuyViewModelTest {
 
     @Before
     fun setup() {
-        val testUiState = BuyUiState(balance = 4)
+        val testUiState = BuyUiState(balance = 24555)
         viewModel = BuyViewModel(testUiState)
     }
 
+    @Test
+    fun verifyInitialState() {
+        // Assert initial state values of ViewModel
+        assertEquals("", viewModel.currentAmount)
+        assertFalse(viewModel.uiState.value.isMaxAmount)
+    }
 
-
-    //removeLastDigit removes last digit from currentAmount when not empty
+    //removes last digit from currentAmount when not empty
     @Test
     fun removeLastDigitWhenStringNotEmpty() {
         // Arrange
@@ -80,4 +85,31 @@ class BuyViewModelTest {
             assertFalse(viewModel.uiState.value.isMaxAmount)
         }
     }
+
+    @Test
+    fun setAmountWithValidValue() {
+        // Arrange
+        viewModel.currentAmount = "100"
+
+        // Act
+        viewModel.setAmount()
+
+        // Assert
+        assertEquals(100, viewModel.uiState.value.amount)
+    }
+
+    @Test
+    fun setAmountWithInvalidValue() {
+        // Arrange
+        viewModel.currentAmount = "abc"
+
+        // Act
+        viewModel.setAmount()
+
+        // Assert
+        assertEquals(0, viewModel.uiState.value.amount)
+    }
+
+
 }
+

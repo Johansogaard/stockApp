@@ -19,7 +19,6 @@ class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : View
 
 
     fun updateAmount(amount: Int) {
-        Log.d("BuyViewModel", "Before update: currentAmount = $currentAmount")
 
         val newAmount = currentAmount + amount.toString()
 
@@ -27,7 +26,7 @@ class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : View
             currentAmount = newAmount
 
             try {
-                if (currentAmount.toInt() > _uiState.value.balance) {
+                if (currentAmount.toInt()+50 > _uiState.value.balance) {
                     _uiState.update { it.copy(isMaxAmount = true) }
                 } else {
                     _uiState.update { it.copy(isMaxAmount = false) }
@@ -36,7 +35,6 @@ class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : View
                 // Handle conversion error
             }
         }
-        Log.d("BuyViewModel", "updateAmount called with: $amount")
 
     }
     private fun updateUiState() {
