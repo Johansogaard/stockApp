@@ -35,12 +35,9 @@ class userStorystep3 {
 
 
     @Given("a stock exists")
-
     fun i_start_connection() {
 // we check that there is one stock named APPL that exists
         runBlocking { assertTrue(searchStocks("AAPL").isNotEmpty())  }
-
-
     }
 
 
