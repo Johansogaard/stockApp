@@ -63,6 +63,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
+import com.example.stockapp.utils.formatNumberUtility.formatNumber
 import com.example.stockapp.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -162,7 +163,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             // Cash Available
             if (buyUiState.isMaxAmount) {
                 Text(
-                    text = stringResource(R.string.buy_funds_available)+ " " + buyUiState.balance + " kr.",
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumber(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Red,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
@@ -170,7 +171,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             }
             else {
                 Text(
-                    text = stringResource(R.string.buy_funds_available)+ " " + buyUiState.balance + " kr.",
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumber(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Black,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)

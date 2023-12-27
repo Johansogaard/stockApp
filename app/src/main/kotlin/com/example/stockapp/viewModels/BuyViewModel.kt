@@ -1,6 +1,7 @@
 package com.example.stockapp.viewModels
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,7 +18,18 @@ class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : View
 
     var currentAmount by mutableStateOf("")
 
+    var marketPrice = MutableStateFlow(0.0) // LiveData or StateFlow to hold the market price
+    val tradingFee = 50
 
+    init {
+        marketPrice.value = 1726.88 // Placeholder value
+    }
+    fun calculateTotalCost(currentAmount: Int): Int {
+        return currentAmount + tradingFee
+    }
+    fun calculateNumberOfShares(currentAmount: Int, marketPrice: Double): Double {
+        return (currentAmount / marketPrice)
+    }
     fun updateAmount(amount: Int) {
 
         val newAmount = currentAmount + amount.toString()
