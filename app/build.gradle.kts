@@ -101,5 +101,7 @@ dependencies {
     androidTestImplementation("io.cucumber:cucumber-picocontainer:7.14.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    //lottie animations
+    implementation("com.airbnb.android:lottie-compose:6.0.1")
 
 }

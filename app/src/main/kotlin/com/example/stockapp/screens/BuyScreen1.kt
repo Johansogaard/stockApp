@@ -63,7 +63,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
-import com.example.stockapp.utils.formatNumberUtility.formatNumber
+import com.example.stockapp.utils.formatNumberUtility.formatNumberWithDecimal
+import com.example.stockapp.utils.formatNumberUtility.formatNumberWithoutDecimal
 import com.example.stockapp.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -145,10 +146,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            ButtonWithBorder()
 
-            // Buy Button with Dropdown
-            // Implement the button and dropdown for buying stocks
 
             Spacer(modifier = Modifier.weight(0.5f))
             CustomTextField(isValueOverMax = buyUiState.isMaxAmount,
@@ -163,7 +161,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             // Cash Available
             if (buyUiState.isMaxAmount) {
                 Text(
-                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumber(buyUiState.balance.toDouble()) + " kr.",
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumberWithoutDecimal(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Red,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
@@ -171,7 +169,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             }
             else {
                 Text(
-                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumber(buyUiState.balance.toDouble()) + " kr.",
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumberWithoutDecimal(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Black,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
@@ -399,27 +397,7 @@ fun Modifier.blink(): Modifier {
     }
     return then(if (visible) Modifier else Modifier.alpha(0f))
 }
-@Composable
-fun ButtonWithBorder() {
-    Button(
-        onClick = {
-            // Your onclick code
-        },
-        border = BorderStroke(2.dp, Color(0xFF1A65E7)),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1A65E7)), modifier = Modifier.height(35.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = "Buy in DKK",
-                color = Color(0xFF1A65E7))
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "down",
-                tint = Color.Black
-            )
-        }
-    }
-}
+
 
 
 

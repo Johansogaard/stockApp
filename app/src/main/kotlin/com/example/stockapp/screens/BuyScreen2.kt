@@ -64,10 +64,10 @@ fun BuyScreen2(navController: NavController, buyViewModel: BuyViewModel = viewMo
 
 
 
-    val formattedMarketPrice = formatNumberUtility.formatNumber(marketPrice)
-    val formattedCurrentAmount = formatNumberUtility.formatNumber(currentAmount.toDouble())
-    val formattedTotalCost = formatNumberUtility.formatNumber(totalCost.toDouble())
-    val formattedTradingFee = formatNumberUtility.formatNumber(tradingFee.toDouble())
+    val formattedMarketPrice = formatNumberUtility.formatNumberWithDecimal(marketPrice)
+    val formattedCurrentAmount = formatNumberUtility.formatNumberWithDecimal(currentAmount.toDouble())
+    val formattedTotalCost = formatNumberUtility.formatNumberWithDecimal(totalCost.toDouble())
+    val formattedTradingFee = formatNumberUtility.formatNumberWithDecimal(tradingFee.toDouble())
 
     Box(modifier = Modifier.fillMaxSize())
     {
