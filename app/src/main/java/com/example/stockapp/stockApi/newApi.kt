@@ -11,28 +11,24 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-
 import com.example.stockapp.ui.theme.Stock
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.finnhub.api.apis.DefaultApi
-import io.finnhub.api.infrastructure.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.junit.Test
-import org.junit.Assert.*
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.net.HttpURLConnection
 import java.net.URL
+
 
 class ApiTest {
     fun fetchStockData() {
         // test del
         Thread {
             try {
-                val url = URL("http://localhost:8080/stock") // Use 10.0.2.2 for localhost if testing on an emulator
+                val url = URL(getBaseURLForAPI()+"/stock") // Use 10.0.2.2 for localhost if testing on an emulator
                 val httpURLConnection = url.openConnection() as HttpURLConnection
                 httpURLConnection.requestMethod = "GET"
 
@@ -48,10 +44,14 @@ class ApiTest {
     }
 }
 
-
+fun getBaseURLForAPI() : String
+{
+    val baseApiUrl = "https://smiling-quietly-thrush.ngrok-free.app"
+     return baseApiUrl
+}
 suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {
     // Replace with your actual API call logic
-    val url = URL("http://10.0.2.2:8080/stock/$ticker/$interval/$count")
+    val url = URL(getBaseURLForAPI()+"/stock/$ticker/$interval/$count")
     val httpURLConnection = url.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
 
@@ -154,7 +154,7 @@ fun getAdjustedPictureName(picture: String): String {
 
 suspend fun getNationalities(tickers: List<String>): Map<String, String> {
     val gson = Gson()
-    val url = URL("http://10.0.2.2:8080/stock/nationalities/${tickers.joinToString(",")}")
+    val url = URL(getBaseURLForAPI()+"/stock/nationalities/${tickers.joinToString(",")}")
     val httpURLConnection = url.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
 
@@ -172,7 +172,7 @@ suspend fun getNationalities(tickers: List<String>): Map<String, String> {
 }
 
 suspend fun getGroupTickers(groupName: String): List<String> {
-    val url = URL("http://10.0.2.2:8080/group/tickers/$groupName")
+    val url = URL(getBaseURLForAPI()+"/group/tickers/$groupName")
     val httpURLConnection = url.openConnection() as HttpURLConnection
     httpURLConnection.requestMethod = "GET"
 
