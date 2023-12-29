@@ -43,7 +43,25 @@ class ApiTest {
         }.start()
     }
 }
+suspend fun searchStocks(query: String): List<String> {
+    if (query.isBlank()) return emptyList()
 
+    val url = URL(getBaseURLForAPI()+ "/search/stocks/$query")
+    val httpURLConnection = url.openConnection() as HttpURLConnection
+    httpURLConnection.requestMethod = "GET"
+
+    return try {
+        val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
+        val gson = Gson()
+        val listType = object : TypeToken<List<String>>() {}.type
+        gson.fromJson(inputStream, listType)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        emptyList()
+    } finally {
+        httpURLConnection.disconnect()
+    }
+}
 fun getBaseURLForAPI() : String
 {
     val baseApiUrl = "https://smiling-quietly-thrush.ngrok-free.app"
