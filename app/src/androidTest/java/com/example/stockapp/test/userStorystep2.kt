@@ -43,8 +43,6 @@ class userStorystep2 {
         assertTrue(stocks.size >= 1)
 // we can see that there is 1 or more S&P500 stocks exist
     }
-
-
     @When("I call for the stock information")
     fun iCall_for_data() {
 

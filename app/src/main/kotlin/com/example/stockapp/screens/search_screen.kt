@@ -1,18 +1,14 @@
 package com.example.stockapp.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -28,10 +24,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,35 +33,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.data.Screen
 import com.example.stockapp.stockApi.ShowStockists
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.stockapp.stockApi.searchStocks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.HttpURLConnection
-import java.net.URL
 // skal den være her
-suspend fun searchStocks(query: String): List<String> {
-    if (query.isBlank()) return emptyList()
 
-    val url = URL("http://10.0.2.2:8080/search/stocks/$query")
-    val httpURLConnection = url.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
-
-    return try {
-        val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-        val gson = Gson()
-        val listType = object : TypeToken<List<String>>() {}.type
-        gson.fromJson(inputStream, listType)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emptyList()
-    } finally {
-        httpURLConnection.disconnect()
-    }
-}
 
 @Composable
 fun SearchScreen(navController: NavController) {

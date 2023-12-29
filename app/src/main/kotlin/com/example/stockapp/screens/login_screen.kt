@@ -94,12 +94,12 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
 
 
         CustomButton(onClick = {
-            navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text))
+            navController.navigate(Screen.PortfolioScreen.route)
         }, text = stringResource(R.string.common_with_google), outlined = true)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text)) }
+        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.route) }
             , text = stringResource(R.string.common_with_apple), outlined = true)
 
     }
