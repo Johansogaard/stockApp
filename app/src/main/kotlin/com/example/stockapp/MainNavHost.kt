@@ -10,18 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.mvvm.screens.Screen
+import com.example.stockapp.data.Screen
 import com.example.stockapp.ui.NavigationBar
-import com.example.stockapp.mvvm.viewModels.CompetitionViewModel
-import com.example.stockapp.mvvm.viewModels.CurrentAppViewModel
-import com.example.stockapp.mvvm.viewModels.StocksViewModel
-import com.example.stockapp.mvvm.viewModels.UserViewModel
+import com.example.stockapp.viewModels.CompetitionViewModel
+import com.example.stockapp.viewModels.CurrentAppViewModel
+import com.example.stockapp.viewModels.StocksViewModel
+import com.example.stockapp.viewModels.UserViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.stockapp.mvvm.screens.*
-import com.example.stockapp.mvvm.viewModels.BuyViewModel
+import com.example.stockapp.screens.*
+import com.example.stockapp.viewModels.BuyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,11 +105,11 @@ fun MainNavHost(
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen2.route) {
-                        BuyScreen2(navController = navController)
+                        BuyScreen2(navController = navController,buyViewModel= buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.BuyScreen3.route) {
-                        BuyScreen3(navController = navController)
+                        BuyScreen3(navController = navController,buyViewModel= buyViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.IndexScreen.route) {

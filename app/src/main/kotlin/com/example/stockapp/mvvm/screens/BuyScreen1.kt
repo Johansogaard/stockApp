@@ -1,7 +1,8 @@
-package com.example.stockapp.mvvm.screens
+package com.example.stockapp.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -10,20 +11,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 
@@ -31,28 +35,47 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material3.AlertDialog
+
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
-import com.example.stockapp.mvvm.viewModels.BuyViewModel
-
+import com.example.stockapp.utils.formatNumberUtility.formatNumberWithDecimal
+import com.example.stockapp.utils.formatNumberUtility.formatNumberWithoutDecimal
+import com.example.stockapp.viewModels.BuyViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 @Composable
 fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewModel()) {
     val buyUiState by buyViewModel.uiState.collectAsState()
+    val currentAmount = buyViewModel.currentAmount
+    var dialogState by remember { mutableStateOf(Triple(false, "", "")) } // (showDialog, title, message)
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -77,7 +100,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                         contentDescription = stringResource(R.string.common_back))
 
                 }
-                Spacer(modifier = Modifier.weight(0.75f))
+                Spacer(modifier = Modifier.weight(0.5f))
                 Text(
                     text = stringResource(R.string.buy_previous),
                     fontSize = 20.sp, fontWeight=FontWeight.Bold ,
@@ -94,7 +117,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                 Column (modifier = Modifier.padding(end=5.dp)){
                     Image(
                         painter = painterResource(id = R.drawable.dk),
-                        contentDescription = ""
+                        "contentDescription = stringResource(id = R.string.dog_content_description)"
                     )  }
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -110,6 +133,9 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
+                Column(modifier = Modifier.height(48.dp), verticalArrangement=Arrangement.Center ){
+                    Text(text = "Buy in DKK")
+                }
 
 
             }
@@ -118,18 +144,16 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
 
             Divider(thickness = 1.dp, color = Color.Gray)
 
-            Spacer(modifier = Modifier.size(80.dp))
+            Spacer(modifier = Modifier.size(10.dp))
 
-            ButtonWithBorder()
 
-            // Buy Button with Dropdown
-            // Implement the button and dropdown for buying stocks
 
-            Spacer(modifier = Modifier.weight(1f))
-            MoneyTextField(
-                isValueOverMax = buyUiState.isMaxAmount,
-                currentAmount = buyViewModel.currentAmount,
+            Spacer(modifier = Modifier.weight(0.5f))
+            CustomTextField(isValueOverMax = buyUiState.isMaxAmount,
+                currentAmount = currentAmount,
+                onBackspaceClick = { buyViewModel.removeLastDigit() }
             )
+            // Amount of DKK TextField
 
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -137,7 +161,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             // Cash Available
             if (buyUiState.isMaxAmount) {
                 Text(
-                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumberWithoutDecimal(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Red,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
@@ -145,7 +169,7 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             }
             else {
                 Text(
-                    text = stringResource(R.string.buy_funds_available) + buyUiState.balance,
+                    text = stringResource(R.string.buy_funds_available)+ " " + formatNumberWithoutDecimal(buyUiState.balance.toDouble()) + " kr.",
                     color = Color.Black,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(bottom = 20.dp)
@@ -154,7 +178,16 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             // Continue Button
             Button(
                 onClick = {
-                    navController.navigate(Screen.BuyScreen2.route)
+                    val amount = currentAmount.toIntOrNull() ?: 0
+                    when {
+                        amount < 200 -> {
+                            dialogState = Triple(true, "Minimum Amount Required", "The minimum amount is 200 kr.")
+                        }
+                        amount > buyUiState.balance -> {
+                            dialogState = Triple(true, "Insufficient Funds", "You do not have enough funds to make this purchase.")
+                        }
+                        else -> navController.navigate(Screen.BuyScreen2.route)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF1A65E7)
@@ -163,143 +196,208 @@ fun BuyScreen1(navController: NavController, buyViewModel: BuyViewModel = viewMo
             ) {
                 Text(text = stringResource(R.string.common_continue), modifier = Modifier.padding(7.dp))
             }
+
+
+            if (dialogState.first) {
+                AlertDialog(
+                    onDismissRequest = { dialogState = Triple(false, "", "") },
+                    title = { Text(dialogState.second) },
+                    text = { Text(dialogState.third) },
+                    confirmButton = {
+                        Button(onClick = { dialogState = Triple(false, "", "") },colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1A65E7)
+                        )) {
+                            Text("OK")
+                        }
+                    }
+                )
+            }
+
+
             Spacer(modifier = Modifier.height(20.dp))
 
             Numpad(onDigitClick = {
                 buyViewModel.updateAmount(it)
             })
 
-            // Numpad
-            // Implement the numpad layout, including digits and a backspace button
+
         }
     }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MoneyTextField(isValueOverMax: Boolean,
-                   currentAmount: String,
-                   modifier: Modifier = Modifier) {
-
-    BasicTextField(
-        value = currentAmount,
-        onValueChange = {  },
-        textStyle = TextStyle(Color.Black, fontSize = 48.sp, fontWeight = FontWeight.SemiBold),
-        cursorBrush = SolidColor(Color.Black),
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(140.dp)
-                    .border(4.dp, Color(0xFF1A65E7), RoundedCornerShape(35.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    innerTextField()
-
-                }
-            }
-        }
-    )
 }
 
 @Composable
 fun Numpad(onDigitClick: (Int) -> Unit) {
-    Column(
+    // Container with rounded corners and elevation
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFFAFAFA)),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(16.dp), // Adjust the padding as needed
+        shape = RoundedCornerShape(8.dp), // Adjust the corner size as needed
+        color = Color(0xFFFAFAFA), // Adjust the background color as needed
+        shadowElevation = 4.dp // Adjust the elevation as needed
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            NumpadButton(1, onDigitClick)
-            NumpadButton(2, onDigitClick)
-            NumpadButton(3, onDigitClick)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            NumpadButton(4, onDigitClick)
-            NumpadButton(5, onDigitClick)
-            NumpadButton(6, onDigitClick)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            NumpadButton(7, onDigitClick)
-            NumpadButton(8, onDigitClick)
-            NumpadButton(9, onDigitClick)
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 0.dp, 0.dp, 50.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.weight(0.5f))
-            NumpadButton(0, onDigitClick)
-            Spacer(modifier = Modifier.weight(0.5f))
-
-
+            NumpadRow(onDigitClick, 1, 2, 3)
+            NumpadRow(onDigitClick, 4, 5, 6)
+            NumpadRow(onDigitClick, 7, 8, 9)
+            NumpadRow(onDigitClick, null,0, null)
         }
     }
-
-
+}
+@Composable
+fun NumpadRow(onDigitClick: (Int) -> Unit, vararg digits: Int?) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly // This will space the buttons evenly
+    ) {
+        digits.forEach { digit ->
+            if (digit != null) {
+                NumpadButton(digit, onDigitClick)
+            } else {
+                Spacer(modifier = Modifier.width(120.dp).height(60.dp)) // Empty space for alignment
+            }
+        }
+    }
 }
 
 
 
 @Composable
-fun NumpadButton(digit: Int, onClick: (Int) -> Unit) {
-    Button(
-        onClick = { onClick(digit) },
-        modifier = Modifier.padding(30.dp,10.dp,30.dp,0.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent)
+fun NumpadButton(digit: Int?, onClick: (Int) -> Unit) {
+    // Remember a MutableInteractionSource for this button, which allows us to track its interactions
+    val interactionSource = remember { MutableInteractionSource() }
+    // Collect the isPressed state from the interactionSource
+    val isPressed = interactionSource.collectIsPressedAsState().value
 
-        ) {
-        Text(text = digit.toString(),
+    // Determine the button color based on the isPressed state
+    val buttonColor = if (isPressed) Color.LightGray else Color.Transparent
+
+    Button(
+        onClick = { digit?.let { onClick(it) } },
+        modifier = Modifier.width(120.dp).height(60.dp).padding(0.dp, 0.dp, 0.dp, 0.dp)
+        ,
+        shape= RectangleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = buttonColor),
+        interactionSource = interactionSource,
+        elevation = null
+
+    ) {
+        Text(text = digit.toString(), // ... existing code ...)
             fontSize = 25.sp,
             color = Color.Black,
             fontWeight= FontWeight.ExtraBold
-            )
+        )
     }
 
 }
 
-
-
-
 @Composable
-fun ButtonWithBorder() {
-    Button(
-        onClick = {
-            // Your onclick code
-        },
-        border = BorderStroke(2.dp, Color(0xFF1A65E7)),
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1A65E7)), modifier = Modifier.height(35.dp)
+fun CustomTextField(isValueOverMax: Boolean, currentAmount: String, onBackspaceClick: () -> Unit) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = LocalConfiguration.current.screenHeightDp.dp * 0.2f)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = stringResource(R.string.buy_in_dkk),
-                color = Color(0xFF1A65E7))
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "",
-                tint = Color.Black
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(60.dp)
+                    .fillMaxHeight()
             )
+            Box(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "${currentAmount.filter { it.isDigit() }}",                        fontSize = 45.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.wrapContentWidth(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
+                    )
+                    Text(
+                        text = "|",
+                        fontSize = 45.sp,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .blink(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
+
+
+                    )
+
+                    Text(
+                        text = "kr.",
+                        fontSize = 45.sp,
+                        color = Color.Black,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.wrapContentWidth(),
+                        style = androidx.compose.ui.text.TextStyle(fontStyle = FontStyle.Normal)
+
+                    )
+
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .width(60.dp)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                if (currentAmount.isNotEmpty()){
+                    IconButton(
+                        onClick = onBackspaceClick,
+
+                        //no ripple effect
+                        interactionSource = NoRippleInteractionSource()
+                    ) {
+
+                        Icon(painter = painterResource(id = R.drawable.baseline_backspace_24), contentDescription = "Delete",modifier=Modifier.padding(end = 16.dp))
+                    }
+                }
+            }
         }
     }
 }
+
+//class for no ripple effect to buttons
+class NoRippleInteractionSource : MutableInteractionSource {
+
+    override val interactions: Flow<Interaction> = emptyFlow()
+    override suspend fun emit(interaction: Interaction) {}
+    override fun tryEmit(interaction: Interaction) = true
+}
+
+@Composable
+fun Modifier.blink(): Modifier {
+    var visible by remember { mutableStateOf(true) }
+    LaunchedEffect(key1 = Unit) {
+        while (true) {
+            withFrameNanos {
+                visible = !visible
+            }
+            delay(530L) // Adjust the delay to speed up/slow down the blinking rate
+        }
+    }
+    return then(if (visible) Modifier else Modifier.alpha(0f))
+}
+
 
 
 

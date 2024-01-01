@@ -34,33 +34,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
 import com.example.stockapp.stockApi.ShowStockists
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.stockapp.stockApi.searchStocks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.HttpURLConnection
-import java.net.URL
 // skal den være her
-suspend fun searchStocks(query: String): List<String> {
-    if (query.isBlank()) return emptyList()
 
-    val url = URL("http://10.0.2.2:8080/search/stocks/$query")
-    val httpURLConnection = url.openConnection() as HttpURLConnection
-    httpURLConnection.requestMethod = "GET"
-
-    return try {
-        val inputStream = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-        val gson = Gson()
-        val listType = object : TypeToken<List<String>>() {}.type
-        gson.fromJson(inputStream, listType)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        emptyList()
-    } finally {
-        httpURLConnection.disconnect()
-    }
-}
 
 @Composable
 fun SearchScreen(navController: NavController) {

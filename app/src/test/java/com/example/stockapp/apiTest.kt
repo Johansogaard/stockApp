@@ -2,9 +2,9 @@ package com.example.stockapp
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
-import org.junit.Assert.*
 import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.net.HttpURLConnection
@@ -17,6 +17,7 @@ import java.net.URLEncoder
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class apiTest {
+    val baseURL = "https://smiling-quietly-thrush.ngrok-free.app"
 
     @Test
     fun testGetHistoricalData() {
@@ -24,7 +25,7 @@ class apiTest {
         val interval = "MINUTE"
         val count = 150
 
-        val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
+        val url = URL(baseURL+"/stock/$ticker/$interval/$count")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 
@@ -51,7 +52,7 @@ class apiTest {
         val interval = "FIFTEEN_MINUTES"
         val count = 20
 
-        val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
+        val url = URL(baseURL+"/stock/$ticker/$interval/$count")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 
@@ -78,7 +79,7 @@ class apiTest {
         val interval = "HOUR"
         val count = 5
 
-        val url = URL("http://localhost:8080/stock/$ticker/$interval/$count")
+        val url = URL(baseURL+"/stock/$ticker/$interval/$count")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 
@@ -105,7 +106,7 @@ class apiTest {
     fun testGetGroupTickers() {
         val groupName = "C25" // Example ticker
 
-        val url = URL("http://localhost:8080/group/tickers/$groupName")
+        val url = URL(baseURL+"/group/tickers/$groupName")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 
@@ -123,7 +124,7 @@ class apiTest {
     @Test
     fun testGetStockNationalities() {
         val tickers = URLEncoder.encode("[NOVO,AAPL]", "UTF-8")
-        val url = URL("http://localhost:8080/stock/nationalities/$tickers")
+        val url = URL(baseURL+"/stock/nationalities/$tickers")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 
@@ -144,7 +145,7 @@ class apiTest {
     fun testSearchStocks() {
         val query = "AAP" // Example search query
 
-        val url = URL("http://localhost:8080/search/stocks/${URLEncoder.encode(query, "UTF-8")}")
+        val url = URL(baseURL+"/search/stocks/${URLEncoder.encode(query, "UTF-8")}")
         val httpURLConnection = url.openConnection() as HttpURLConnection
         httpURLConnection.requestMethod = "GET"
 

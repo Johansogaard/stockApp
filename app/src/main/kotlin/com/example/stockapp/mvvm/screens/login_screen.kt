@@ -1,5 +1,6 @@
-package com.example.stockapp.mvvm.screens
+package com.example.stockapp.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -15,11 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.R
+import com.example.stockapp.authentication.EmailAuthManager
+import com.example.stockapp.data.Screen
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 import com.example.stockapp.ui.theme.CustomTextField
-import com.example.stockapp.mvvm.viewModels.UserViewModel
-import com.example.stockapp.R
+import com.example.stockapp.viewModels.UserViewModel
 
 @Composable
 fun LoginScreen(navController: NavController, userViewModel: UserViewModel)
@@ -69,29 +72,34 @@ fun LoginLayout(navController: NavController, userViewModel: UserViewModel)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        CustomButton(onClick = {                    navController.navigate(Screen.PortfolioScreen.route)
-/*
-            EmailAuthManager.signIn(username.value.text, password.value.text) { isSuccess, errorMessage ->
-                if (userViewModel.state.value.isLoggedIn true) {
-                    navController.navigate(Screen.PortfolioScreen.route)
+        CustomButton(onClick = {
+            val uName = username.value.text
+            val pWord = password.value.text
+            if (uName.length == 0 || pWord.length == 0) {
+                Toast.makeText(context, "empty username or password", Toast.LENGTH_SHORT).show()
+            } else {
+                EmailAuthManager.signIn(uName, pWord) { isSuccess, errorMessage ->
+                    if (userViewModel.state.value.isLoggedIn) {
+                        navController.navigate(Screen.PortfolioScreen.route)
+                    } else {
+                        val formattedErrorMessage = String.format(loginFailedMessage, errorMessage)
+                        Toast.makeText(context, formattedErrorMessage, Toast.LENGTH_SHORT).show()
+                        println("Login failed. Error message: $errorMessage")
+                    }
                 }
-                else {
-                    val formattedErrorMessage = String.format(loginFailedMessage, errorMessage)
-                    Toast.makeText(context, formattedErrorMessage, Toast.LENGTH_SHORT).show()
-                    println("Login failed. Error message: $errorMessage")
-                }
-            }*/
-        }, text = stringResource(R.string.common_login))
+            }
+        }
+        , text = stringResource(R.string.common_login))
         OrDivider()
 
 
         CustomButton(onClick = {
-            navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text))
+            navController.navigate(Screen.PortfolioScreen.route)
         }, text = stringResource(R.string.common_with_google), outlined = true)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.withArgs(username.value.text)) }
+        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.route) }
             , text = stringResource(R.string.common_with_apple), outlined = true)
 
     }

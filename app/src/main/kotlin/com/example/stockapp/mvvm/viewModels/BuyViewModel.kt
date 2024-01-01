@@ -1,55 +1,80 @@
-package com.example.stockapp.mvvm.viewModels
+package com.example.stockapp.viewModels
 
+import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.stockapp.mvvm.uiModels.BuyUiState
+import com.example.stockapp.models.BuyUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class BuyViewModel : ViewModel() {
+class BuyViewModel(private val initialUiState: BuyUiState = BuyUiState()) : ViewModel() {
+    private val _uiState = MutableStateFlow(initialUiState)
+    val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow()
 
-    private val _uiState = MutableStateFlow(BuyUiState())
-    val uiState: StateFlow<BuyUiState> = _uiState.asStateFlow() // only read
+    var currentAmount by mutableStateOf("")
 
-    var currentAmount by mutableStateOf("0")
-        private set
+    var marketPrice = MutableStateFlow(0.0) // LiveData or StateFlow to hold the market price
+    val tradingFee = 50
 
+    init {
+        marketPrice.value = 1726.88 // Placeholder value
+    }
+    fun calculateTotalCost(currentAmount: Int): Int {
+        return currentAmount + tradingFee
+    }
+    fun calculateNumberOfShares(currentAmount: Int, marketPrice: Double): Double {
+        return (currentAmount / marketPrice)
+    }
     fun updateAmount(amount: Int) {
-        if (currentAmount == "0") {
-            currentAmount = ""
-        }
 
-        currentAmount += amount
+        val newAmount = currentAmount + amount.toString()
 
-        if (currentAmount.toInt() >= _uiState.value.balance) {
-            // error
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isMaxAmount = true,
-                )
+        if (newAmount.length <= 7) {
+            currentAmount = newAmount
+
+            try {
+                if (currentAmount.toInt()+50 > _uiState.value.balance) {
+                    _uiState.update { it.copy(isMaxAmount = true) }
+                } else {
+                    _uiState.update { it.copy(isMaxAmount = false) }
+                }
+            } catch (e: NumberFormatException) {
+                // Handle conversion error
             }
         }
-        else {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isMaxAmount = false,
-                )
+
+    }
+    private fun updateUiState() {
+        try {
+            val amount = currentAmount.toIntOrNull() ?: 0
+            if (amount > _uiState.value.balance) {
+                _uiState.update { it.copy(isMaxAmount = true) }
+            } else {
+                _uiState.update { it.copy(isMaxAmount = false) }
             }
+        } catch (e: NumberFormatException) {
+            // Handle conversion error
         }
     }
-
+    fun removeLastDigit() {
+        if (currentAmount.isNotEmpty()) {
+            currentAmount = currentAmount.dropLast(1)
+            updateUiState()
+        }
+    }
     fun setAmount() {
-        if (currentAmount != "0")
-        _uiState.update { currentState ->
-            currentState.copy(
-                isMaxAmount = false,
-                amount = currentAmount.toInt()
-            )
+        try {
+            if (currentAmount.isNotEmpty()) {
+                val amount = currentAmount.toInt()
+                _uiState.update { it.copy(isMaxAmount = false, amount = amount) }
+            }
+        } catch (e: NumberFormatException) {
+            // Handle error if conversion fails
         }
-    }
 
-}
+}}
