@@ -103,7 +103,8 @@
     <string name="stockview_prev_close">Prev. close</string>
     <string name="stockview_high_52w">High in 52w</string>
     <string name="stockview_low_52w">Low in 52w</string>
-    <string name="stockview_trade_button">TRADE</string>
+    <string name="stockview_buy_button">BUY</string>
+    <string name="stockview_sell_button">SELL</string>
 
 
     <!-- Transaction Screen -->

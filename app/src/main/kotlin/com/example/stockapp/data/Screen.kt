@@ -11,6 +11,7 @@ sealed class Screen(val route: String) {
     object BuyScreen1: Screen("buy_screen1")
     object BuyScreen2: Screen("buy_screen2")
     object BuyScreen3: Screen("buy_screen3")
+    object SellScreen1: Screen("sell_screen1")
 
     object WatchScreen: Screen("watch_screen")
     object OrderScreen: Screen("order_screen")

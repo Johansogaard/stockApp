@@ -1,4 +1,5 @@
 package com.example.stockapp.screens
+import androidx.compose.ui.res.colorResource
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -268,26 +270,49 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                 .align(Alignment.CenterHorizontally),
                 contentAlignment = Alignment.Center
             ) {
-                Row(modifier = Modifier
-                    .align(Alignment.CenterStart),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly, // Arranges the buttons with equal space around them
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)) {
                     Column() {
                         Text(text = "Price", style = MaterialTheme.typography.bodyMedium)
                         Text(text = "${"%.2f".format(stockData.lastOrNull()?.first?: 0f)}", style = MaterialTheme.typography.titleMedium)
                     }
-                    Button(
-                        modifier = Modifier
-                            .padding(horizontal = 28.dp)
-                            .fillMaxWidth(),
-                        onClick = { navController.navigate(Screen.BuyScreen1.route) },) {
-                        Text(text = stringResource(R.string.stockview_trade_button), style = MaterialTheme.typography.labelLarge)
+                    Row {
+                        Button(
+                            modifier = Modifier
+                                .padding(horizontal = 28.dp)
+                            ,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.primary_red), // Set the background color
+                                contentColor = Color.White // Set the text/icon color
+                            ),
+
+                            onClick = { navController.navigate(Screen.BuyScreen1.route) },) {
+                            Text(text = stringResource(R.string.stockview_buy_button), style = MaterialTheme.typography.labelLarge)
+                        }
+                        Button(
+                            modifier = Modifier
+                                .padding(horizontal = 28.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorResource(R.color.primary_blue), // Set the background color
+                                contentColor = Color.White // Set the text/icon color
+                            ),
+                           onClick = { navController.navigate(Screen.SellScreen1.route) },
+                        ) {
+                            Text(text = stringResource(R.string.stockview_sell_button), style = MaterialTheme.typography.labelLarge)
+                        }
+
                     }
+                    }
+
                 }
             }
         }
     }
 
-}
+
 
 @Preview (showBackground = true)
 @Composable

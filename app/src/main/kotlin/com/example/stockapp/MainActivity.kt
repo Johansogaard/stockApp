@@ -1,5 +1,6 @@
 package com.example.stockapp
 
+import SellViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,13 +25,15 @@ class MainActivity : ComponentActivity() {
                 val competitionViewModel: CompetitionViewModel by viewModels()
                 val currentAppViewModel: CurrentAppViewModel by viewModels()
                 val buyViewModel: BuyViewModel by viewModels()
+                val sellViewModel: SellViewModel by viewModels()
 
                 MainNavHost(
                     userViewModel = userViewModel,
                     stocksViewModel = stocksViewModel,
                     competitionViewModel = competitionViewModel,
                     currentAppViewModel = currentAppViewModel,
-                    buyViewModel = buyViewModel
+                    buyViewModel = buyViewModel,
+                    sellViewModel = sellViewModel
                 )
             }
         }

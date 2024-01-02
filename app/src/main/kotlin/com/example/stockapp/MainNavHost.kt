@@ -1,5 +1,6 @@
 package com.example.stockapp
 
+import SellViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -30,7 +31,8 @@ fun MainNavHost(
     stocksViewModel: StocksViewModel,
     buyViewModel: BuyViewModel,
     competitionViewModel: CompetitionViewModel,
-    currentAppViewModel: CurrentAppViewModel
+    currentAppViewModel: CurrentAppViewModel,
+    sellViewModel: SellViewModel
 ) {
 
     //currentAppViewModel.state.value.showNavigationBar = true
@@ -110,6 +112,10 @@ fun MainNavHost(
                     }
                     composable(route = Screen.BuyScreen3.route) {
                         BuyScreen3(navController = navController,buyViewModel= buyViewModel)
+                        showNavigate = false
+                    }
+                    composable(route = Screen.SellScreen1.route) {
+                        SellScreen(navController = navController, sellViewModel = sellViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.IndexScreen.route) {
