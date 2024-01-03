@@ -134,5 +134,9 @@
     <string name="buy_back_to_stock">Back to stock</string>
     <string name="buy_omxc">OMXC25</string>
 
+    <!-- Sell Screen(s) -->
+    <string name="sell">Sell</string>
+    <string name="sell_preview">Preview Sell</string>
+
 
 </resources>

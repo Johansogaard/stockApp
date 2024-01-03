@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
@@ -267,11 +269,12 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
             }
             Divider(color = Color.LightGray, thickness = 1.dp)
             Box(modifier = Modifier
+                .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
                 contentAlignment = Alignment.Center
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly, // Arranges the buttons with equal space around them
+                    horizontalArrangement = Arrangement.End, // Arranges the buttons with equal space around them
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)) {
@@ -279,13 +282,16 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                         Text(text = "Price", style = MaterialTheme.typography.bodyMedium)
                         Text(text = "${"%.2f".format(stockData.lastOrNull()?.first?: 0f)}", style = MaterialTheme.typography.titleMedium)
                     }
-                    Row {
+                    Row(horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()) {
                         Button(
                             modifier = Modifier
-                                .padding(horizontal = 28.dp)
-                            ,
+                                .padding(end = 12.dp)
+                                .height(48.dp)
+                                .width(103.dp),
+
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.primary_red), // Set the background color
+                                containerColor = colorResource(R.color.primary_blue), // Set the background color
                                 contentColor = Color.White // Set the text/icon color
                             ),
 
@@ -294,9 +300,10 @@ fun StockViewScreen(navController: NavController, stocksViewModel: StocksViewMod
                         }
                         Button(
                             modifier = Modifier
-                                .padding(horizontal = 28.dp),
+                                .height(48.dp)
+                                .width(103.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = colorResource(R.color.primary_blue), // Set the background color
+                                containerColor = colorResource(R.color.primary_red), // Set the background color
                                 contentColor = Color.White // Set the text/icon color
                             ),
                            onClick = { navController.navigate(Screen.SellScreen1.route) },

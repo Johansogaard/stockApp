@@ -152,7 +152,7 @@ fun BuyScreen2(navController: NavController, buyViewModel: BuyViewModel = viewMo
                     .width(320.dp)
                     .clip(shape)
                     .align(Alignment.CenterHorizontally)
-                    .background(Color(0xFFFAFAFA))
+                    .background(Color(0xFFF6F5F5))
             )
 
             // Set the background color to blue

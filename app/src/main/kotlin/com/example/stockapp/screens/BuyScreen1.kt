@@ -63,7 +63,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockapp.data.Screen
 
 import com.example.stockapp.R
-import com.example.stockapp.utils.formatNumberUtility.formatNumberWithDecimal
 import com.example.stockapp.utils.formatNumberUtility.formatNumberWithoutDecimal
 import com.example.stockapp.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
