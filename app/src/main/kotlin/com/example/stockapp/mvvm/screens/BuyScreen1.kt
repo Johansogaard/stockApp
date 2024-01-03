@@ -60,12 +60,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.stockapp.data.Screen
+import com.example.stockapp.mvvm.screens.Screen
 
 import com.example.stockapp.R
 import com.example.stockapp.utils.formatNumberUtility.formatNumberWithDecimal
 import com.example.stockapp.utils.formatNumberUtility.formatNumberWithoutDecimal
-import com.example.stockapp.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.viewModels.BuyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

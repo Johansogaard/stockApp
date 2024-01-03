@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "465308424902",
+    "firebase_url": "https://stockapp-26f58-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "stockapp-26f58",
     "storage_bucket": "stockapp-26f58.appspot.com"
   },

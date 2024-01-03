@@ -17,12 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.authentication.EmailAuthManager
-import com.example.stockapp.data.Screen
+import com.example.stockapp.integration.api.firebase.EmailAuthManager
+import com.example.stockapp.mvvm.screens.OrDivider
+import com.example.stockapp.mvvm.screens.Screen
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 import com.example.stockapp.ui.theme.CustomTextField
-import com.example.stockapp.viewModels.UserViewModel
+import com.example.stockapp.mvvm.viewModels.UserViewModel
 
 @Composable
 fun LoginScreen(navController: NavController, userViewModel: UserViewModel)

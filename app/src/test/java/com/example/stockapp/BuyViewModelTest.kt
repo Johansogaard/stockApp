@@ -1,6 +1,6 @@
 package com.example.stockapp
 import com.example.stockapp.models.BuyUiState
-import com.example.stockapp.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.viewModels.BuyViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -1,31 +1,48 @@
 package com.example.stockapp
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.data.Screen
+import com.example.stockapp.mvvm.screens.Screen
 import com.example.stockapp.ui.NavigationBar
-import com.example.stockapp.viewModels.CompetitionViewModel
-import com.example.stockapp.viewModels.CurrentAppViewModel
-import com.example.stockapp.viewModels.StocksViewModel
-import com.example.stockapp.viewModels.UserViewModel
+import com.example.stockapp.mvvm.viewModels.CompetitionViewModel
+import com.example.stockapp.mvvm.viewModels.CurrentAppViewModel
+import com.example.stockapp.mvvm.viewModels.StocksViewModel
+import com.example.stockapp.mvvm.viewModels.UserViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.stockapp.integration.api.Authentication
+import com.example.stockapp.mvvm.screens.ChoseSignupScreen
+import com.example.stockapp.mvvm.screens.ExplorerScreen
+import com.example.stockapp.mvvm.screens.IndexScreen
+import com.example.stockapp.mvvm.screens.IntroScreen
+import com.example.stockapp.mvvm.screens.OrderScreen
+import com.example.stockapp.mvvm.screens.PortfolioScreen
+import com.example.stockapp.mvvm.screens.SearchScreen
+import com.example.stockapp.mvvm.screens.SignUpScreen
+import com.example.stockapp.mvvm.screens.StockViewScreen
+import com.example.stockapp.mvvm.screens.TransactionScreen
+import com.example.stockapp.mvvm.screens.WatchScreen
 import com.example.stockapp.screens.*
-import com.example.stockapp.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.viewModels.BuyViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("RestrictedApi")
 @Composable
 fun MainNavHost(
+    authentication: Authentication,
     userViewModel: UserViewModel,
     stocksViewModel: StocksViewModel,
     buyViewModel: BuyViewModel,
@@ -33,23 +50,32 @@ fun MainNavHost(
     currentAppViewModel: CurrentAppViewModel
 ) {
 
-    //currentAppViewModel.state.value.showNavigationBar = true
+    val navController = rememberNavController();
 
     var showNavigate by remember {
         mutableStateOf(true)
     }
 
-    val navController = rememberNavController();
-    val startDestination = if(userViewModel.state.value.isLoggedIn)
-    {
-        Screen.PortfolioScreen.route
-
+    val loggedInUser = authentication.state.collectAsState().value.currentUser
+    val userCreated = authentication.state.collectAsState().value.userCreated
+    LaunchedEffect(loggedInUser) {
+        Log.i("FirebaseAuth", "User log in status: $loggedInUser")
     }
-    else
-    {
-        Screen.IntroScreen.route
 
+    var startDestination: Screen
+
+    if (loggedInUser == null) {
+        startDestination = Screen.IntroScreen
     }
+    else {
+        if (userCreated == false) {
+            startDestination = Screen.SignUpScreen
+        }
+        else {
+            startDestination = Screen.PortfolioScreen
+        }
+    }
+
 
     Scaffold(
         bottomBar = {
@@ -61,9 +87,7 @@ fun MainNavHost(
             Box(Modifier.padding(innerPadding)) {
                 NavHost(
                     navController = navController,
-                    startDestination = startDestination,
-                    //enterTransition = { EnterTransition.None },
-                    //exitTransition = { ExitTransition.None },
+                    startDestination = startDestination.route,
                     )
                 {
                     composable(route = Screen.IntroScreen.route) {

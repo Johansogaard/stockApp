@@ -39,9 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.data.Screen
+import com.example.stockapp.mvvm.screens.Screen
 import com.example.stockapp.utils.formatNumberUtility
-import com.example.stockapp.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.viewModels.BuyViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants

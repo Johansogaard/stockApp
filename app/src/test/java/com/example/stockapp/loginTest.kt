@@ -2,8 +2,8 @@ package com.example.stockapp
 
 import android.widget.Toast
 import com.example.stockapp.authentication.EmailAuthManager
-import com.example.stockapp.data.Screen
-import com.example.stockapp.viewModels.UserViewModel
+import com.example.stockapp.mvvm.screens.Screen
+import com.example.stockapp.mvvm.viewModels.UserViewModel
 import org.junit.Test
 
 class loginTest {
