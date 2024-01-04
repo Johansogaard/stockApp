@@ -1,6 +1,9 @@
 package com.example.stockapp.mvvm.order
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -20,26 +23,19 @@ import androidx.compose.runtime.*
 
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import com.example.stockapp.R
 import com.example.stockapp.mvvm.Screen
-import com.example.stockapp.ui.theme.Transaction
 
 @Stable
 
 @Composable
 fun OrderScreen(navController: NavController) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        OrderLayout(navController)
-    }
-}
+    val orderViewModel: OrderViewModel = hiltViewModel()
+    val uiState by orderViewModel.uiState.collectAsState()
 
-@Composable
-fun OrderLayout(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -64,33 +60,169 @@ fun OrderLayout(navController: NavController) {
                     style = TextStyle(fontSize = 24.sp)
                 )
             }
-
-            /*
-            Text(
-                text = "Transactions",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight(800)
-                )
-            )
-*/
-
-            orderColumn()
+            LazyColumn() {
+                item {
+                    repeat(20) {
+                        orderColumn(
+                            orderViewModel = orderViewModel,
+                            uiState = uiState
+                        )
+                    }
+                }
+            }
         }
+    }
+
+}
+
+
+@Composable
+fun orderColumn(orderViewModel: OrderViewModel, uiState: OrderUiState){
+    Box(modifier = Modifier.clickable {  }) {
+        Divider(
+            color = Color.Black,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Transaction(name = uiState.title, status = "order", quantity = "360", rate = "420", amount = "69")
     }
 }
 
 @Composable
-fun orderColumn(){
+fun Transaction(
+    name: String,
+    status: String,
+    quantity: String,
+    rate: String,
+    amount: String
+) {Column(
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = name,
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.padding(top = 4.dp)
+        )
+
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Canvas(modifier = Modifier.size(12.dp)) {
+                drawCircle(
+                    color = when (status) {
+                        "sold" -> Color.Green
+                        "bought" -> Color.Blue
+                        "order" -> Color.Gray
+                        else -> Color.Gray
+                    }
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = status,
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+        Text(
+            text = "date",
+            style = TextStyle(
+                fontSize = 12.sp,
+                color = Color.Gray
+            ),
+        )
+    }
+
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Column(
+            horizontalAlignment = Alignment.End
+
+        ) {
+            Text(
+                text = "quantity",
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    color = Color.Gray
+                ),
+            )
+            Text(
+                text = quantity,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.End
+
+        )
+        {
+            Text(
+                text = "Exchange rate(DKK)",
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    color = Color.Gray
+                ),
+            )
+            Text(
+                text = rate,
+
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+
+                )
+        }
+        Column(
+            horizontalAlignment = Alignment.End
+        )
+        {
+            Text(
+                text = "Amount(DKK)",
+                style = TextStyle(
+                    fontSize = 15.sp,
+                ),
+                color = Color.Gray
+            )
+            Text(
+                text = amount,
+
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+            )
+        }
+    }
+
+}
     Divider(
         color = Color.Black,
         modifier = Modifier.fillMaxWidth()
     )
-    Transaction( name="NOVO",status="order", quantity="420", rate="360", amount="21.42")
-    repeat(6) {
-        Transaction( name="APPL",status="order", quantity="360", rate="420", amount="69")
-
-    }
 }
 
 
