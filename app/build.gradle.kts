@@ -11,7 +11,7 @@ plugins {
 android {
     signingConfigs {
         getByName("debug") {
-            storeFile = file("C:\\Users\\LuucM\\.android\\debug_bnker.keystore")
+            storeFile = file("src/debug_bnker.keystore")
             storePassword = "android"
             keyAlias = "debug_bnker"
             keyPassword = "android"
