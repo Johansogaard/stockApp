@@ -8,8 +8,8 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.MainActivity
-import com.example.stockapp.screens.IntroScreen
-import com.example.stockapp.screens.searchStocks
+import com.example.stockapp.mvvm.start.intro.IntroScreen
+import com.example.stockapp.stockApi.searchStocks
 import com.example.stockapp.stockApi.getGroupTickers
 import com.example.stockapp.stockApi.getStockData
 import com.example.stockapp.stockApi.getcurrentvalue

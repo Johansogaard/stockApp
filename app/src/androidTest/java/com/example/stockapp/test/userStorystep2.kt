@@ -1,29 +1,17 @@
 package com.example.stockapp.test
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.MainActivity
-import com.example.stockapp.screens.IntroScreen
-import com.example.stockapp.screens.searchStocks
 import com.example.stockapp.stockApi.*
 import com.example.stockapp.stockApi.getGroupTickers
 import com.example.stockapp.stockApi.getStockData
 import com.example.stockapp.stockApi.getcurrentvalue
-import com.example.stockapp.ui.theme.StockAppTheme
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import org.junit.Rule
-import org.junit.Test
 
 
 class userStorystep2 {

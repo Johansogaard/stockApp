@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.stockapp.mvvm.screens.Screen
+import com.example.stockapp.mvvm.Screen
 
 @Composable
 fun NavigationBar(navController: NavController) {

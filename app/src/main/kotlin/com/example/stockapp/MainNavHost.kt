@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,41 +13,43 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.stockapp.mvvm.screens.Screen
+import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.ui.NavigationBar
-import com.example.stockapp.mvvm.viewModels.CompetitionViewModel
-import com.example.stockapp.mvvm.viewModels.CurrentAppViewModel
-import com.example.stockapp.mvvm.viewModels.StocksViewModel
-import com.example.stockapp.mvvm.viewModels.UserViewModel
+import com.example.stockapp.mvvm.competition.CompetitionViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.stockapp.integration.api.Authentication
-import com.example.stockapp.mvvm.screens.ChoseSignupScreen
-import com.example.stockapp.mvvm.screens.ExplorerScreen
-import com.example.stockapp.mvvm.screens.IndexScreen
-import com.example.stockapp.mvvm.screens.IntroScreen
-import com.example.stockapp.mvvm.screens.OrderScreen
-import com.example.stockapp.mvvm.screens.PortfolioScreen
-import com.example.stockapp.mvvm.screens.SearchScreen
-import com.example.stockapp.mvvm.screens.SignUpScreen
-import com.example.stockapp.mvvm.screens.StockViewScreen
-import com.example.stockapp.mvvm.screens.TransactionScreen
-import com.example.stockapp.mvvm.screens.WatchScreen
+import com.example.stockapp.integration.firebase.authentication.Authentication
+import com.example.stockapp.mvvm.buy.buy.BuyScreen1
+import com.example.stockapp.mvvm.buy.buy.BuyScreen2
+import com.example.stockapp.mvvm.buy.buy.BuyScreen3
+import com.example.stockapp.mvvm.start.signup.ChoseSignupScreen
+import com.example.stockapp.mvvm.search.explorer.ExplorerScreen
+import com.example.stockapp.mvvm.index.IndexScreen
+import com.example.stockapp.mvvm.start.intro.IntroScreen
+import com.example.stockapp.mvvm.order.OrderScreen
+import com.example.stockapp.mvvm.portfolio.PortfolioScreen
+import com.example.stockapp.mvvm.search.search.SearchScreen
+import com.example.stockapp.mvvm.start.signup.SignUpScreen
+import com.example.stockapp.mvvm.stock.StockViewScreen
+import com.example.stockapp.mvvm.buy.transaction.TransactionScreen
+import com.example.stockapp.mvvm.watch.WatchScreen
 import com.example.stockapp.screens.*
-import com.example.stockapp.mvvm.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.buy.buy.BuyViewModel
+import com.example.stockapp.mvvm.start.login.LoginViewModel
+import com.example.stockapp.mvvm.stock.StockViewModel
 
 @SuppressLint("RestrictedApi")
 @Composable
 fun MainNavHost(
     authentication: Authentication,
-    userViewModel: UserViewModel,
-    stocksViewModel: StocksViewModel,
+    loginViewModel: LoginViewModel,
+    stockViewModel: StockViewModel,
     buyViewModel: BuyViewModel,
     competitionViewModel: CompetitionViewModel,
-    currentAppViewModel: CurrentAppViewModel
-) {
+
+    ) {
 
     val navController = rememberNavController();
 
@@ -64,7 +65,7 @@ fun MainNavHost(
 
     var startDestination: Screen
 
-    if (loggedInUser == null) {
+    /*if (loggedInUser == null) {
         startDestination = Screen.IntroScreen
     }
     else {
@@ -74,7 +75,8 @@ fun MainNavHost(
         else {
             startDestination = Screen.PortfolioScreen
         }
-    }
+    }*/
+    startDestination = Screen.PortfolioScreen
 
 
     Scaffold(
@@ -109,7 +111,7 @@ fun MainNavHost(
                         showNavigate = false
                     }
                     composable(route = Screen.LoginScreen.route) {
-                        LoginScreen(navController = navController, userViewModel = userViewModel)
+                        LoginScreen(navController = navController, loginViewModel = loginViewModel)
                         showNavigate = false
                     }
                     composable(
@@ -155,7 +157,7 @@ fun MainNavHost(
                     composable(route = "StockViewScreen/{stockSymbol}") { backStackEntry ->
                         StockViewScreen(
                             navController = navController,
-                            stocksViewModel = stocksViewModel,
+                            stockViewModel = stockViewModel,
                             stockSymbol = backStackEntry.arguments?.getString("stockSymbol") ?: "NOVO"
                         )
                         showNavigate = true

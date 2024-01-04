@@ -1,6 +1,6 @@
 package com.example.stockapp
-import com.example.stockapp.models.BuyUiState
-import com.example.stockapp.mvvm.viewModels.BuyViewModel
+import com.example.stockapp.mvvm.buy.buy.BuyUiState
+import com.example.stockapp.mvvm.buy.buy.BuyViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -12,7 +12,7 @@ class BuyViewModelTest {
     @Before
     fun setup() {
         val testUiState = BuyUiState(balance = 24555)
-        viewModel = BuyViewModel(testUiState)
+        viewModel = BuyViewModel()
     }
 
     @Test

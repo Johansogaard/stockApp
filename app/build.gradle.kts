@@ -95,6 +95,8 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50") // Hilt compiler
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21")
 
     implementation("com.google.dagger:hilt-android-gradle-plugin:2.50")
