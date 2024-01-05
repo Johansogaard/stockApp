@@ -12,3 +12,4 @@ data class User(
     val balance: Double = 0.0,
     val ownedStocks: Map<String, Int> = emptyMap(),
 )
+
