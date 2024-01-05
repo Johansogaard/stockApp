@@ -73,7 +73,6 @@ fun PortfolioLayout(navController: NavController) {
         ) {
             Spacer(modifier = Modifier.size(30.dp))
 
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -90,15 +89,12 @@ fun PortfolioLayout(navController: NavController) {
                         contentDescription = "Back"
                     )
 
-
                 }
                 Spacer(modifier = Modifier.weight(1.2f))
                 Text(
                     text = "Portfolio",
                     fontSize = 30.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(end = 90.dp)
-
-
                 )
                 //Spacer(modifier = Modifier.weight(0.90f))
                 IconButton(
@@ -106,7 +102,6 @@ fun PortfolioLayout(navController: NavController) {
                         EmailAuthManager.signOut()
                         navController.navigate(Screen.IntroScreen.route)
                     },
-
 
                     ) {
                     Icon(
@@ -118,19 +113,12 @@ fun PortfolioLayout(navController: NavController) {
             }
             Spacer(modifier = Modifier.size(30.dp))
 
-
             Row(
                 modifier = Modifier
                     .width(320.dp)
                     .height(90.dp)
             ) {
-
-
                 //Spacer(modifier = Modifier.weight(1f))
-
-
-
-
                 Column() {
 
 
@@ -152,13 +140,7 @@ fun PortfolioLayout(navController: NavController) {
                 Spacer(modifier = Modifier.weight(1f))
 
 
-
-
-
-
             }
-
-
             Spacer(modifier = Modifier.size(30.dp))
 
 
@@ -177,8 +159,6 @@ fun PortfolioLayout(navController: NavController) {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = "22.232 DKK")
             }
-
-
             Spacer(modifier = Modifier.size(10.dp))
             Divider(thickness = 1.dp, color = Color.Gray)
 
