@@ -56,7 +56,7 @@ class Authentication @Inject constructor(@ApplicationContext private val context
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     // Your server's client ID, not your Android client ID.
-                    .setServerClientId("628293109266-5u6pd3t88uie9eg0bjjrr1pqe5trt8s7.apps.googleusercontent.com")
+                    .setServerClientId("465308424902-42bbgfqinrq6anav8bk0fddqnb1h7bj3.apps.googleusercontent.com")
                     // Only show accounts previously used to sign in.
                     .setFilterByAuthorizedAccounts(false)
                     .build())

@@ -1,5 +1,7 @@
 package com.example.stockapp.repositories.user
 
+import android.content.Intent
+import android.content.IntentSender
 import android.util.Log
 import com.example.stockapp.integration.firebase.authentication.Authentication
 import com.example.stockapp.integration.firebase.authentication.AuthenticationState
@@ -21,11 +23,17 @@ class UserRepository @Inject constructor(
     private val database: FirebaseDatabaseConnection
 ) {
 
+    private val _signInIntentSender = MutableStateFlow<IntentSender?>(null)
+    val signInIntentSender: StateFlow<IntentSender?> = _signInIntentSender
     val authState: StateFlow<AuthenticationState> = authentication.state
 
     private val _state = MutableStateFlow(UserState())
     val state: StateFlow<UserState> = _state
 
+    companion object {
+        // Unique request code
+        const val REQ_ONE_TAP = 1001
+    }
     init {
         CoroutineScope(Dispatchers.Default).launch {
             authentication.state.collect { authState ->
@@ -75,5 +83,21 @@ class UserRepository @Inject constructor(
         authentication.signOut()
     }
 
-
+    fun send (email: String,password: String) {
+        authentication.signInUser(email,password)
+    }
+    fun signInGoogleRequest() {
+        authentication.onSignInRequired = { intentSender ->
+            _signInIntentSender.value = intentSender
+        }
+        authentication.displayGoogleUISignIn()
+    }
+    fun processSignInResult(data: Intent)
+    {
+        authentication.signIn(Authentication.REQ_ONE_TAP,data)
+    }
+    fun updateIntentSender(intentSender: IntentSender?)
+    {
+        _signInIntentSender.value = intentSender
+    }
 }

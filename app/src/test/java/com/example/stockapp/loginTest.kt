@@ -1,6 +1,5 @@
 package com.example.stockapp
 
-import com.example.stockapp.integration.firebase.authentication.EmailAuthManager
 import org.junit.Test
 
 class loginTest {

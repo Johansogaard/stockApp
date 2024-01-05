@@ -65,6 +65,8 @@ suspend fun searchStocks(query: String): List<String> {
 fun getBaseURLForAPI() : String
 {
     val baseApiUrl = "https://smiling-quietly-thrush.ngrok-free.app"
+    // for local use http://localhost:8080 as base url
+    // for remote use https://smiling-quietly-thrush.ngrok-free.app as base url
      return baseApiUrl
 }
 suspend fun getStockData(ticker: String, interval: String, count: Int): List<Triple<Float, Float, Float>> {

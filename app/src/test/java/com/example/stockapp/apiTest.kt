@@ -18,7 +18,8 @@ import java.net.URLEncoder
  */
 class apiTest {
     val baseURL = "https://smiling-quietly-thrush.ngrok-free.app"
-
+        // for local use http://localhost:8080 as base url
+        // for remote use https://smiling-quietly-thrush.ngrok-free.app as base url
     @Test
     fun testGetHistoricalData() {
         val ticker = "AAPL"

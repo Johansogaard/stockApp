@@ -71,6 +71,7 @@ android {
 dependencies {
 
     implementation("junit:junit:4.13.2")
+    implementation("androidx.room:room-ktx:2.6.1")
     testImplementation("org.mockito:mockito-core:3.11.2")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("co.yml:ycharts:2.1.0")
