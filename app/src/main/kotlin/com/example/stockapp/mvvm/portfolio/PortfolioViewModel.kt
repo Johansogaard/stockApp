@@ -23,9 +23,9 @@ class PortfolioViewModel @Inject constructor(
     /*private val _stockData = MutableStateFlow<Stock>()
     val stockData: StateFlow<Stock> = _stockData */
 
-    fun refreshStockData() {
+    /*fun refreshStockData() {
         val stock =
-    }
+    }*/
 
 
 }
