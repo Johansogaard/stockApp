@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +34,11 @@ import com.example.stockapp.R
 import com.example.stockapp.mvvm.Screen
 
 @Composable
-fun ExplorerScreen(navController: NavController) {
+fun ExplorerScreen(navController: NavController, explorerViewModel: ExplorerViewModel) {
+
+    val uiState by explorerViewModel.uiState.collectAsState()
+    uiState.stocks[0].company_name
+
 
     Column(
         modifier = Modifier
@@ -41,14 +47,14 @@ fun ExplorerScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        searchBar(navController)
-        ExplorerContent(navController)
+        searchBar(navController, explorerViewModel, uiState)
+        ExplorerContent(navController, explorerViewModel, uiState)
     }
 
 }
 
 @Composable
-fun searchBar(navController: NavController) {
+fun searchBar(navController: NavController, explorerViewModel: ExplorerViewModel, uiState: ExplorerUiState) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(24.dp))
@@ -76,7 +82,8 @@ fun searchBar(navController: NavController) {
 }
 
 @Composable
-fun ExplorerContent(navController: NavController) {
+fun ExplorerContent(navController: NavController, explorerViewModel: ExplorerViewModel, uiState: ExplorerUiState) {
+
     Box(modifier = Modifier
         .fillMaxWidth()
     ) {
@@ -86,7 +93,7 @@ fun ExplorerContent(navController: NavController) {
             item {
                 repeat(10) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(text = "Something here")
+                        Text(text = uiState.stocks[0].company_name)
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
@@ -109,9 +116,11 @@ fun ExplorerContent(navController: NavController) {
 }
 
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewExplorerScreen() {
     ExplorerScreen(navController = rememberNavController())
 }
+
+ */

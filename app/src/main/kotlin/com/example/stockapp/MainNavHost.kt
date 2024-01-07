@@ -131,7 +131,7 @@ fun MainNavHost(
                     composable(
                         route = Screen.ExplorerScreen.route,) {
                         val searchTerm = remember { mutableStateOf("") }
-                        ExplorerScreen(navController = navController)
+                        ExplorerScreen(navController = navController, explorerViewModel = explorerViewModel)
                         showNavigate = true
                     }
                     composable(
