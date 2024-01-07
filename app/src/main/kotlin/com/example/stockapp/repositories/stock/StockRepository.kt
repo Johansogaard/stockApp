@@ -39,22 +39,52 @@ class StockRepository @Inject constructor(
     }
 
 
-    private suspend fun fetchUserStocksFromFirebase(): List<Stock>? {
+    suspend fun fetchUserStocksFromFirebase(): List<Stock>? {
         val stockDefault: HashMap<String, Stock> = hashMapOf()
         val stocksFromFirebase = database.retrieve(path = "users", refPath = listOf(authentication.state.value.userId, "portfolio", "stocks"), stockDefault)
+
+
+
         //_stocks.value = stocksFromFirebase
         return null
     }
 
-
-    private suspend fun fetchStocksFromApi(): List<Stock> {
+    suspend fun fetchStockFromApi(): Stock? {
         try {
-            val stocksFromApi = api.fetchStocks()
+            val stocksFromApi = api.retrieveStock(selectedStock.toString(), "", "")
+
+            return stocksFromApi
+        } catch (e: Exception) {
+            // Handle API request errors here
+            Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
+            return null
+        }
+    }
+
+
+    suspend fun fetchStocksFromApi(): List<Stock> {
+        try {
+            val stocksFromApi = api.retrieveListOfStocks(List<>,"", "")
+
+            // Return the fetched list of stocks
+            return stocksFromApi ?: emptyList()
+
+
         } catch (e: Exception) {
             // Handle API request errors here
             Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
         }
     }
+
+    suspend fun fetchAnyStocksFromApi(): List<Stock> {
+        try {
+            val stocksFromApi = api.retrieveAnyListOfStocks()
+        } catch (e: Exception) {
+            // Handle API request errors here
+            Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
+        }
+    }
+
 
     fun refreshStocks() {
         // This function can be called to refresh the stocks from the API
