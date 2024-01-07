@@ -66,6 +66,7 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
@@ -93,6 +94,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50") // Hilt compiler

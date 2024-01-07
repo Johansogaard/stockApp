@@ -2,6 +2,7 @@ package com.example.stockapp.mvvm.start.login
 
 import android.content.Intent
 import android.content.IntentSender
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.stockapp.repositories.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +20,9 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val state: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private val _signInIntentSender = MutableStateFlow<IntentSender?>(null)
-    val signInIntentSender: StateFlow<IntentSender?> = _signInIntentSender
+  //  private val _signInIntentSender = MutableStateFlow<IntentSender?>(null)
+   // val signInIntentSender: StateFlow<IntentSender?> = _signInIntentSender
+    val signInIntentSender:StateFlow<IntentSender?> = userRepository.signInIntentSender
     fun signInMailRequest(email: String , password: String)
     {
         _uiState.value.pword = password
@@ -30,7 +32,9 @@ class LoginViewModel @Inject constructor(
     }
     fun signInGoogleRequest()
     {
-        userRepository.updateIntentSender(signInIntentSender.value)
+        Log.d("SignInGoogleRequest", "Sign-in has been pressed. \nIntent sender check = "+signInIntentSender.value)
+
+       // userRepository.updateIntentSender(signInIntentSender.value)
         userRepository.signInGoogleRequest()
     }
     fun send ()

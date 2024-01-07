@@ -98,6 +98,8 @@ class UserRepository @Inject constructor(
     }
     fun updateIntentSender(intentSender: IntentSender?)
     {
+        Log.d("updateIntentSender", "intentsender = "+_signInIntentSender.value + " new intentsender ="+intentSender)
         _signInIntentSender.value = intentSender
+        Log.d("updateIntentSender", "intentsender after update = "+_signInIntentSender.value )
     }
 }
