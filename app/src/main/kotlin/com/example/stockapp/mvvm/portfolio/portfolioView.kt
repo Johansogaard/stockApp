@@ -21,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,34 +38,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
+import com.example.stockapp.mvvm.stock.StockUiState
+import com.example.stockapp.repositories.stock.StockRepository
 import com.example.stockapp.stockApi.getStockData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun PortfolioScreen(navController: NavController) {
+fun PortfolioScreen(navController: NavController, portfolioViewModel: PortfolioViewModel) {
+    val uiState by portfolioViewModel.uiState.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
-        PortfolioLayout(navController)
+        PortfolioLayout(
+            navController = navController,
+            portfolioViewModel = portfolioViewModel,
+            uiState = uiState,
+        )
     }
 }
 
 @Composable
-fun PortfolioLayout(navController: NavController) {
-    val coroutineScope = rememberCoroutineScope()
-    var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
-    var apiError by remember { mutableStateOf<String?>(null) }
-
-    LaunchedEffect(Unit) {
-        coroutineScope.launch(Dispatchers.IO) {
-            try {
-                stockData = getStockData("AAPL", "MINUTE", 150)
-                apiError = null // Reset the error message
-            } catch (exception: Exception) {
-                apiError = exception.localizedMessage // Capture the error message
-            }
-        }
-    }
+fun PortfolioLayout(navController: NavController, portfolioViewModel: PortfolioViewModel, uiState: PortfolioUiState) {
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -166,8 +160,8 @@ fun PortfolioLayout(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {
-    PortfolioScreen(navController = rememberNavController())
-}
+    PortfolioScreen(navController = rememberNavController(), portfolioViewModel = PortfolioViewModel(stockRepository = StockRepository()))
+}*/

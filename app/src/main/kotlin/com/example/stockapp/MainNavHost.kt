@@ -26,11 +26,17 @@ import com.example.stockapp.mvvm.buy.buy.BuyViewModel
 import com.example.stockapp.mvvm.buy.transaction.TransactionScreen
 import com.example.stockapp.mvvm.competition.CompetitionViewModel
 import com.example.stockapp.mvvm.index.IndexScreen
+import com.example.stockapp.mvvm.index.IndexViewModel
 import com.example.stockapp.mvvm.order.OrderScreen
+import com.example.stockapp.mvvm.order.OrderViewModel
 import com.example.stockapp.mvvm.portfolio.PortfolioScreen
+import com.example.stockapp.mvvm.portfolio.PortfolioViewModel
 import com.example.stockapp.mvvm.search.explorer.ExplorerScreen
+import com.example.stockapp.mvvm.search.explorer.ExplorerViewModel
 import com.example.stockapp.mvvm.search.search.SearchScreen
+import com.example.stockapp.mvvm.search.search.SearchViewModel
 import com.example.stockapp.mvvm.start.intro.IntroScreen
+import com.example.stockapp.mvvm.start.intro.IntroViewModel
 import com.example.stockapp.mvvm.start.login.LoginViewModel
 import com.example.stockapp.mvvm.start.signup.ChoseSignupScreen
 import com.example.stockapp.mvvm.start.signup.SignUpScreen
@@ -38,6 +44,7 @@ import com.example.stockapp.mvvm.start.signup.SignupViewModel
 import com.example.stockapp.mvvm.stock.StockViewModel
 import com.example.stockapp.mvvm.stock.StockViewScreen
 import com.example.stockapp.mvvm.watch.WatchScreen
+import com.example.stockapp.mvvm.watch.WatchViewModel
 import com.example.stockapp.screens.*
 import com.example.stockapp.ui.NavigationBar
 
@@ -50,6 +57,13 @@ fun MainNavHost(
     buyViewModel: BuyViewModel,
     signupViewModel: SignupViewModel,
     competitionViewModel: CompetitionViewModel,
+    portfolioViewModel: PortfolioViewModel,
+    explorerViewModel: ExplorerViewModel,
+    indexViewModel: IndexViewModel,
+    orderViewModel: OrderViewModel,
+    searchViewModel: SearchViewModel,
+    introViewModel: IntroViewModel,
+    watchViewModel: WatchViewModel,
 
     ) {
 
@@ -98,12 +112,12 @@ fun MainNavHost(
                     }
                     composable(route = Screen.ChoseSignupScreen.route) {
                         Column {
-                            ChoseSignupScreen(navController = navController,signupViewModel =signupViewModel)
+                            ChoseSignupScreen(navController = navController,signupViewModel = signupViewModel)
                             showNavigate = false
                         }
                     }
                     composable(route = Screen.PortfolioScreen.route) {
-                        PortfolioScreen(navController = navController)
+                        PortfolioScreen(navController = navController, portfolioViewModel = portfolioViewModel)
                         showNavigate = true
                     }
                     composable(route = Screen.SignUpScreen.route) {
@@ -154,11 +168,10 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
-                    composable(route = "StockViewScreen/{stockSymbol}") { backStackEntry ->
+                    composable(route = "StockViewScreen/") { backStackEntry ->
                         StockViewScreen(
                             navController = navController,
                             stockViewModel = stockViewModel,
-                            stockSymbol = backStackEntry.arguments?.getString("stockSymbol") ?: "NOVO"
                         )
                         showNavigate = true
                     }

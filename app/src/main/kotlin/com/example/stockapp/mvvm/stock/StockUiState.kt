@@ -1,18 +1,9 @@
 package com.example.stockapp.mvvm.stock
 
 import co.yml.charts.common.model.Point
+import com.example.stockapp.serializable.Stock
 
-data class StockState(
-    var stocks: MutableList<Stock>
+data class StockUiState(
+    val stock: Stock = Stock(),
+    val stockData: StockData = StockData()
 )
-
-data class Stock(
-    val name: String,
-    val price: Double,
-    val stockData: StockData,
-)
-
-class StockData {
-    var steps: Int = 0
-    var pointsData: List<Point> = emptyList()
-}

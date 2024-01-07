@@ -17,8 +17,8 @@ class PortfolioViewModel @Inject constructor(
     private val stockRepository: StockRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(Stock())
-    val uiState: StateFlow<Stock> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PortfolioUiState())
+    val uiState: StateFlow<PortfolioUiState> = _uiState.asStateFlow()
 
     /*private val _stockData = MutableStateFlow<Stock>()
     val stockData: StateFlow<Stock> = _stockData */

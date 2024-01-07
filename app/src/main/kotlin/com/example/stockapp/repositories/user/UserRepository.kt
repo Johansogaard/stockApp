@@ -43,7 +43,7 @@ class UserRepository @Inject constructor(
 
                     if (loggedInUser != null) {
                         Log.i("UserRepository", "Collecting user data from database")
-                        _state.value = database.retrieve(path = "users", refPath = listOf(authState.userId, "portfolio", "stocks"), defaultValue =  User())
+                        _state.value = database.retrieve(path = "users", refPath = listOf(authState.userId), defaultValue =  User())
                         return@collect
                     } else {
                         Log.i("UserRepository", "Unable to find user in database")

@@ -103,7 +103,14 @@ class MainActivity : ComponentActivity() {
                             stockViewModel = stocksViewModel,
                             competitionViewModel = competitionViewModel,
                             signupViewModel = signupViewModel,
-                            buyViewModel = buyViewModel
+                            buyViewModel = buyViewModel,
+                            portfolioViewModel = portfolioViewModel,
+                            explorerViewModel = explorerViewModel,
+                            indexViewModel = indexViewModel,
+                            orderViewModel = orderViewModel,
+                            searchViewModel = searchViewModel,
+                            introViewModel = introViewModel,
+                            watchViewModel = watchViewModel,
                         )
                     }
                 }
