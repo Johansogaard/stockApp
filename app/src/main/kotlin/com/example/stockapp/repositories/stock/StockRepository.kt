@@ -7,11 +7,13 @@ import com.example.stockapp.integration.firebase.database.FirebaseDatabaseConnec
 import com.example.stockapp.integration.stockapi.StockApi
 import com.example.stockapp.serializable.Stock
 import com.example.stockapp.serializable.User
+import io.finnhub.api.models.SymbolLookup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +25,7 @@ class StockRepository @Inject constructor(
     private val api: StockApi,
     private val authentication: Authentication,
 ){
+
 
 
     private val _selectedStocks = MutableStateFlow<Stock>(Stock())
@@ -43,15 +46,14 @@ class StockRepository @Inject constructor(
         val stockDefault: HashMap<String, Stock> = hashMapOf()
         val stocksFromFirebase = database.retrieve(path = "users", refPath = listOf(authentication.state.value.userId, "portfolio", "stocks"), stockDefault)
 
-
-
         //_stocks.value = stocksFromFirebase
         return null
     }
 
-    suspend fun fetchStockFromApi(): Stock? {
+
+    suspend fun fetchStockFromApi(symbol: String): Stock? {
         try {
-            val stocksFromApi = api.retrieveStock(selectedStock.toString(), "", "")
+            val stocksFromApi = api.retrieveStock(symbol, "", "")
 
             return stocksFromApi
         } catch (e: Exception) {
@@ -62,28 +64,70 @@ class StockRepository @Inject constructor(
     }
 
 
+    suspend fun fetchStocksBySymbols(symbols: List<String>): List<Stock> {
+        try {
+            val fetchedStocks = mutableListOf<Stock>()
+
+            for (symbol in symbols) {
+                val stockFromApi = fetchStockFromApi(symbol)
+                stockFromApi?.let {
+                    fetchedStocks.add(it)
+                }
+            }
+
+            return fetchedStocks
+        } catch (e: Exception) {
+            // Handle API request errors here
+            Log.e("StockRepository", "Error fetching stocks by symbols from API: ${e.message}")
+            return emptyList()
+        }
+    }
+
     suspend fun fetchStocksFromApi(): List<Stock> {
         try {
-            val stocksFromApi = api.retrieveListOfStocks(List<>,"", "")
+            val batchSize = 100 // Adjust the batch size as needed
+            var offset = 0
+            val fetchedStocks = mutableListOf<Stock>()
 
-            // Return the fetched list of stocks
-            return stocksFromApi ?: emptyList()
+            while (true) {
+                val batchStocks = fetchBatchStocksFromApi(batchSize, offset)
+                if (batchStocks.isEmpty()) {
+                    break // No more stocks to fetch
+                }
 
+                fetchedStocks.addAll(batchStocks)
+                offset += batchSize
+            }
 
+            /*
+            _selectedStocks.update {
+                it.copy(value = fetchedStocks)
+            } */
+
+            return fetchedStocks
         } catch (e: Exception) {
             // Handle API request errors here
             Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
+            return emptyList()
         }
     }
 
-    suspend fun fetchAnyStocksFromApi(): List<Stock> {
+    private suspend fun fetchBatchStocksFromApi(batchSize: Int, offset: Int): List<Stock> {
         try {
-            val stocksFromApi = api.retrieveAnyListOfStocks()
+            val batchStocks = api.retrieveAnyListOfStocks(batchSize.toString(), offset.toString(), "", "")
+            return batchStocks ?: emptyList()
         } catch (e: Exception) {
             // Handle API request errors here
-            Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
+            Log.e("StockRepository", "Error fetching batch of stocks from API: ${e.message}")
+            return emptyList()
         }
     }
+
+
+
+
+
+
 
 
     fun refreshStocks() {
