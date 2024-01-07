@@ -25,8 +25,8 @@ class UserRepository @Inject constructor(
     val signInIntentSender: StateFlow<IntentSender?> = _signInIntentSender
     val authState: StateFlow<AuthenticationState> = authentication.state
 
-    private val _state = MutableStateFlow(UserState())
-    val state: StateFlow<UserState> = _state
+    private val _state = MutableStateFlow(User())
+    val state: StateFlow<User> = _state
 
     companion object {
         // Unique request code
@@ -41,17 +41,7 @@ class UserRepository @Inject constructor(
 
                     if (loggedInUser != null) {
                         Log.i("UserRepository", "Collecting user data from database")
-                        _state.update {  currentState ->
-                            currentState.copy(
-                                firstName = database.retrieve("users", listOf(authState.userId, "firstName"), ""),
-                                lastName = database.retrieve("users", listOf(authState.userId, "lastName"), ""),
-                                username = database.retrieve("users", listOf(authState.userId, "username"), ""),
-                                email = database.retrieve("users", listOf(authState.userId, "email"), ""),
-                                country = database.retrieve("users", listOf(authState.userId, "country"), ""),
-                                benches = database.retrieve("users", listOf(authState.userId, "benches"), 0),
-                                level = database.retrieve("users", listOf(authState.userId, "level"), 0),
-                                )
-                        }
+                        _state.value = database.retrieve(path = "users", refPath = listOf(authState.userId, "portfolio", "stocks"), defaultValue =  User())
                         return@collect
                     } else {
                         Log.i("UserRepository", "Unable to find user in database")
