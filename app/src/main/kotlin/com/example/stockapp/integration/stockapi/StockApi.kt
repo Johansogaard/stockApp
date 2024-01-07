@@ -131,6 +131,8 @@ class StockApi @Inject constructor(
         return@withContext null
     }
 
+
+    // symbols ex.: ['NVO', 'GME', 'AAPL']
     suspend fun retrieveListOfStocks(symbols: List<String>, start: String = "", end: String = ""): List<Stock>? = withContext(Dispatchers.IO) {
         val symbolsString: String = symbols.joinToString("-")
         Log.i("StockApi", "$symbolsString")
