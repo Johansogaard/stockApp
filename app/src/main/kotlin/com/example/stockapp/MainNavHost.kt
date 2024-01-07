@@ -162,10 +162,10 @@ fun MainNavHost(
                         )
                         showNavigate = true
                     }
-                    composable(route = Screen.GoogleSignInView.route) {
+                 /*  composable(route = Screen.GoogleSignInView.route) {
                         LoginGoogleView(loginViewModel = loginViewModel,navController = navController)
                         showNavigate = false
-                    }
+                    }*/
                 }
             }
         }
