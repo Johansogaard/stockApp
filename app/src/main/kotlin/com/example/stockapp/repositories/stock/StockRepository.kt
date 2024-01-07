@@ -20,33 +20,36 @@ import javax.inject.Singleton
 @Singleton
 class StockRepository @Inject constructor(
     private val database: FirebaseDatabaseConnection,
-    private val api: StockApi
+    private val api: StockApi,
+    private val authentication: Authentication,
 ){
 
-    private val _stocks = MutableStateFlow<List<Stock>>(emptyList())
-    val stocks: StateFlow<List<Stock>> = _stocks
+
+    private val _selectedStocks = MutableStateFlow<Stock>(Stock())
+    val selectedStock: StateFlow<Stock> = _selectedStocks
 
     init {
         CoroutineScope(Dispatchers.Default).launch {
             // Fetch stocks from Firebase or cache initially
-            fetchStocksFromFirebase()
+            //fetchStocksFromFirebase()
 
             // Fetch stocks from API and update the StateFlow
-            fetchStocksFromApi()
+            //fetchStocksFromApi()
         }
     }
 
-    private suspend fun fetchStocksFromFirebase() {
 
-        val stocksFromFirebase = database.retrieve(Stock)
-        _stocks.value = stocksFromFirebase
+    private suspend fun fetchUserStocksFromFirebase(): List<Stock>? {
+        val stockDefault: HashMap<String, Stock> = hashMapOf()
+        val stocksFromFirebase = database.retrieve(path = "users", refPath = listOf(authentication.state.value.userId, "portfolio", "stocks"), stockDefault)
+        //_stocks.value = stocksFromFirebase
+        return null
     }
 
-    private suspend fun fetchStocksFromApi() {
 
+    private suspend fun fetchStocksFromApi(): List<Stock> {
         try {
             val stocksFromApi = api.fetchStocks()
-            _stocks.value = stocksFromApi
         } catch (e: Exception) {
             // Handle API request errors here
             Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
@@ -55,7 +58,7 @@ class StockRepository @Inject constructor(
 
     fun refreshStocks() {
         // This function can be called to refresh the stocks from the API
-        fetchStocksFromApi()
+
     }
 
     fun clearCache() {
