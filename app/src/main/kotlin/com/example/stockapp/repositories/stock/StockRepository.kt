@@ -37,18 +37,13 @@ class StockRepository @Inject constructor(
     }
 
     private suspend fun fetchStocksFromFirebase() {
-        // Implement fetching stocks from Firebase database
-        // You can use database.retrieve or any other method to fetch stocks
-        // and update the _stocks StateFlow with the fetched data
-        // Example:
+
         val stocksFromFirebase = database.retrieve(Stock)
         _stocks.value = stocksFromFirebase
     }
 
     private suspend fun fetchStocksFromApi() {
-        // Implement fetching stocks from your API
-        // You can use the provided StockApi interface to make API requests
-        // Example:
+
         try {
             val stocksFromApi = api.fetchStocks()
             _stocks.value = stocksFromApi
