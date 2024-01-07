@@ -143,4 +143,3 @@ class StockRepository @Inject constructor(
     }
 }
 
-}
