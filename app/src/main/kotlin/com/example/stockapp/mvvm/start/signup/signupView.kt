@@ -53,7 +53,8 @@ fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
 {
 
     val context = LocalContext.current
-    val fullName = remember { mutableStateOf(TextFieldValue()) }
+    val firstName = remember { mutableStateOf(TextFieldValue()) }
+    val lastName = remember { mutableStateOf(TextFieldValue()) }
     val email = remember { mutableStateOf(TextFieldValue()) }
     val username = remember { mutableStateOf(TextFieldValue()) }
     val password = remember { mutableStateOf(TextFieldValue()) }
@@ -78,8 +79,12 @@ fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
         )
         // Full Name
         CustomTextField(
-            value = fullName,
-            label = stringResource(R.string.signup_name)
+            value = firstName,
+            label = stringResource(R.string.signup_firstname)
+        )
+        CustomTextField(
+            value = lastName,
+            label = stringResource(R.string.signup_lastname)
         )
 
         CustomTextField(
@@ -106,20 +111,9 @@ fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
         CustomButton(
             onClick = {
 
-                    /*EmailAuthManager.signUp(email.value.text, password.value.text, username.value.text) {
-                          isSuccess, errorMessage ->
-                          if (isSuccess)
-                          {
+                      signupViewModel.signUpUser(email.value.text,firstName.value.text,lastName.value.text,password.value.text,username.value.text)
 
-                            println("successfull")
-                              navController.navigate(Screen.LoginScreen.route)
-                          }
-                          else{
-                              Toast.makeText(context,"Sign up failed. Error message: $errorMessage",Toast.LENGTH_SHORT).show()
-                              println("Sign up failed. Error message: $errorMessage")
-                          }
-                      }
-*/
+
 
 
             },

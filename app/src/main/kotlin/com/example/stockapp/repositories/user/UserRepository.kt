@@ -1,5 +1,7 @@
 package com.example.stockapp.repositories.user
 
+import android.content.Intent
+import android.content.IntentSender
 import android.util.Log
 import com.example.stockapp.integration.firebase.authentication.Authentication
 import com.example.stockapp.integration.firebase.authentication.AuthenticationState
@@ -99,5 +101,9 @@ class UserRepository @Inject constructor(
         Log.d("updateIntentSender", "intentsender = "+_signInIntentSender.value + " new intentsender ="+intentSender)
         _signInIntentSender.value = intentSender
         Log.d("updateIntentSender", "intentsender after update = "+_signInIntentSender.value )
+    }
+    fun checkSignedIn(): Boolean
+    {
+        return authentication.state.value.loggedIn
     }
 }
