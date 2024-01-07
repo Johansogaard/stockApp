@@ -289,7 +289,7 @@ fun StockViewScreen(navController: NavController, stockViewModel: StockViewModel
     }
 
 }
-
+/*
 @Preview (showBackground = true)
 @Composable
 fun StockViewScreenPreview() {
@@ -297,3 +297,5 @@ fun StockViewScreenPreview() {
         LocalContext.current, stockApi = StockApi(LocalContext.current)
     )), "NOVO")
 }
+
+ */
