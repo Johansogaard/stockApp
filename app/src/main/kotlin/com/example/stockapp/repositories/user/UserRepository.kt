@@ -92,4 +92,8 @@ class UserRepository @Inject constructor(
         _signInIntentSender.value = intentSender
         Log.d("updateIntentSender", "intentsender after update = "+_signInIntentSender.value )
     }
+    fun checkSignedIn(): Boolean
+    {
+        return authentication.state.value.loggedIn
+    }
 }

@@ -83,7 +83,8 @@
 
     <!-- Signup Screen -->
     <string name="signup_get_started">Get started</string>
-    <string name="signup_name">Full Name</string>
+    <string name="signup_firstname">First Name</string>
+    <string name="signup_lastname">Last Name</string>
     <string name="signup_username">Choose a username</string>
     <string name="signup_password">Choose a password</string>
     <string name="signup_referral_opt">Referral Code (Optional)</string>
