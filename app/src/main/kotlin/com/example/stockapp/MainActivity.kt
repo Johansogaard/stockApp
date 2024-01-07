@@ -18,7 +18,6 @@ import com.example.stockapp.integration.firebase.authentication.Authentication
 import com.example.stockapp.integration.firebase.authentication.AuthenticationState
 import com.example.stockapp.integration.firebase.database.FirebaseDatabaseConnection
 import com.example.stockapp.integration.stockapi.StockApi
-import com.example.stockapp.ui.theme.StockAppTheme
 import com.example.stockapp.mvvm.buy.buy.BuyViewModel
 import com.example.stockapp.mvvm.competition.CompetitionViewModel
 import com.example.stockapp.mvvm.index.IndexViewModel
@@ -32,6 +31,7 @@ import com.example.stockapp.mvvm.start.login.LoginViewModel
 import com.example.stockapp.mvvm.start.signup.SignupViewModel
 import com.example.stockapp.mvvm.stock.StockViewModel
 import com.example.stockapp.mvvm.watch.WatchViewModel
+import com.example.stockapp.ui.theme.StockAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -102,6 +102,7 @@ class MainActivity : ComponentActivity() {
                             loginViewModel = loginViewModel,
                             stockViewModel = stocksViewModel,
                             competitionViewModel = competitionViewModel,
+                            signupViewModel = signupViewModel,
                             buyViewModel = buyViewModel
                         )
                     }

@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -105,9 +103,33 @@ fun LoginLayout(navController: NavController, loginViewModel: LoginViewModel)
         , text = stringResource(R.string.common_login))
         OrDivider()
 
+        val context = LocalContext.current
+        val intentSender by loginViewModel.signInIntentSender.collectAsState()
 
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // Handle the successful sign-in
+                result.data?.let { data ->
+                    loginViewModel.processSignInResult(data)
+                }
+            } else {
+                // Handle cancellation or error
+                Log.d("SignInScreen", "Sign-in cancelled or error occurred.")
+            }
+        }
+        // Observe the StateFlow and react when a new IntentSender is emitted
+        LaunchedEffect(intentSender) {
+            intentSender?.let { sender ->
+                if (context is Activity) {
+                    val request = IntentSenderRequest.Builder(sender).build()
+                    launcher.launch(request)
+                }
+            }
+        }
+
+        // Add a Button to trigger Google Sign-In
         CustomButton(onClick = {
-            navController.navigate(Screen.GoogleSignInView.route)
+            loginViewModel.signInGoogleRequest()
         }, text = stringResource(R.string.common_with_google), outlined = true)
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -144,7 +166,7 @@ fun LoginLayout(navController: NavController, loginViewModel: LoginViewModel)
         }
     }
     }
-@Composable
+/*@Composable
 fun LoginGoogleView(loginViewModel: LoginViewModel, navController: NavController) {
     val context = LocalContext.current
     val intentSender by loginViewModel.signInIntentSender.collectAsState()
@@ -175,7 +197,7 @@ fun LoginGoogleView(loginViewModel: LoginViewModel, navController: NavController
         Text("Sign in with Google")
     }
 
-}
+}*/
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {

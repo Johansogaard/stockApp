@@ -34,6 +34,7 @@ import com.example.stockapp.mvvm.start.intro.IntroScreen
 import com.example.stockapp.mvvm.start.login.LoginViewModel
 import com.example.stockapp.mvvm.start.signup.ChoseSignupScreen
 import com.example.stockapp.mvvm.start.signup.SignUpScreen
+import com.example.stockapp.mvvm.start.signup.SignupViewModel
 import com.example.stockapp.mvvm.stock.StockViewModel
 import com.example.stockapp.mvvm.stock.StockViewScreen
 import com.example.stockapp.mvvm.watch.WatchScreen
@@ -47,6 +48,7 @@ fun MainNavHost(
     loginViewModel: LoginViewModel,
     stockViewModel: StockViewModel,
     buyViewModel: BuyViewModel,
+    signupViewModel: SignupViewModel,
     competitionViewModel: CompetitionViewModel,
 
     ) {
@@ -96,7 +98,7 @@ fun MainNavHost(
                     }
                     composable(route = Screen.ChoseSignupScreen.route) {
                         Column {
-                            ChoseSignupScreen(navController = navController)
+                            ChoseSignupScreen(navController = navController,signupViewModel =signupViewModel)
                             showNavigate = false
                         }
                     }
@@ -105,7 +107,7 @@ fun MainNavHost(
                         showNavigate = true
                     }
                     composable(route = Screen.SignUpScreen.route) {
-                        SignUpScreen(navController = navController)
+                        SignUpScreen(navController = navController, signupViewModel = signupViewModel )
                         showNavigate = false
                     }
                     composable(route = Screen.LoginScreen.route) {

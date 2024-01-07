@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
 import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.ui.theme.ClickableText
@@ -36,13 +35,13 @@ import com.example.stockapp.ui.theme.CustomTextField
 
 
 @Composable
-fun SignUpScreen(navController: NavController)
+fun SignUpScreen(navController: NavController,signupViewModel: SignupViewModel)
 {
     // val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        SignUpLayout(navController)
+        SignUpLayout(navController,signupViewModel)
     }
 
 }
@@ -50,7 +49,7 @@ fun SignUpScreen(navController: NavController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpLayout(navController: NavController)
+fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
 {
 
     val context = LocalContext.current
@@ -161,5 +160,5 @@ fun SignUpLayout(navController: NavController)
 @Preview (showBackground = true)
 @Composable
 fun PreviewSignUpScreen() {
-    SignUpScreen(navController = rememberNavController())
+    //SignUpScreen(navController = rememberNavController())
 }

@@ -3,9 +3,15 @@ package com.example.stockapp.mvvm.start.signup
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import com.example.stockapp.R
-
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,20 +27,19 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.stockapp.R
 import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
-import com.example.stockapp.ui.theme.CustomTextField
 
 @Composable
-fun ChoseSignupScreen(navController: NavController)
+fun ChoseSignupScreen(navController: NavController,signupViewModel: SignupViewModel)
 {
   // val appUiState by appViewModel.uiState.collectAsState()
 
    Box(modifier = Modifier.fillMaxSize())
    {
-      ChoseSignupLayOut(navController)
+      ChoseSignupLayOut(navController,signupViewModel)
    }
 
 }
@@ -42,7 +47,7 @@ fun ChoseSignupScreen(navController: NavController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoseSignupLayOut(navController: NavController)
+fun ChoseSignupLayOut(navController: NavController,signupViewModel: SignupViewModel)
 {
    val email = remember { mutableStateOf(TextFieldValue()) }
    Column(
@@ -53,11 +58,11 @@ fun ChoseSignupLayOut(navController: NavController)
    )
    {
       Text(text = stringResource(R.string.choose_signup_get_started))
-
+/*
       CustomTextField(
          value = email,
          label = stringResource(R.string.common_email)
-      )
+      )*/
       Spacer(modifier = Modifier.height(16.dp))
 
       CustomButton(onClick = {
@@ -133,5 +138,5 @@ fun OrDivider() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewChoseSignupScreen() {
-   ChoseSignupScreen(navController = rememberNavController())
+   //ChoseSignupScreen(navController = rememberNavController())
 }
