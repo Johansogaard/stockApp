@@ -18,6 +18,8 @@ sealed class Screen(val route: String) {
     object StockViewScreen: Screen("stockView_screen")
 
     object IndexScreen: Screen("index_screen")
+
+    object GoogleSignInView: Screen("google_signin")
     fun withArgs(vararg args: String): String{
         return buildString {
             append(route)

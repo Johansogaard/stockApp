@@ -1,9 +1,25 @@
 package com.example.stockapp.screens
 
+import android.app.Activity
+import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.layout.*
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,12 +31,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.integration.firebase.authentication.EmailAuthManager
-import com.example.stockapp.mvvm.start.signup.OrDivider
 import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.mvvm.start.login.LoginViewModel
+import com.example.stockapp.mvvm.start.signup.OrDivider
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 import com.example.stockapp.ui.theme.CustomTextField
@@ -29,15 +43,15 @@ import com.example.stockapp.ui.theme.CustomTextField
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel)
 {
 
-    /*Box(modifier = Modifier.fillMaxSize())
+    Box(modifier = Modifier.fillMaxSize())
     {
         LoginLayout(navController = navController, loginViewModel = loginViewModel)
-    }*/
+    }
 
 }
 
 
-/*
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginLayout(navController: NavController, loginViewModel: LoginViewModel)
@@ -81,28 +95,46 @@ fun LoginLayout(navController: NavController, loginViewModel: LoginViewModel)
             if (uName.length == 0 || pWord.length == 0) {
                 Toast.makeText(context, "empty username or password", Toast.LENGTH_SHORT).show()
             } else {
-                EmailAuthManager.signIn(uName, pWord) { isSuccess, errorMessage ->
-                    if (loginViewModel.state.value.isLoggedIn) {
-                        navController.navigate(Screen.PortfolioScreen.route)
-                    } else {
-                        val formattedErrorMessage = String.format(loginFailedMessage, errorMessage)
-                        Toast.makeText(context, formattedErrorMessage, Toast.LENGTH_SHORT).show()
-                        println("Login failed. Error message: $errorMessage")
-                    }
+              loginViewModel.signInMailRequest(uName,pWord)
+
                 }
-            }
+
         }
         , text = stringResource(R.string.common_login))
         OrDivider()
 
+        val context = LocalContext.current
+        val intentSender by loginViewModel.signInIntentSender.collectAsState()
 
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // Handle the successful sign-in
+                result.data?.let { data ->
+                    loginViewModel.processSignInResult(data)
+                }
+            } else {
+                // Handle cancellation or error
+                Log.d("SignInScreen", "Sign-in cancelled or error occurred.")
+            }
+        }
+        // Observe the StateFlow and react when a new IntentSender is emitted
+        LaunchedEffect(intentSender) {
+            intentSender?.let { sender ->
+                if (context is Activity) {
+                    val request = IntentSenderRequest.Builder(sender).build()
+                    launcher.launch(request)
+                }
+            }
+        }
+
+        // Add a Button to trigger Google Sign-In
         CustomButton(onClick = {
-            navController.navigate(Screen.PortfolioScreen.route)
+            loginViewModel.signInGoogleRequest()
         }, text = stringResource(R.string.common_with_google), outlined = true)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CustomButton(onClick = {  navController.navigate(Screen.PortfolioScreen.route) }
+        CustomButton(onClick = {   }
             , text = stringResource(R.string.common_with_apple), outlined = true)
 
     }
@@ -134,9 +166,40 @@ fun LoginLayout(navController: NavController, loginViewModel: LoginViewModel)
         }
     }
     }
+/*@Composable
+fun LoginGoogleView(loginViewModel: LoginViewModel, navController: NavController) {
+    val context = LocalContext.current
+    val intentSender by loginViewModel.signInIntentSender.collectAsState()
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Handle the successful sign-in
+            result.data?.let { data ->
+                loginViewModel.processSignInResult(data)
+            }
+        } else {
+            // Handle cancellation or error
+            Log.d("SignInScreen", "Sign-in cancelled or error occurred.")
+        }
+    }
+    // Observe the StateFlow and react when a new IntentSender is emitted
+    LaunchedEffect(intentSender) {
+        intentSender?.let { sender ->
+            if (context is Activity) {
+                val request = IntentSenderRequest.Builder(sender).build()
+                launcher.launch(request)
+            }
+        }
+    }
+
+    // Add a Button to trigger Google Sign-In
+    Button(onClick = { loginViewModel.signInGoogleRequest() }) {
+        Text("Sign in with Google")
+    }
+
+}*/
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginScreen() {
-    LoginScreen(navController = rememberNavController(), loginViewModel = LoginViewModel())
+  //  LoginScreen(navController = rememberNavController(), loginViewModel = LoginViewModel)
 }
-*/

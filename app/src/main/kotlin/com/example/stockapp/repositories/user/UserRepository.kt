@@ -21,11 +21,17 @@ class UserRepository @Inject constructor(
     private val database: FirebaseDatabaseConnection
 ) {
 
-    private val authState: StateFlow<AuthenticationState> = authentication.state
+    private val _signInIntentSender = MutableStateFlow<IntentSender?>(null)
+    val signInIntentSender: StateFlow<IntentSender?> = _signInIntentSender
+    val authState: StateFlow<AuthenticationState> = authentication.state
 
     private val _state = MutableStateFlow(UserState())
     val state: StateFlow<UserState> = _state
 
+    companion object {
+        // Unique request code
+        const val REQ_ONE_TAP = 1001
+    }
     init {
         CoroutineScope(Dispatchers.Default).launch {
             authentication.state.collect { authState ->
@@ -75,5 +81,23 @@ class UserRepository @Inject constructor(
         authentication.signOut()
     }
 
-
+    fun send (email: String,password: String) {
+        authentication.signInUser(email,password)
+    }
+    fun signInGoogleRequest() {
+        authentication.onSignInRequired = { intentSender ->
+            _signInIntentSender.value = intentSender
+        }
+        authentication.displayGoogleUISignIn()
+    }
+    fun processSignInResult(data: Intent)
+    {
+        authentication.signIn(Authentication.REQ_ONE_TAP,data)
+    }
+    fun updateIntentSender(intentSender: IntentSender?)
+    {
+        Log.d("updateIntentSender", "intentsender = "+_signInIntentSender.value + " new intentsender ="+intentSender)
+        _signInIntentSender.value = intentSender
+        Log.d("updateIntentSender", "intentsender after update = "+_signInIntentSender.value )
+    }
 }

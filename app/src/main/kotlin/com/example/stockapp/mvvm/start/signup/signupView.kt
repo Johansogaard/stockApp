@@ -1,9 +1,20 @@
 package com.example.stockapp.mvvm.start.signup
 
-import android.widget.Toast
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,9 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.integration.firebase.authentication.EmailAuthManager
 import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
@@ -26,13 +35,13 @@ import com.example.stockapp.ui.theme.CustomTextField
 
 
 @Composable
-fun SignUpScreen(navController: NavController)
+fun SignUpScreen(navController: NavController,signupViewModel: SignupViewModel)
 {
     // val appUiState by appViewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        SignUpLayout(navController)
+        SignUpLayout(navController,signupViewModel)
     }
 
 }
@@ -40,7 +49,7 @@ fun SignUpScreen(navController: NavController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpLayout(navController: NavController)
+fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
 {
 
     val context = LocalContext.current
@@ -97,7 +106,7 @@ fun SignUpLayout(navController: NavController)
         CustomButton(
             onClick = {
 
-                    EmailAuthManager.signUp(email.value.text, password.value.text, username.value.text) {
+                    /*EmailAuthManager.signUp(email.value.text, password.value.text, username.value.text) {
                           isSuccess, errorMessage ->
                           if (isSuccess)
                           {
@@ -110,7 +119,7 @@ fun SignUpLayout(navController: NavController)
                               println("Sign up failed. Error message: $errorMessage")
                           }
                       }
-
+*/
 
 
             },
@@ -151,5 +160,5 @@ fun SignUpLayout(navController: NavController)
 @Preview (showBackground = true)
 @Composable
 fun PreviewSignUpScreen() {
-    SignUpScreen(navController = rememberNavController())
+    //SignUpScreen(navController = rememberNavController())
 }
