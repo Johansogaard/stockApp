@@ -21,7 +21,7 @@ class UserRepository @Inject constructor(
     private val database: FirebaseDatabaseConnection
 ) {
 
-    val authState: StateFlow<AuthenticationState> = authentication.state
+    private val authState: StateFlow<AuthenticationState> = authentication.state
 
     private val _state = MutableStateFlow(UserState())
     val state: StateFlow<UserState> = _state
