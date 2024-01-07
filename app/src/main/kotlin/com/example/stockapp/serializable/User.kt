@@ -10,5 +10,5 @@ data class User(
     val email: String = "",
     val country: String = "",
     val balance: Double = 0.0,
-    val ownedStocks: Map<String, Int> = emptyMap(),
+    val stocks: Map<Int, Stock> = emptyMap(),
 )
