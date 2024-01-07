@@ -1,5 +1,7 @@
 package com.example.stockapp.repositories.user
 
+import android.content.Intent
+import android.content.IntentSender
 import android.util.Log
 import com.example.stockapp.integration.firebase.authentication.Authentication
 import com.example.stockapp.integration.firebase.authentication.AuthenticationState
