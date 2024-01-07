@@ -88,14 +88,14 @@ class StockRepository @Inject constructor(
 
     suspend fun fetchStocksFromApi(): List<Stock> {
         try {
-            val batchSize = 100 // Adjust the batch size as needed
+            val batchSize = 100
             var offset = 0
             val fetchedStocks = mutableListOf<Stock>()
 
             while (true) {
                 val batchStocks = fetchBatchStocksFromApi(batchSize, offset)
                 if (batchStocks.isEmpty()) {
-                    break // No more stocks to fetch
+                    break
                 }
 
                 fetchedStocks.addAll(batchStocks)
