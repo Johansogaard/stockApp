@@ -103,6 +103,7 @@ class MainActivity : ComponentActivity() {
                             stockViewModel = stocksViewModel,
                             competitionViewModel = competitionViewModel,
                             signupViewModel = signupViewModel,
+                            portfolioViewModel = portfolioViewModel,
                             buyViewModel = buyViewModel
                         )
                     }

@@ -28,6 +28,7 @@ import com.example.stockapp.mvvm.competition.CompetitionViewModel
 import com.example.stockapp.mvvm.index.IndexScreen
 import com.example.stockapp.mvvm.order.OrderScreen
 import com.example.stockapp.mvvm.portfolio.PortfolioScreen
+import com.example.stockapp.mvvm.portfolio.PortfolioViewModel
 import com.example.stockapp.mvvm.search.explorer.ExplorerScreen
 import com.example.stockapp.mvvm.search.search.SearchScreen
 import com.example.stockapp.mvvm.start.intro.IntroScreen
@@ -49,6 +50,7 @@ fun MainNavHost(
     stockViewModel: StockViewModel,
     buyViewModel: BuyViewModel,
     signupViewModel: SignupViewModel,
+    portfolioViewModel: PortfolioViewModel,
     competitionViewModel: CompetitionViewModel,
 
     ) {
@@ -103,7 +105,7 @@ fun MainNavHost(
                         }
                     }
                     composable(route = Screen.PortfolioScreen.route) {
-                        PortfolioScreen(navController = navController)
+                        PortfolioScreen(navController = navController,portfolioViewModel = portfolioViewModel)
                         showNavigate = true
                     }
                     composable(route = Screen.SignUpScreen.route) {

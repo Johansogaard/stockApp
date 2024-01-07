@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
 import com.example.stockapp.stockApi.getStockData
 import kotlinx.coroutines.Dispatchers
@@ -43,14 +42,14 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun PortfolioScreen(navController: NavController) {
+fun PortfolioScreen(navController: NavController,portfolioViewModel: PortfolioViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
-        PortfolioLayout(navController)
+        PortfolioLayout(navController,portfolioViewModel)
     }
 }
 
 @Composable
-fun PortfolioLayout(navController: NavController) {
+fun PortfolioLayout(navController: NavController,portfolioViewModel: PortfolioViewModel) {
     val coroutineScope = rememberCoroutineScope()
     var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
     var apiError by remember { mutableStateOf<String?>(null) }
@@ -99,8 +98,7 @@ fun PortfolioLayout(navController: NavController) {
                 //Spacer(modifier = Modifier.weight(0.90f))
                 IconButton(
                     onClick = {
-                        //EmailAuthManager.signOut()
-                        //navController.navigate(Screen.IntroScreen.route)
+                              portfolioViewModel.signOutOfApp()
                     },
 
                     ) {
@@ -169,5 +167,5 @@ fun PortfolioLayout(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {
-    PortfolioScreen(navController = rememberNavController())
+   // PortfolioScreen(navController = rememberNavController())
 }
