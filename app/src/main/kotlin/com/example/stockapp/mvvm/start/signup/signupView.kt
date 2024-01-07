@@ -96,11 +96,13 @@ fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
             value = username,
             label = stringResource(R.string.signup_username)
         )
+        if (!signupViewModel.checkIfSignedIn()) {
+            CustomTextField(
+                value = password,
+                label = stringResource(R.string.signup_password)
 
-        CustomTextField(
-            value = password,
-            label = stringResource(R.string.signup_password)
-        )
+            )
+        }
 
         CustomTextField(
             value = referralCode,
@@ -110,12 +112,7 @@ fun SignUpLayout(navController: NavController,signupViewModel: SignupViewModel)
         // Signup Button
         CustomButton(
             onClick = {
-
-                      signupViewModel.signUpUser(email.value.text,firstName.value.text,lastName.value.text,password.value.text,username.value.text)
-
-
-
-
+                     signupViewModel.signUpUser(email.value.text,firstName.value.text,lastName.value.text,password.value.text,username.value.text)
             },
             text = stringResource(R.string.signup_sign_up),
         )

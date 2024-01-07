@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -90,12 +89,7 @@ class UserRepository @Inject constructor(
     {
         authentication.signIn(Authentication.REQ_ONE_TAP,data)
     }
-    fun updateIntentSender(intentSender: IntentSender?)
-    {
-        Log.d("updateIntentSender", "intentsender = "+_signInIntentSender.value + " new intentsender ="+intentSender)
-        _signInIntentSender.value = intentSender
-        Log.d("updateIntentSender", "intentsender after update = "+_signInIntentSender.value )
-    }
+
     fun checkSignedIn(): Boolean
     {
         return authentication.state.value.loggedIn

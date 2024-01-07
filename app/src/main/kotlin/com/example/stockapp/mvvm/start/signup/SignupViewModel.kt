@@ -1,5 +1,8 @@
 package com.example.stockapp.mvvm.start.signup
 
+import android.content.Intent
+import android.content.IntentSender
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stockapp.repositories.user.UserRepository
@@ -20,27 +23,38 @@ class SignupViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignupUiState())
     val state: StateFlow<SignupUiState> = _uiState.asStateFlow()
 
-    fun signUpUser(email: String, firstName: String, lastName: String, password: String, uName: String)
+    val signInIntentSender:StateFlow<IntentSender?> = userRepository.signInIntentSender
+    fun signUpUser(email: String, firstName: String, lastName: String, pWord: String, uName: String)
     {
-        if(userRepository.checkSignedIn()) {
+
+        if(checkIfSignedIn()&& notNullCheck(email,firstName,lastName,uName)) {
             _uiState.value.user = createNewUserObject(email, firstName, lastName, uName)
             viewModelScope.launch {
                 userRepository.initializeUser(_uiState.value.user)
             }
         }
-        else
+        else if(notNullCheck(email,firstName,lastName,uName,pWord))
         {
             _uiState.value.user = createNewUserObject(email, firstName, lastName, uName)
             viewModelScope.launch {
-                val createUserAuth = async {
-                    userRepository.createUserWithEmail(email,password)
+                val data = async {
+                    userRepository.send(email,pWord)
                 }
-                createUserAuth.await()
+
+                val result = data.await()
                 userRepository.initializeUser(_uiState.value.user)
             }
          }
 
+    }
+    fun notNullCheck(vararg strings: String?) : Boolean
+    {
+        return strings.all { it != null && it.length !=null }
+    }
 
+    fun checkIfSignedIn() : Boolean
+    {
+        return userRepository.checkSignedIn()
     }
     fun createNewUserObject(email: String,firstName: String,lastName: String,uName: String): User
     {
@@ -53,6 +67,17 @@ class SignupViewModel @Inject constructor(
         )
        return newUser
     }
+    fun processSignInResult(data: Intent)
+    {
 
+        userRepository.processSignInResult(data)
+    }
+    fun signInGoogleRequest()
+    {
+        Log.d("SignInGoogleRequest", "Sign-in has been pressed. \nIntent sender check = "+signInIntentSender.value)
+
+        // userRepository.updateIntentSender(signInIntentSender.value)
+        userRepository.signInGoogleRequest()
+    }
 
 }

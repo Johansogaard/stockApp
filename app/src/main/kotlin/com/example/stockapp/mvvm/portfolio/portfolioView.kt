@@ -46,8 +46,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun PortfolioScreen(navController: NavController, portfolioViewModel: PortfolioViewModel) {
-    val uiState by portfolioViewModel.uiState.collectAsState()
+fun PortfolioScreen(navController: NavController,portfolioViewModel: PortfolioViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         PortfolioLayout(
             navController = navController,
@@ -58,7 +57,21 @@ fun PortfolioScreen(navController: NavController, portfolioViewModel: PortfolioV
 }
 
 @Composable
-fun PortfolioLayout(navController: NavController, portfolioViewModel: PortfolioViewModel, uiState: PortfolioUiState) {
+fun PortfolioLayout(navController: NavController,portfolioViewModel: PortfolioViewModel) {
+    val coroutineScope = rememberCoroutineScope()
+    var stockData by remember { mutableStateOf<List<Triple<Float, Float, Float>>>(emptyList()) }
+    var apiError by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        coroutineScope.launch(Dispatchers.IO) {
+            try {
+                stockData = getStockData("AAPL", "MINUTE", 150)
+                apiError = null // Reset the error message
+            } catch (exception: Exception) {
+                apiError = exception.localizedMessage // Capture the error message
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -93,7 +106,7 @@ fun PortfolioLayout(navController: NavController, portfolioViewModel: PortfolioV
                 //Spacer(modifier = Modifier.weight(0.90f))
                 IconButton(
                     onClick = {
-                        portfolioViewModel.signOut()
+                              portfolioViewModel.signOutOfApp()
                     },
 
                     ) {
@@ -159,8 +172,8 @@ fun PortfolioLayout(navController: NavController, portfolioViewModel: PortfolioV
     }
 }
 
-/*@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewPortfolioScreen() {
-    PortfolioScreen(navController = rememberNavController(), portfolioViewModel = PortfolioViewModel(stockRepository = StockRepository()))
-}*/
+   // PortfolioScreen(navController = rememberNavController())
+}

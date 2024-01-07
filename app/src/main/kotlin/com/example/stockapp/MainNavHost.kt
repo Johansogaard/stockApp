@@ -57,13 +57,6 @@ fun MainNavHost(
     buyViewModel: BuyViewModel,
     signupViewModel: SignupViewModel,
     competitionViewModel: CompetitionViewModel,
-    portfolioViewModel: PortfolioViewModel,
-    explorerViewModel: ExplorerViewModel,
-    indexViewModel: IndexViewModel,
-    orderViewModel: OrderViewModel,
-    searchViewModel: SearchViewModel,
-    introViewModel: IntroViewModel,
-    watchViewModel: WatchViewModel,
 
     ) {
 
