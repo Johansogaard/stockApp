@@ -31,6 +31,7 @@ class StockRepository @Inject constructor(
     private val _selectedStocks = MutableStateFlow<Stock>(Stock())
     val selectedStock: StateFlow<Stock> = _selectedStocks
 
+    /*
     init {
         CoroutineScope(Dispatchers.Default).launch {
             // Fetch stocks from Firebase or cache initially
@@ -40,6 +41,8 @@ class StockRepository @Inject constructor(
             //fetchStocksFromApi()
         }
     }
+
+     */
 
 
     suspend fun fetchUserStocksFromFirebase(): List<Stock>? {
