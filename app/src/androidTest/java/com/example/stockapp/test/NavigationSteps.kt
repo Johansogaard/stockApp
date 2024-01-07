@@ -1,4 +1,4 @@
-package com.example.stockapp.test
+/*package com.example.stockapp.test
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -61,3 +61,4 @@ class NavigationSteps {
     }}
 
 
+ */

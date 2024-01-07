@@ -168,10 +168,9 @@ fun MainNavHost(
                         WatchScreen(navController = navController)
                         showNavigate = true
                     }
-                    composable(route = "StockViewScreen/") { backStackEntry ->
+                    composable(route = Screen.StockViewScreen.route) { backStackEntry ->
                         StockViewScreen(
                             navController = navController,
-                            stockViewModel = stockViewModel,
                         )
                         showNavigate = true
                     }

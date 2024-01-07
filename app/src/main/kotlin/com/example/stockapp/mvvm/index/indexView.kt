@@ -26,10 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 
 import com.example.stockapp.R
-import com.example.stockapp.stockApi.ShowStockists
-import com.example.stockapp.stockApi.getGroupTickers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.stockapp.mvvm.Screen
 
 @Stable
 var activeButton by mutableStateOf("WORLD")
@@ -52,16 +49,12 @@ fun IndexScreen(navController: NavController) {
                 activeButton = selectedButton
             }
 
-            LaunchedEffect(activeButton) {
-                coroutineScope.launch(Dispatchers.IO) {
-                    stockNames = getGroupTickers(activeButton)
-                    println(stockNames)
-                }
+            Button(
+                onClick = { navController.navigate(Screen.StockViewScreen.route) }
+            ) {
+                Text(text = "View a stock")
             }
 
-            if (stockNames.isNotEmpty()) {
-                ShowStockists(navController, stockNames)
-            }
         }
     }
 }

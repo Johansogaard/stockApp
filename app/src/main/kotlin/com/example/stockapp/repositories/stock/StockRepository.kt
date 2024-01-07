@@ -2,20 +2,11 @@ package com.example.stockapp.repositories.stock
 
 import android.util.Log
 import com.example.stockapp.integration.firebase.authentication.Authentication
-import com.example.stockapp.integration.firebase.authentication.AuthenticationState
 import com.example.stockapp.integration.firebase.database.FirebaseDatabaseConnection
 import com.example.stockapp.integration.stockapi.StockApi
 import com.example.stockapp.serializable.Stock
-import com.example.stockapp.serializable.User
-import io.finnhub.api.models.SymbolLookup
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,21 +19,8 @@ class StockRepository @Inject constructor(
 
 
 
-    private val _selectedStocks = MutableStateFlow<Stock>(Stock())
-    val selectedStock: StateFlow<Stock> = _selectedStocks
-
-    /*
-    init {
-        CoroutineScope(Dispatchers.Default).launch {
-            // Fetch stocks from Firebase or cache initially
-            //fetchStocksFromFirebase()
-
-            // Fetch stocks from API and update the StateFlow
-            //fetchStocksFromApi()
-        }
-    }
-
-     */
+    private val _selectedStock = MutableStateFlow(Stock())
+    val selectedStock: StateFlow<Stock> = _selectedStock
 
 
     suspend fun fetchUserStocksFromFirebase(): List<Stock>? {
@@ -56,9 +34,8 @@ class StockRepository @Inject constructor(
 
     suspend fun fetchStockFromApi(symbol: String): Stock? {
         try {
-            val stocksFromApi = api.retrieveStock(symbol, "", "")
+            return api.retrieveStock(symbol, "", "")
 
-            return stocksFromApi
         } catch (e: Exception) {
             // Handle API request errors here
             Log.e("StockRepository", "Error fetching stocks from API: ${e.message}")
@@ -124,6 +101,11 @@ class StockRepository @Inject constructor(
             Log.e("StockRepository", "Error fetching batch of stocks from API: ${e.message}")
             return emptyList()
         }
+    }
+
+
+    fun setSelectedStock(stock: Stock) {
+        _selectedStock.value = stock
     }
 
 

@@ -15,9 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import co.yml.charts.axis.AxisData
@@ -32,178 +32,188 @@ import co.yml.charts.ui.linechart.model.LineType
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import com.example.stockapp.integration.stockapi.StockApi
-import com.example.stockapp.repositories.stock.StockRepository
 import com.example.stockapp.ui.theme.TopBarGoBack
 
 @Composable
-fun StockViewScreen(navController: NavController, stockViewModel: StockViewModel) {
+fun StockViewScreen(navController: NavController) {
+
+    val stockViewModel: StockViewModel = hiltViewModel()
 
     val uiState by stockViewModel.state.collectAsState()
 
     stockViewModel.addTestStock()
+    stockViewModel.testCallSetStockToNVO()
+
     val steps = uiState.stockData.steps
     val pointsData = uiState.stockData.pointsData
 
-    val XAxisData = AxisData.Builder()
-        .axisStepSize(100.dp)
-        .backgroundColor(Color.Transparent)
-        .steps(pointsData.size - 1)
-        .labelData { i -> i.toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .axisLineColor(MaterialTheme.colorScheme.primary)
-        .axisLineColor(MaterialTheme.colorScheme.secondary)
-        .build()
+    if (uiState.stockData.steps != 0) {
+        val xAxisData = AxisData.Builder()
+            .axisStepSize(100.dp)
+            .backgroundColor(Color.Transparent)
+            .steps(pointsData.size - 1)
+            .labelData { i -> i.toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .axisLineColor(MaterialTheme.colorScheme.primary)
+            .axisLineColor(MaterialTheme.colorScheme.secondary)
+            .build()
 
-    val YAxisData = AxisData.Builder()
-        .steps(steps)
-        .backgroundColor(Color.Transparent)
-        .labelAndAxisLinePadding(15.dp)
-        .labelData { i ->
-            val yScale = 100 / steps
-            (i * yScale).toString()
-        }
-        .axisLineColor(MaterialTheme.colorScheme.primary)
-        .axisLineColor(MaterialTheme.colorScheme.secondary)
-        .build()
+        val yAxisData = AxisData.Builder()
+            .steps(steps)
+            .backgroundColor(Color.Transparent)
+            .labelAndAxisLinePadding(15.dp)
+            .labelData { i ->
+                val yScale = 100 / steps
+                (i * yScale).toString()
+            }
+            .axisLineColor(MaterialTheme.colorScheme.primary)
+            .axisLineColor(MaterialTheme.colorScheme.secondary)
+            .build()
 
-    val lineChartData = LineChartData(
-        linePlotData= LinePlotData(
-            lines = listOf(
-                Line(
-                    dataPoints = pointsData,
-                    LineStyle(
-                        color = MaterialTheme.colorScheme.secondary,
-                        lineType = LineType.SmoothCurve(isDotted = false)
-                    ),
-                    IntersectionPoint(
-                        color = MaterialTheme.colorScheme.secondary,
-                    ),
-                    SelectionHighlightPoint(color = MaterialTheme.colorScheme.primary),
-                    ShadowUnderLine(
-                        alpha = 0.5f,
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary,
-                                Color.Transparent
+        val lineChartData = LineChartData(
+            linePlotData = LinePlotData(
+                lines = listOf(
+                    Line(
+                        dataPoints = pointsData,
+                        LineStyle(
+                            color = MaterialTheme.colorScheme.secondary,
+                            lineType = LineType.SmoothCurve(isDotted = false)
+                        ),
+                        IntersectionPoint(
+                            color = MaterialTheme.colorScheme.secondary,
+                        ),
+                        SelectionHighlightPoint(color = MaterialTheme.colorScheme.primary),
+                        ShadowUnderLine(
+                            alpha = 0.5f,
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    Color.Transparent
+                                )
                             )
-                        )
-                    ),
-                    SelectionHighlightPopUp()
-                )
-            )
-        ),
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        xAxisData = XAxisData,
-        yAxisData = YAxisData,
-        gridLines = GridLines(color = MaterialTheme.colorScheme.outlineVariant)
-    )
-
-    Column {
-        Column() {
-            TopBarGoBack("Details", navController = navController)
-        }
-        Column(modifier = Modifier
-            .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Column() {
-                Text(text = "OMX C25", style = MaterialTheme.typography.titleMedium)
-                Text(text = "Index NASDAQ: OMX C25", style = MaterialTheme.typography.titleMedium)
-            }
-            Divider(color = Color.LightGray, thickness = 1.dp)
-            Column() {
-                Row() {
-                    Text(
-                        text = "USD 1,789.00",
-                        modifier = Modifier.padding(end = 20.dp),
-                        style = MaterialTheme.typography.bodyLarge
+                        ),
+                        SelectionHighlightPopUp()
                     )
-                    Text(text = "-15,03 (0,91%) today", style = MaterialTheme.typography.bodyLarge)
-                }
-                Text(
-                    text = "01.57.41 PM",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.DarkGray
                 )
-            }
-            Divider(color = Color.LightGray, thickness = 1.dp)
-            LineChart(modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-                lineChartData = lineChartData
-            )
-            Divider(color = Color.LightGray, thickness = 1.dp)
+            ),
+            backgroundColor = MaterialTheme.colorScheme.surface,
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(color = MaterialTheme.colorScheme.outlineVariant)
+        )
+
+        Column {
             Column() {
-                Row() {
-                    Column(modifier = Modifier.padding(end = 24.dp)) {
+                TopBarGoBack("Details", navController = navController)
+            }
+            Column(
+                modifier = Modifier
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Column() {
+                    Text(text = "Text", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = uiState.stock.exchange,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                Divider(color = Color.LightGray, thickness = 1.dp)
+                Column() {
+                    Row() {
                         Text(
-                            text = "Opening",
-                            style = MaterialTheme.typography.bodyMedium
+                            text = uiState.stock.last_price.toString(),
+                            modifier = Modifier.padding(end = 20.dp),
+                            style = MaterialTheme.typography.bodyLarge
                         )
                         Text(
-                            text = "HIGH",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "LOW",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Column(modifier = Modifier.padding(end = 36.dp)) {
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
+                            text = "-15,03 (0,91%) today",
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
-                    Column(modifier = Modifier.padding(end = 24.dp)) {
-                        Text(
-                            text = "Prev. close",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "High in 52W",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "Low in 52W",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Column() {
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                        Text(
-                            text = "X",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                    Text(
+                        text = "01.57.41 PM",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.DarkGray
+                    )
+                }
+                Divider(color = Color.LightGray, thickness = 1.dp)
+                LineChart(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    lineChartData = lineChartData
+                )
+                Divider(color = Color.LightGray, thickness = 1.dp)
+                Column() {
+                    Row() {
+                        Column(modifier = Modifier.padding(end = 24.dp)) {
+                            Text(
+                                text = "Opening",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "HIGH",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "LOW",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        Column(modifier = Modifier.padding(end = 36.dp)) {
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        Column(modifier = Modifier.padding(end = 24.dp)) {
+                            Text(
+                                text = "Prev. close",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "High in 52W",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "Low in 52W",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                        Column() {
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Text(
+                                text = "X",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-/*
+
 @Preview (showBackground = true)
 @Composable
 fun StockViewScreenPreview() {
-    StockViewScreen(navController = rememberNavController(), stockViewModel = StockViewModel(stockRepository = StockRepository(
-        LocalContext.current, stockApi = StockApi(LocalContext.current)
-    )))
+    StockViewScreen(
+        navController = rememberNavController()
+    )
 }
-
- */

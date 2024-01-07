@@ -22,8 +22,9 @@ class StockApiUnitTests {
     }
 
     @Test
-    fun retrieveNVOStockTest() = runTest {
-        val stock: Stock? = stockApi.retrieveStock("NVO")
+    fun retrieveNVOStockWithHistoryTest() = runTest {
+        val stock: Stock? = stockApi.retrieveStock("NVO", start = "2024-01-01%2000:00:00", end = "2024-02-01%2000:00:00")
+        Log.i("StockApi", "Found result: \n$stock")
         TestCase.assertNotNull("Stock should not be null", stock)
     }
 

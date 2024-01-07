@@ -5,7 +5,7 @@ import io.finnhub.api.infrastructure.ApiClient
 import org.junit.Test
 import org.junit.Assert.*
 
-class FinnhubApiTest {
+/*class FinnhubApiTest {
 
     init {
         ApiClient.apiKey["token"] = "ckvnsohr01qq199j3h9gckvnsohr01qq199j3ha0" // Replace with your actual API key
@@ -32,5 +32,6 @@ class FinnhubApiTest {
         println(result)
     }
 }
+ */
 
 

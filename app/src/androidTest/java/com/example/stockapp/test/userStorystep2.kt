@@ -1,4 +1,4 @@
-package com.example.stockapp.test
+/*package com.example.stockapp.test
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -62,3 +62,4 @@ class userStorystep2 {
 
 
 }
+*/

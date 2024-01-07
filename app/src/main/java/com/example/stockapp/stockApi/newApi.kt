@@ -23,7 +23,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class ApiTest {
+/*class ApiTest {
     fun fetchStockData() {
         // test del
         Thread {
@@ -206,3 +206,5 @@ fun main() {
     val apiTest = ApiTest()
     apiTest.fetchStockData()
 }
+
+ */

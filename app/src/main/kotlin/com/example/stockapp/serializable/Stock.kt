@@ -19,5 +19,5 @@ data class Stock(
     val volume: String = "0M",
     val fiftytwo_week_low: Double = 0.0,
     val fiftytwo_week_high: Double = 0.0,
-    val history: History = History(),
+    val history: Map<Int, History> = emptyMap()
 )

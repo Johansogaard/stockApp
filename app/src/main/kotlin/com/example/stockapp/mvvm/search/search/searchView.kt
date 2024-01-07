@@ -30,19 +30,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
-import com.example.stockapp.stockApi.ShowStockists
-import com.example.stockapp.stockApi.searchStocks
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 // skal den være her
 
 
 @Composable
 fun SearchScreen(navController: NavController) {
+
+    val viewModel: SearchViewModel = hiltViewModel()
+
     var searchQuery by remember { mutableStateOf("") }
     var searchResults by remember { mutableStateOf<List<String>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
@@ -50,20 +49,8 @@ fun SearchScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         SearchableBar(searchQuery) { query ->
             searchQuery = query
-            coroutineScope.launch(Dispatchers.IO) {
-                val results = searchStocks(query)
-                withContext(Dispatchers.Main) {
-                    searchResults = results
-                    println("Search Results: $results") // Debug log
-                }
-            }
         }
 
-        if (searchResults.isNotEmpty()) {
-            ShowStockists(navController, searchResults)
-        } else {
-            Text("No results found or search not yet performed.")
-        }
     }
 }
 

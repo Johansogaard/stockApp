@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.runtime.*
-import com.example.stockapp.stockApi.ShowStockists
 
 @Composable
 fun WatchScreen(navController: NavController) {
@@ -53,10 +52,6 @@ fun WatchLayout(navController: NavController) {
                     color = Color.Black,
                     modifier = Modifier.fillMaxWidth()
                 )
-
-                if (stockNames.isNotEmpty()) {
-                    ShowStockists(navController, stockNames)
-                }
             }
         }
     }
