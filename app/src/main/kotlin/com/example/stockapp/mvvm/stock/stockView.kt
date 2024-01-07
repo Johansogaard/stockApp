@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.stockapp.R
+import com.example.stockapp.integration.stockapi.StockApi
 import com.example.stockapp.mvvm.Screen
 import com.example.stockapp.repositories.stock.StockRepository
 import com.example.stockapp.stockApi.findMaxValue
@@ -293,5 +294,6 @@ fun StockViewScreen(navController: NavController, stockViewModel: StockViewModel
 @Composable
 fun StockViewScreenPreview() {
     StockViewScreen(navController = rememberNavController(), stockViewModel = StockViewModel(stockRepository = StockRepository(
-        LocalContext.current)), "NOVO")
+        LocalContext.current, stockApi = StockApi(LocalContext.current)
+    )), "NOVO")
 }

@@ -2,10 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="StockApiUnitTest">
+      <entry key="StockApiUnitTests">
         <State />
       </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="retrieveAnyListOfStocksWithSizeFive() (1)">
+        <State />
+      </entry>
+      <entry key="retrieveNVOStockTest()">
         <State />
       </entry>
     </value>

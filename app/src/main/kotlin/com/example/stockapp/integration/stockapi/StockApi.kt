@@ -4,25 +4,19 @@ import android.content.Context
 import com.example.stockapp.serializable.Stock
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.BufferedReader
 import android.util.Log
 import com.google.common.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class StockApi @Inject constructor(
     @ApplicationContext private val context: Context
 ){
 
-
-    // Tests connection, returns true/false
     suspend fun testConnection(): Boolean = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -33,6 +27,7 @@ class StockApi @Inject constructor(
         val request = Request.Builder()
             .url(urlString)
             .get()
+            .header("Connection", "close")
             .build()
 
         try {
@@ -49,8 +44,6 @@ class StockApi @Inject constructor(
         return@withContext false
     }
 
-
-    // Retrieves one stock (maybe)
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun retrieveStock(symbol: String, start: String = "", end: String = ""): Stock? = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
@@ -62,9 +55,10 @@ class StockApi @Inject constructor(
         val request = Request.Builder()
             .url(urlString)
             .get()
+            .header("Connection", "close")
             .build()
 
-        var tries = 1
+        var tries = 10
         while (tries > 0) {
             try {
                 client.newCall(request).execute().use { response ->
@@ -92,8 +86,98 @@ class StockApi @Inject constructor(
         return@withContext null
     }
 
-    // retrieves a list of strings based on search terms in a list of strings
-    // e.g ['GME'] -> ['GME - General electric', 'NVO - NOVO Nordisk']
+    suspend fun retrieveAnyListOfStocks(limit: String, offset: String, start: String = "", end: String = ""): List<Stock>? = withContext(Dispatchers.IO) {
+        val client = OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build()
+
+        val urlString = "http://135.181.106.80:5000/get-stocks-amount/?start_date=$start&end_date=$end&limit=$limit&offset=$offset"
+        val request = Request.Builder()
+            .url(urlString)
+            .get()
+            .header("Connection", "close")
+            .build()
+
+        var tries = 10
+        while (tries > 0) {
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        Log.e("StockApi", "Call to stock failed with error: ${response.code}")
+                    }
+
+                    val responseBody = response.body?.string()
+                    if (responseBody != null) {
+                        val searchResultsType = object : TypeToken<List<Stock>>() {}.type
+                        return@withContext Gson().fromJson<List<Stock>?>(
+                            responseBody,
+                            searchResultsType
+                        )
+                    } else {
+                        Log.e("StockApi", "Response body was null")
+                        return@withContext null
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("StockApi", "Error in making the request: ${e.message}")
+                // Wait a bit before retrying to give transient issues time to resolve
+                Thread.sleep(1000)
+            }
+            tries -= 1
+            Log.i("StockApi", "Retrying due to failure. Tries left: $tries")
+        }
+        Log.e("StockApi", "Failed to retrieve stock after multiple attempts")
+        return@withContext null
+    }
+
+    suspend fun retrieveListOfStocks(symbols: List<String>, start: String = "", end: String = ""): List<Stock>? = withContext(Dispatchers.IO) {
+        val symbolsString: String = symbols.joinToString("-")
+        Log.i("StockApi", "$symbolsString")
+        val client = OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .build()
+
+        val urlString = "http://135.181.106.80:5000/get-stocks/$symbolsString?start_date=$start&end_date=$end"
+        val request = Request.Builder()
+            .url(urlString)
+            .get()
+            .header("Connection", "close")
+            .build()
+
+        var tries = 10
+        while (tries > 0) {
+            try {
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) {
+                        Log.e("StockApi", "Call to stock failed with error: ${response.code}")
+                    }
+
+                    val responseBody = response.body?.string()
+                    if (responseBody != null) {
+                        val searchResultsType = object : TypeToken<List<Stock>>() {}.type
+                        return@withContext Gson().fromJson<List<Stock>?>(
+                            responseBody,
+                            searchResultsType
+                        )
+                    } else {
+                        Log.e("StockApi", "Response body was null")
+                        return@withContext null
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("StockApi", "Error in making the request: ${e.message}")
+                // Wait a bit before retrying to give transient issues time to resolve
+                Thread.sleep(1000)
+            }
+            tries -= 1
+            Log.i("StockApi", "Retrying due to failure. Tries left: $tries")
+        }
+        Log.e("StockApi", "Failed to retrieve stock after multiple attempts")
+        return@withContext null
+    }
+
     suspend fun retrieveSearch(symbol: String, limit: Int = 1): List<String>? = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -104,6 +188,7 @@ class StockApi @Inject constructor(
         val request = Request.Builder()
             .url(urlString)
             .get()
+            .header("Connection", "close")
             .build()
 
         repeat(10) { attempt ->
@@ -135,5 +220,6 @@ class StockApi @Inject constructor(
         println("Failed to retrieve search results after multiple attempts")
         return@withContext null
     }
+
 
 }

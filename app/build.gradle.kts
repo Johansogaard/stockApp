@@ -89,7 +89,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation ("com.google.code.gson:gson:2.10")
+    implementation ("com.google.code.gson:gson:2.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
@@ -97,7 +97,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.50") // Hilt compiler
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22")
 
     implementation("com.google.dagger:hilt-android-gradle-plugin:2.50")
 
@@ -121,9 +121,9 @@ dependencies {
 
 //finhnhubb
     implementation ("io.finnhub:kotlin-client:2.0.20")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
-    implementation ("com.squareup.moshi:moshi-kotlin:1.12.0") // Check for the latest version
-    implementation ("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("com.squareup.moshi:moshi-kotlin:1.15.0") // Check for the latest version
+    implementation ("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
