@@ -21,6 +21,8 @@ class StockApi @Inject constructor(
     @ApplicationContext private val context: Context
 ){
 
+
+    // Tests connection, returns true/false
     suspend fun testConnection(): Boolean = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -47,6 +49,8 @@ class StockApi @Inject constructor(
         return@withContext false
     }
 
+
+    // Retrieves one stock (maybe)
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun retrieveStock(symbol: String, start: String = "", end: String = ""): Stock? = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
@@ -88,6 +92,8 @@ class StockApi @Inject constructor(
         return@withContext null
     }
 
+    // retrieves a list of strings based on search terms in a list of strings
+    // e.g ['GME'] -> ['GME - General electric', 'NVO - NOVO Nordisk']
     suspend fun retrieveSearch(symbol: String, limit: Int = 1): List<String>? = withContext(Dispatchers.IO) {
         val client = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
