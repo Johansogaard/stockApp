@@ -73,6 +73,10 @@ class UserRepository @Inject constructor(
         authentication.signOut()
     }
 
+    suspend fun createUserWithEmail(email: String, password: String) {
+        authentication.createUser(email, password)
+    }
+
     fun send (email: String,password: String) {
         authentication.signInUser(email,password)
     }

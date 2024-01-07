@@ -93,8 +93,7 @@ fun PortfolioLayout(navController: NavController, portfolioViewModel: PortfolioV
                 //Spacer(modifier = Modifier.weight(0.90f))
                 IconButton(
                     onClick = {
-                        //EmailAuthManager.signOut()
-                        //navController.navigate(Screen.IntroScreen.route)
+                        portfolioViewModel.signOut()
                     },
 
                     ) {

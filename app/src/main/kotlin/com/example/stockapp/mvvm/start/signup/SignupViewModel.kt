@@ -20,7 +20,7 @@ class SignupViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignupUiState())
     val state: StateFlow<SignupUiState> = _uiState.asStateFlow()
 
-    fun signUpUser(email: String, firstName: String, lastName: String, pWord: String, uName: String)
+    fun signUpUser(email: String, firstName: String, lastName: String, password: String, uName: String)
     {
         if(userRepository.checkSignedIn()) {
             _uiState.value.user = createNewUserObject(email, firstName, lastName, uName)
@@ -32,11 +32,10 @@ class SignupViewModel @Inject constructor(
         {
             _uiState.value.user = createNewUserObject(email, firstName, lastName, uName)
             viewModelScope.launch {
-                val data = async {
-                    userRepository.send(email,pWord)
+                val createUserAuth = async {
+                    userRepository.createUserWithEmail(email,password)
                 }
-
-                val result = data.await()
+                createUserAuth.await()
                 userRepository.initializeUser(_uiState.value.user)
             }
          }
