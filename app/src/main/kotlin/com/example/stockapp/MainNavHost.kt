@@ -56,6 +56,13 @@ fun MainNavHost(
     stockViewModel: StockViewModel,
     buyViewModel: BuyViewModel,
     signupViewModel: SignupViewModel,
+    portfolioViewModel: PortfolioViewModel,
+    explorerViewModel: ExplorerViewModel,
+    indexViewModel: IndexViewModel,
+    orderViewModel: OrderViewModel,
+    searchViewModel: SearchViewModel,
+    introViewModel: IntroViewModel,
+    watchViewModel: WatchViewModel,
     competitionViewModel: CompetitionViewModel,
 
     ) {
@@ -100,7 +107,7 @@ fun MainNavHost(
                     )
                 {
                     composable(route = Screen.IntroScreen.route) {
-                        IntroScreen(navController = navController)
+                        IntroScreen(navController = navController,introViewModel = introViewModel)
                         showNavigate = false
                     }
                     composable(route = Screen.ChoseSignupScreen.route) {

@@ -21,7 +21,7 @@ import com.example.stockapp.ui.theme.ClickableText
 import com.example.stockapp.ui.theme.CustomButton
 
 @Composable
-fun IntroScreen(navController: NavController)
+fun IntroScreen(navController: NavController, introViewModel: IntroViewModel)
 {
     //val appUiState by appViewModel.uiState.collectAsState()
 
@@ -29,11 +29,11 @@ fun IntroScreen(navController: NavController)
 
     Box(modifier = Modifier.fillMaxSize())
     {
-        IntroLayout(navController = navController)
+        IntroLayout(navController = navController,introViewModel = introViewModel)
     }
 }
 @Composable
-fun IntroLayout(navController: NavController)
+fun IntroLayout(navController: NavController, introViewModel: IntroViewModel)
 {
 
     Column(
@@ -81,6 +81,6 @@ fun BeginText(text: String) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewIntroScreen() {
-    IntroScreen(navController = rememberNavController())
+    //IntroScreen(navController = rememberNavController())
 }
 

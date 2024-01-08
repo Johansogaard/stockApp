@@ -51,7 +51,7 @@ fun PortfolioScreen(navController: NavController,portfolioViewModel: PortfolioVi
         PortfolioLayout(
             navController = navController,
             portfolioViewModel = portfolioViewModel,
-            uiState = uiState,
+           // uiState = uiState,
         )
     }
 }
